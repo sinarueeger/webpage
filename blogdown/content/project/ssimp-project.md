@@ -1,25 +1,26 @@
 +++
 # Date this page was created.
-date = "2016-04-27"
+date = "2018-01-11"
 
 # Project title.
-title = "External Project"
+title = "Summary statistics imputation"
 
 # Project summary to display on homepage.
-summary = "An example of linking directly to an external project website using `external_link`."
+summary = "Imputation of GWAS summary statistics"
 
 # Optional image to display on homepage (relative to `static/img/` folder).
-image_preview = "boards.jpg"
+image_preview = "ssimp.jpeg"
 
 # Tags: can be used for filtering projects.
 # Example: `tags = ["machine-learning", "deep-learning"]`
-tags = ["demo"]
+tags = ["ssimp", "statistical genetics"]
 
 # Optional external URL for project (replaces project detail page).
-external_link = "http://example.org"
+external_link = "https://github.com/sinarueeger/ssimp_software"
 
 # Does the project detail page use math formatting?
 math = false
 
 +++
 
+some text
