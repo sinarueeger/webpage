@@ -7,12 +7,15 @@
 ## blogdown::new_site(theme = "gcushen/hugo-academic")
 
 
+library(blogdown)
+new_post(title="A first post using blogdown", kind = ".Rmd")
+
 ## 1) update content, whatever, create new post
 
 ## 2) update website
 blogdown::hugo_build()
 
 ## 3) commit changes to github, 
-system("cd /Users/admin/Documents/Privat/webpage/blogdown/public")
+system("cd /Users/admin/Documents/Projects/webpage/blogdown/public")
 system("git commit -a -m 'update'")
 system("git push")
