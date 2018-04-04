@@ -8,9 +8,9 @@
 
 
 library(blogdown)
-new_post(title="A first post using blogdown", kind = ".Rmd")
 
 ## 1) update content, whatever, create new post
+#new_post(title="A first post using blogdown", kind = ".Rmd")
 
 ## 2) update website
 blogdown::hugo_build()
