@@ -10,7 +10,13 @@ header:
   image: ''
 ---
 
-# Title
-https://gist.github.com/sinarueeger/aadfe4916cf285e32d5a55f320a82a6f
+I work - broadly speaking - in epidemiology. Within collaborations we often have to share (sensitive) data accross institutions (therefore not sharing IT facilities). But bare e-mail or file hosting are not secure options. 
 
-https://gist.github.com/sinarueeger/600e7d876ed8d74583fd4197ab290255
+There are a handful of other options around ([ProtonMail](https://protonmail.com/) or [keybase.io](https://keybase.io/)), but for those that only trust open source projects I have written some basic instructions for asymmetric GPG encryption. 
+
+I should say that I am not an encryption expert at all, but I never came across a compact instruction for the sender of the document and the recipient for all three operating systems (Linux, Mac, Windows). The instructions are written for people that are familiar with a terminal. In a way I mainly wrote this for myself and potential collaborators.
+
+- Here are the instructions for the [sender of the document](https://gist.github.com/sinarueeger/aadfe4916cf285e32d5a55f320a82a6f#file-encryption_files-md).
+- Here are the instructions that the [recipient](https://gist.github.com/sinarueeger/aadfe4916cf285e32d5a55f320a82a6f#file-encryption_files_recipient-md) needs to follow.
+
+Feedback is highly appreciated!

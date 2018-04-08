@@ -43,11 +43,11 @@ defaultContentLanguageInSubdir = false
 [params]
   # Color theme.
   #   Choose from `default`, `ocean`, `forest`, `coffee`, `dark`, or `1950s`.
-  color_theme = "dark"
+  color_theme = "default"
 
   # Font style.
   #   Choose from `default`, `classic`, or `playfair`.
-  font = "playfair"
+  font = "default"
 
   # Your details.
   name = "Sina Rüeger"
@@ -75,7 +75,7 @@ defaultContentLanguageInSubdir = false
 
   # Diplay a logo in navigation bar rather than title (optional).
   #   To enable, place an image in `static/img/` and reference its filename below. To disable, set the value to "".
-  logo = "ssimp.jpg"
+  logo = ""
 
   # Enable/disable map in Contact widget.
   # To show your address on a map in the contact widget, you need to enter your latitude, longitude and choose
@@ -249,11 +249,6 @@ defaultContentLanguageInSubdir = false
   weight = 1
 
 [[menu.main]]
-  name = "Publications"
-  url = "#publications_selected"
-  weight = 4
-
-[[menu.main]]
   name = "Posts"
   url = "#posts"
   weight = 2
@@ -262,6 +257,11 @@ defaultContentLanguageInSubdir = false
   name = "Projects"
   url = "#projects"
   weight = 3
+  
+[[menu.main]]
+  name = "Publications"
+  url = "#publications_selected"
+  weight = 4
 
 [[menu.main]]
   name = "Contact"

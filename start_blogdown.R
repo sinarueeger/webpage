@@ -15,7 +15,9 @@ library(blogdown)
 ## 2) update website
 blogdown::hugo_build()
 
-## 3) commit changes to github, 
-system("cd /Users/admin/Documents/Projects/webpage/blogdown/public")
-system("git commit -a -m 'update'")
-system("git push")
+## 3) commit changes to github >> do in terminal
+#system("cd /Users/admin/Documents/Projects/webpage/blogdown/public")
+#system("git add *")
+#system("git commit -a -m 'update'")
+#system("git push")
+
