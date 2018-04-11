@@ -23,7 +23,6 @@ publication_short = "bioRxiv"
 # Abstract and optional shortened version.
 abstract = ""
 
-
 # Featured image thumbnail (optional)
 image_preview = ""
 
@@ -33,18 +32,10 @@ selected = true
 # Projects (optional).
 #   Associate this publication with one or more of your projects.
 #   Simply enter the filename (excluding '.md') of your project file in `content/project/`.
-projects = ["ssimp-project"]
 
 # Links (optional).
 url_pdf = "https://www.biorxiv.org/content/early/2017/10/16/203927"
 url_preprint = "https://www.biorxiv.org/content/early/2017/10/16/203927"
-url_code = "#"
-url_dataset = "#"
-url_project = "#"
-url_slides = "#"
-url_video = "#"
-url_poster = "#"
-url_source = "#"
 
 # Custom links (optional).
 #   Uncomment line below to enable. For multiple links, use the form `[{...}, {...}, {...}]`.
@@ -61,7 +52,4 @@ highlight = true
 [header]
 image = "ssimp-method.jpg"
 caption = ""
-
 +++
-
-## More detail can easily be written here using *Markdown* and $\rm \LaTeX$ math code.

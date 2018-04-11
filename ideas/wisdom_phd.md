@@ -43,3 +43,13 @@ From my experience with depression, anxiety and exhaustion I learned the followi
 - figure out what you like to do in your spare free time and do more of that. for me, it was to do less sports and more crafting. for others it might be the other way around. problem is: freetime activities can also trigger depression on top of work. 
 
 - look for a group of people that (what has truly helped me to gain confidence is a group called R-Ladies).
+
+
+why we need to learn meditation back as a child, meditation by religion teacher
+
+biking meditaiton post cyclingtips
+
+
+One of the best investments I made during the past few months, was, to get a meditation cushion. Its a daily, visual reminder to sit down and get lost for a while. :meditation:
+<pic>
+

@@ -32,18 +32,17 @@ selected = true
 # Projects (optional).
 #   Associate this publication with one or more of your projects.
 #   Simply enter the filename (excluding '.md') of your project file in `content/project/`.
-projects = ["ssimp-project"]
 
 # Links (optional).
 url_pdf = "https://www.biorxiv.org/content/early/2017/10/18/204560"
 url_preprint = "https://www.biorxiv.org/content/early/2017/10/18/204560"
-url_code = "#"
-url_dataset = "#"
-url_project = "#"
-url_slides = "#"
-url_video = "#"
-url_poster = "#"
-url_source = "#"
+#url_code = "#"
+#url_dataset = "#"
+#url_project = "#"
+#url_slides = "#"
+#url_video = "#"
+#url_poster = "#"
+#url_source = "#"
 
 # Custom links (optional).
 #   Uncomment line below to enable. For multiple links, use the form `[{...}, {...}, {...}]`.
@@ -62,5 +61,4 @@ image = "ssimp-application.jpg"
 caption = ""
 
 +++
-
 ## More detail can easily be written here using *Markdown* and $\rm \LaTeX$ math code.

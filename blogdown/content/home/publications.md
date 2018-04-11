@@ -36,3 +36,4 @@ publication_type = "-1"
 exclude_selected = false
 +++
 
+Find a detailed list on [Google Scholar](https://scholar.google.com/citations?user=OD9gCh4AAAAJ&hl=de).

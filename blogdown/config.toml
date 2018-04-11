@@ -18,9 +18,10 @@ footnotereturnlinkcontents = "<sup>^</sup>"
 ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]
 preserveTaxonomyNames = true
 paginate = 10
+publishDir = "../sinarueeger.github.io"
 
 # Enable comments by entering your Disqus shortname
-disqusShortname = ""
+disqusShortname = "sinarueeger-github-io"
 
 # Enable analytics by entering your Google Analytics tracking ID
 googleAnalytics = ""
@@ -67,7 +68,7 @@ defaultContentLanguageInSubdir = false
   telegram = ""
 
   # Enable Keybase in Contact widget by entering your keybase.io username.
-  keybase = ""
+  keybase = "sinarueeger"
 
   # Discussion link (e.g. link to a forum, mailing list, or chat).
   #   Uncomment line below to use.
@@ -252,21 +253,16 @@ defaultContentLanguageInSubdir = false
   name = "Posts"
   url = "#posts"
   weight = 2
-
-[[menu.main]]
-  name = "Projects"
-  url = "#projects"
-  weight = 3
   
 [[menu.main]]
   name = "Publications"
-  url = "#publications_selected"
-  weight = 4
+  url = "#publications"
+  weight = 3
 
 [[menu.main]]
   name = "Contact"
   url = "#contact"
-  weight = 5
+  weight = 4
 
 # Taxonomies.
 [taxonomies]
@@ -279,4 +275,4 @@ defaultContentLanguageInSubdir = false
 
 # Configure the English version of the website.
 [Languages.en]
-  languageCode = "en-us"
+  languageCode = "en-gb"
