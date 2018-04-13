@@ -1,7 +1,7 @@
 +++
 title = "Contact"
-date = 2015-04-03T02:13:50Z
-author = "Sina"
+date = 2018-04-13T02:13:50Z
+author = "Sina Rüeger"
 description = "How to contact me."
 +++
 
