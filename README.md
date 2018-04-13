@@ -3,6 +3,8 @@
 
 ## Blog
 
+categories
+
 - R (datasets you find interesting, exploring a package: gmailr)
 - concepts (ssimp, statgen, explanations of concepts in statistical genetics)
 - conferences (write up conferences, emgm)

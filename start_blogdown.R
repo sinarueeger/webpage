@@ -5,7 +5,7 @@
 
 ## https://bookdown.org/yihui/blogdown/a-quick-example.html
 ## blogdown::new_site(theme = "gcushen/hugo-academic")
-
+##blogdown::new_site(theme = "jbub/ghostwriter")
 
 library(blogdown)
 
