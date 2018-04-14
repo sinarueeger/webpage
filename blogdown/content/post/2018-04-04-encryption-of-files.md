@@ -14,6 +14,5 @@ There are a handful of secure options around ([ProtonMail](https://protonmail.co
 
 *I should say that I am not an encryption expert at all. But, although there is a lot of talk about data protection, I never came across a compact, easy-to-follow instruction for the sender of the document and the recipient, valid for all three operating systems (Linux, Mac, Windows). Therefore, I tried to write one, mainly for myself and collaborators. Feedback is appreciated!*
 
-
-{{< gist sinarueeger aadfe4916cf285e32d5a55f320a82a6f >}}
+{{< gist sinarueeger aadfe4916cf285e32d5a55f320a82a6f "encryption_files.md" >}}
 
