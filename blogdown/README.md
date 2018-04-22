@@ -1,0 +1,34 @@
+in css file:
+/Users/admin/Documents/Projects/new/mainfolder/themes/ghostwriter/static/dist
+
+
+blues changed: #3182bd > #003366
+
+light blue for hower > # deebf7
+
+
+
+# webpage
+
+
+## Blog
+
+categories
+
+- R (datasets you find interesting, exploring a package: gmailr)
+- concepts (ssimp, statgen, explanations of concepts in statistical genetics)
+- conferences (write up conferences, emgm)
+- workflow (gpg, improving workflow)
+- Expressing opinions about data science or educational practice (example)
+
+
+
+
+## Publications
+
+## About 
+
+- bio
+- goodreads
+- usethis
+- cycling
