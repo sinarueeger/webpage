@@ -13,7 +13,7 @@ To set up this website I have used some excellent material around [**blogdown**]
 
 ## Motivation
 
-Before going into the technical details, let me say something about motivation and inspiration. For me, it definitely helped to read the blogpost by [David Robinson](http://varianceexplained.org/r/start-blog/), being encouraged by [Ma&euml;lle Salmon](http://www.masalmon.eu/rladiesct/slides#1) and seeing many others leading by example (among many: Marie Christine Dussault on [mcdussault.rbind.io](http://mcdussault.rbind.io/post/building-your-blog-using-blogdown/) or [Kasia]()).
+Before going into the technical details, let me say something about motivation and inspiration. For me, it definitely helped to read the blogpost by [David Robinson](http://varianceexplained.org/r/start-blog/), being encouraged by [Ma&euml;lle Salmon](http://www.masalmon.eu/rladiesct/slides#1) and seeing many others leading by example (among many: Marie Christine Dussault on [mcdussault.rbind.io](http://mcdussault.rbind.io/post/building-your-blog-using-blogdown/) or [Kasia Kulma](https://kkulma.github.io/2017-12-29-end-of-year-thoughts/)).
 
 I might get into a more personal motivation in a future blogpost.
 
