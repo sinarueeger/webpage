@@ -3,7 +3,7 @@ title = "Getting started with encryption of documents"
 description = ""
 author = "Sina Rueeger"
 date = 2018-04-13T20:40:59+02:00
-tags = ["encryption"]
+tags = ["encryption","best practices","workflow"]
 category = ["workflow"]
 draft = false
 +++

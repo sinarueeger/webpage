@@ -1,7 +1,0 @@
-devtools::install_github("jonocarroll/mathpix")
-library(mathpix)#
-mathpix("/Users/admin/Desktop/mathpix/integral.jpg", trial=FALSE)
-mathpix("/Users/admin/Desktop/groupmeeting/mathpix/integral.jpg", trial=FALSE)
-mathpix("/Users/admin/Desktop/group meeting/mathpix/integral.jpg", trial=FALSE)
-mathpix("/Users/admin/Desktop/group meeting/mathpix/IMG_20171013_163303.jpg", trial=FALSE)
-mathpix("/Users/admin/Desktop/group meeting/mathpix/IMG_20171013_163303.jpg", trial=FALSE)
