@@ -1,7 +1,7 @@
 +++
 title = "About"
 date = 2017-04-13T02:13:50Z
-author = "Sina Rüeger"
+author = "Sina R&uuml;eger"
 description = "Things about me."
 +++
 
@@ -15,10 +15,15 @@ description = "Things about me."
 
 ## Interests
 
-- Data analysis and statistical modelling
+- Data analysis and statistical modelling paired with R
 - Visual representation of concepts and results
 - Interplay between health, medicine and technology
 - Reproducibility and open science
+
+<p align="justify">I am glad that I encountered <a href="https://en.wikipedia.org/wiki/R_(programming_language)">R</a> early in my studies and I like how it has evolved over time. As an open source project, lots of people are making contributions and so there is always something to learn. I like to share my passion for R, and together with three colleagues I am organising <a href="https://www.meetup.com/rladies-lausanne/">R-Ladies Lausanne</a>.</p>
+
+
+
 
 ## Resume 
 
@@ -30,4 +35,4 @@ description = "Things about me."
 
 ## Other than that... 
 
-I am a keen cyclist and blog about bike packing [here](https://medium.com/@sinarueeger/).
+I am a keen cyclist and blog about bikepacking [here](https://medium.com/@sinarueeger/).

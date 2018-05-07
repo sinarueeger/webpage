@@ -1,9 +1,9 @@
 +++
-title = "Setting up the Blogdown Website"
-description = ""
-author = ""
+title = "Setting up the Blogdown website"
+description = "and personalising it."
+author = "Sina R&uuml;eger"
 date = 2018-04-14T10:00:03+02:00
-tags = ["blogdown","github","hugo","workflow"]
+tags = ["R",blogdown","github","hugo","workflow"]
 category = ["workflow"]
 draft = false
 +++
