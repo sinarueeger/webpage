@@ -25,3 +25,6 @@ categories
 
 
 ## Publications
+
+## cookies
+https://manage.cookiebot.com/en/manage

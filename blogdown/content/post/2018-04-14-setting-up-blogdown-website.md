@@ -3,9 +3,8 @@ title = "Setting up the Blogdown website"
 description = "and personalising it."
 author = "Sina R&uuml;eger"
 date = 2018-04-14T10:00:03+02:00
-tags = ["R",blogdown","github","hugo","workflow"]
+tags = ["R","blogdown","github","hugo","workflow"]
 category = ["workflow"]
-draft = false
 +++
 
 To set up this website I have used some excellent material around [**blogdown**](https://bookdown.org/yihui/blogdown/get-started.html), [**github**](https://pages.github.com/) and [**hugo**](https://themes.gohugo.io/). 

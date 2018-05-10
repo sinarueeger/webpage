@@ -15,7 +15,12 @@ library(blogdown)
 ## 2) update website
 blogdown::hugo_build()
 
-## 3) commit changes to github >> do in terminal
+## add
+# <script id="Cookiebot" src="https://consent.cookiebot.com/uc.js" data-cbid="119ec67e-e76e-474f-98e1-db5f9991a5e7" type="text/javascript" async></script>
+
+#  to index.html file
+
+  ## 3) commit changes to github >> do in terminal
 #system("cd /Users/admin/Documents/Projects/webpage/sinarueeger.github.io")
 #system("git add *")
 #system("git commit -a -m 'update'")
