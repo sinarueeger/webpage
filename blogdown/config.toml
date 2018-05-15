@@ -1,5 +1,5 @@
 baseurl = "/"
-title = "Data science in genetics & related things"
+title = "Data science in genomics & related things"
 theme = "ghostwriter"
 languageCode = "en-us"
 copyright = "Sina R&uuml;eger"
@@ -7,6 +7,9 @@ disqusShortname = "sinarueeger-github-io"
 googleAnalytics = "XXX"
 publishDir = "../sinarueeger.github.io"
 ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]
+
+enableEmoji = true
+enablefa = true
 
 [Author]
     name = "Sina Rüeger"
