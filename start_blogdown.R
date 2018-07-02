@@ -32,5 +32,4 @@ setwd("/Users/admin/Documents/Projects/webpage/sinarueeger.github.io")
 system("git add -f *")
 system(paste0("git commit -a -m ", comment))
 system("git push")
-
 setwd(path)
