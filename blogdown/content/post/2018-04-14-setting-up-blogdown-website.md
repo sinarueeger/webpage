@@ -50,7 +50,7 @@ The default color theme is red. But I wanted something dark blue. So I went thro
 
 #### Font
 
-The default font is [<font face="Open Sans">Open Sans</font>](https://fonts.google.com/specimen/Open+Sans). I went for Futura [~~Dosis~~](https://fonts.google.com/specimen/Dosis), simply, because I prefer it (currently).
+The default font is [<font face="Open Sans">Open Sans</font>](https://fonts.google.com/specimen/Open+Sans). But you can add other fonts too. ~~I went for Futura [Dosis](https://fonts.google.com/specimen/Dosis), simply, because I prefer it (currently).~~
 
 ### 3. Caution!
 When choosing a theme and changing the `css` file keep the last paragraph from this [section](https://bookdown.org/yihui/blogdown/other-themes.html) from the blogdown instructions in mind!
