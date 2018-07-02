@@ -12,7 +12,7 @@ enablefa = true
 
 [Author]
     name = "Sina Rüeger"
-    profile = "https://google.com/+XXX"
+    profile = "https://twitter.com/sinarueeger"
 
 [Taxonomies]
     tag = "tags"
@@ -34,7 +34,7 @@ enablefa = true
     dateFormat = "Mon, Jan 2, 2006"
     highlightJsUrl = ""
     highlightJsLocalUrl = ""
-    color_theme = "red"
+    color_theme = "blue"
 
 [Permalinks]
     post = "/:year/:month/:day/:filename/"
