@@ -1,7 +1,7 @@
 +++
 title = "Setting up the Blogdown website"
 description = "and personalising it."
-author = "Sina Rüeger"
+author = "Sina RÃ¼eger"
 date = 2018-04-14T10:00:03+02:00
 tags = ["R","blogdown","github","hugo","workflow"]
 category = ["workflow"]
