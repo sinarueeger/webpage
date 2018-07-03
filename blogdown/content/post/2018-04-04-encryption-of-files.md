@@ -1,7 +1,7 @@
 +++
 title = "Getting started with encryption of documents"
 description = "to share data securely."
-author = "Sina R&uuml;eger"
+author = "Sina Rüeger"
 date = 2018-04-13T20:40:59+02:00
 tags = ["encryption","best practices","workflow"]
 category = ["workflow"]
