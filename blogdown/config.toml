@@ -47,7 +47,7 @@ enablefa = true
     
 [[menu.main]]
     name = "Resources"
-    url = "https://github.com/sinarueeger/statistical-genetics-resources"
+    url = "https://github.com/sinarueeger/statistical-genetics-resources/blob/master/statgen-data.md"
     weight = 2
     
 
