@@ -39,9 +39,7 @@ Kathrine Tansey kept us busy with a workshop on `dplyr` in the morning.
 
 Textmining with [Nujcharee (เป็ด)](https://twitter.com/Nujcharee), applied to #metoo twitter data:
 
-
-<
-<blockqe class="twitter-tweet" data-cards="hidden" data-lang="en"><p lang="en" dir="ltr">My slide on Introduction to Tidytext <a href="https://t.co/XOiEiedNjN">https://t.co/XOiEiedNjN</a> <a href="https://twitter.com/satRdays_org?ref_src=twsrc%5Etfw">@satRdays_org</a> <a href="https://twitter.com/hashtag/rstats?src=hash&amp;ref_src=twsrc%5Etfw">#rstats</a></p>&mdash; Nujcharee (เป็ด) (@Nujcharee) <a href="https://twitter.com/Nujcharee/status/1010521563676991489?ref_src=twsrc%5Etfw">June 23, 2018</a></blockquote>
+<blockquote class="twitter-tweet" data-cards="hidden" data-lang="en"><p lang="en" dir="ltr">My slide on Introduction to Tidytext <a href="https://t.co/XOiEiedNjN">https://t.co/XOiEiedNjN</a> <a href="https://twitter.com/satRdays_org?ref_src=twsrc%5Etfw">@satRdays_org</a> <a href="https://twitter.com/hashtag/rstats?src=hash&amp;ref_src=twsrc%5Etfw">#rstats</a></p>&mdash; Nujcharee (เป็ด) (@Nujcharee) <a href="https://twitter.com/Nujcharee/status/1010521563676991489?ref_src=twsrc%5Etfw">June 23, 2018</a></blockquote>
 
 <img src="https://user-images.githubusercontent.com/4454726/41937494-bf3e2020-7990-11e8-8453-a6b566e3b469.jpg" height="200" />
 
