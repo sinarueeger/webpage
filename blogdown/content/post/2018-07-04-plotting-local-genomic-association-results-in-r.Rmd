@@ -1,0 +1,55 @@
++++
+title = "Plotting Local Genomic Association Results in R"
+description = ""
+author = ""
+date = 2018-07-04T10:43:44+02:00
+tags = ["statgen", "R", "data visualisation", "R", "ggplot2"]
+category = ["statgen", "R", "data visualisation"]
+draft = true
++++
+
+<!-- what will I do? -->
+
+In this blogpost, I will show how to look at the association results of a small genomic region in R. 
+
+<!-- reasoning: why do we need a locus zoom plot -->
+
+
+<!-- data -->
+For this we need first some summary association statistics. 
+
+There has been recently a study on ... 
+
+Journal mentioned region... 
+
+<!-- locuszoom -->
+## Locuszoom
+
+http://locuszoom.org/
+Plot it in Locuszoom plot
+via interface
+
+<!-- R + locuszoom -->
+## R through locuszoomoutput
+
+Plot it with data from locuszoom
+
+
+<!-- GWAS + biomart info -->
+
+## R with origninal datasources
+
+Plot it with original dataa 
+
+
+## add gtex summary stats
+
+
+
+## What plotting tools to use?
+
+When doing more of what I like to call *arts & crafts* (plotting multiple datasets), it might be tempting to use base-R plotting functions. Simply because we are used to use base-R to overlay different datasets. 
+
+But `ggplot2` can handle that probably better in the long run. 
+
+
