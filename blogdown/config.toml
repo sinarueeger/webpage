@@ -1,5 +1,5 @@
 baseurl = "/"
-title = "Data science in genomics & related things"
+title = "Analysing genetic data"
 theme = "ghostwriter"
 languageCode = "en-us"
 copyright = "Sina R&uuml;eger"
