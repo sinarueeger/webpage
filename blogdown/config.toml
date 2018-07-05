@@ -20,7 +20,7 @@ enablefa = true
 [Params]
     intro = true
     headline = "Sina Rüeger"
-    description = "Data science in genetics & related things"
+    description = "Analysing genetic data"
     github = "https://github.com/sinarueeger"
     linkedin = "https://www.linkedin.com/in/sinarueeger/"
     twitter = "https://twitter.com/sinarueeger"
