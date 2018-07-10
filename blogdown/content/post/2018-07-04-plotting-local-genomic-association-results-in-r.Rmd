@@ -25,9 +25,10 @@ There are lots of [ressources](https://github.com/sinarueeger/statistical-geneti
 
 Because direct download is not possible, we will look at another great source, GIANT. BMI. Download [here](https://portals.broadinstitute.org/collaboration/giant/index.php/GIANT_consortium_data_files#GWAMA_Age-.2FSex-Stratified_2015_BMI_and_WHR) from this [publication](https://www.biorxiv.org/content/early/2018/03/22/274654).
 
-```{r, setup}
+```{r, setup, warning=FALSE,message=FALSE}
 ## we are gonna need this
 library(tidyverse)
+library(cookbookRsina) ## for QQPLOT
 
 ```
 
@@ -53,7 +54,7 @@ head(dat.bmi, n = 3)
 
 Since the datset is so large, we want to plot he Pvalues with a historgram. 
 
-```{r, plotting}
+```{r, plotting, warning =FALSE,message=FALSE}
 ggplot(data = dat.bmi) + geom_histogram(aes(-log10(P)))
 
 ```
@@ -62,14 +63,13 @@ The problem is, that the distribution is highly skewed, even when log transforme
 So a QQplot might suit better. 
 
 ```{r, qqplot}
-library(cookbookRsina)
 QQplot(dat.bmi$P)
 
 ```
 
 Now, we want to look at a specific genomic region and add annotation, so let's pick the genomic region with the lowest P-value.
 
-```{r, min}
+```{r, min, warning =FALSE}
 dat.bmi.min <- dat.bmi %>% slice(which.min(P))
 dat.bmi.min
 ```
@@ -83,6 +83,7 @@ There are plenty of websites to check this. But we love R, and we love to do thi
 Thankfully, there is a library that can do this very efficiently for us. Here, we look at human data, but this library can acutally expand on any species. In fact, the library can do much much more, than I am going to show. So if, say, you are interested in the sequence of Drosophila, you better checkout this package. 
 
 I learned this from here: 
+
 - From: https://www.bioconductor.org/packages/devel/bioc/vignettes/biomaRt/inst/doc/biomaRt.html
 - also checkout this: https://stackoverflow.com/questions/41490657/best-way-to-get-list-of-snps-by-gene-id
 
@@ -126,8 +127,6 @@ snpmart = useMart(biomart = "ENSEMBL_MART_SNP", dataset="hsapiens_snp")
 
 listAttributes(snpmart) %>% slice(str_which(description, "Gene")) 
 listAttributes(variation) %>% slice(str_which(description, "Gene")) 
-listAttributes(variation) %>% slice(str_which(description, "symbol")) 
-listFilters(snpmart)
 
 ## extract gene-d
 ## ----------
@@ -140,7 +139,6 @@ out.bm.snpmart
 ## extract name
 ## ----------
 ensembl = useMart("ensembl",dataset="hsapiens_gene_ensembl")
-listFilters(ensembl)
 out.bm.ensembl <- getBM(attributes = c('external_gene_name'), 
       filters = c('ensembl_gene_id'),
       values = unique(out.bm.snpmart$ensembl_gene_stable_id), 
@@ -233,7 +231,7 @@ But `ggplot2` can handle that probably better in the long run.
 
 
 
-```{r, get-snp-info-pos-chr, include = TRUE, cache=TRUE}
+```{r, get-snp-info-pos-chr, include = TRUE, cache=TRUE, eval=FALSE}
 
 
 
@@ -251,7 +249,7 @@ getBM(attributes = c('refsnp_id','allele','chrom_start','chrom_strand'),
 
 
 
-```{r, get-gene-info, include = TRUE,cache =TRUE}
+```{r, get-gene-info, include = TRUE,cache =TRUE, eval=FALSE}
 
 ## first, we need to figure out the gene ID of FTO
 ensembl = useMart("ensembl",dataset="hsapiens_gene_ensembl")
@@ -274,7 +272,7 @@ snps.fto <- getBM(attributes = c( 'refsnp_id',
 
 ```
 
-```{r, get-all-snps-in-range, include=TRUE, cache=TRUE}
+```{r, get-all-snps-in-range, include=TRUE, cache=TRUE, eval=FALSE}
 
 ## SNPMART
 ## ---------
