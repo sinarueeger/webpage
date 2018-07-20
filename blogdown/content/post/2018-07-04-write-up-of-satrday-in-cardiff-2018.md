@@ -64,6 +64,8 @@ More info on submitting a package for review [here](https://ropensci.github.io/d
 
 [Amy McDougall](https://twitter.com/AmyMcDougall96) presented [airtable](https://airtable.com/) (💡!) and the R interface [`airtabler`](https://github.com/bergant/airtabler).
 
+Amy wrote a blogpost on [this topic too](https://itsalocke.com/blog/how-to-use-an-r-interface-with-airtable-api/) (which I found through Locke Data's write up [here](https://itsalocke.com/blog/satrdays-cardiff/)). 
+
 ➡️ [Slides](https://github.com/Amymcdougall/talks/tree/master/airtable-and-r)
 
 <img src="https://user-images.githubusercontent.com/4454726/41937499-bfe9f562-7990-11e8-90f5-62c866c54055.jpg" height="200" />
@@ -136,6 +138,10 @@ Other tips:
 📁 [Slides repo](https://github.com/satRdays/cardiff2018_talks).
 
 📘 Check out Maëlle's blogpost on [Storrrify #satRdayCDF 2018](https://masalmon.eu/2018/06/26/storrrify-satrdaycdf-2018/).
+
+📘 Loads of info from the [Locke Data team members](https://itsalocke.com/blog/satrdays-cardiff/).
+
+
 
 [#satRdayCDF](https://twitter.com/search?q=satRdayCDF&src=typd) on Twitter.
 
