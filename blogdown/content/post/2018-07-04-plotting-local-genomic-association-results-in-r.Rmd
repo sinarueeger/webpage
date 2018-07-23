@@ -1,91 +1,182 @@
-+++
-title = "Plotting Local Genomic Association Results in R"
-description = ""
-author = ""
-date = 2018-07-04T10:43:44+02:00
-tags = ["statgen", "R", "data visualisation", "R", "ggplot2"]
-category = ["statgen", "R", "data visualisation"]
-draft = true
-+++
+---
+title: Visualising GWAS summary statistics
+description: with `biomaRt` R-package
+date: '2018-07-23'
+slug: content/post/2018-07-23-GWAS-annotation
+categories: [statgen,R,data visualisation]
+tags: [statgen,R,data visualisation,R,ggplot2]
+draft: true
+header:
+  caption: ''
+  image: ''
+---
 
-<!-- what will I do? -->
+```{r, setup, include=FALSE,warning=FALSE,message=FALSE}
+## we are gonna need this
+library(tidyverse)
+library(icon) ## for fa icons, installed via gh: https://github.com/ropenscilabs/icon
+library(ggman) ## for mhtplot, installed via gh: https://github.com/drveera/ggman
+library(biomaRt) ## bioconductor package
+#library(biomartr) ## ropensci package
+theme_set(theme_bw()) ## make all ggplot2 plots whiteish
+```
 
-In this blogpost, I will show how to zoom into GWAS results and annotate the plot based on the information about that genomic region --- with R and another specialised software.
+<!-- what do we want -->
+In the world of [genome-wide association studies](https://www.ebi.ac.uk/training/online/course/gwas-catalog-exploring-snp-trait-associations/why-do-we-need-gwas-catalog/what-are-genome) (GWAS) we often get a list of genetic markers (SNPs) that seem relevant for the outcome of interest.
 
-<!-- reasoning: why do we need a locus zoom plot -->
+But further analyses we usually need more information than what we can extract from GWAS results (which is typically SNP identifier, the effect size and standard error). 
+
+Here is a *very rudimentary* example of what we want. For now, we keep it simple and only focus on gene names, but this can be easily extended to other annotation.
+
+### Annotation of each SNP
+
+We might want to know the corresponding gene of a SNP:
+
+<figure>
+<img src="/post/annotation/table-drawing.jpg" alt="Drawing of a table." align="middle" style="width: 400px;"/>
+<figcaption><small>Here, we know the SNP identifier, the chromosome and the position form the GWAS results, but not the corresponding gene.</small></figcaption>
+</figure>
+ 
+### Annotation of a genomic region
+
+Or we might want to know gene start and end positions of a genomic region. 
+
+<figure>
+<img src="/post/annotation/locuszoom-drawing.jpg" alt="Drawing of a table." align="middle" style="width: 400px;"/>
+<figcaption><small>In this case, we want to visualise the GWAS summary statistics of a genomic region (with each point representing a SNP), whith the corresponding genes at the bottom.</small></figcaption>
+</figure>
+ 
+
+### How?!
+<!-- how can we achieve this? -->
+There are currently more than 10 Mio SNPs known, and knowing their functions and genes by heart would equal to some super power. Which is why we `r fa_heart(colour = "#a6cee3")`^[Awesome icons in R? `r fa_band_aid(colour = "orange")` `r fa_chess_queen(colour = "gray")` `r fa_bicycle(colour = "green")` `r fa_birthday_cake(colour = "pink")` `r fa_arrow_right(colour = "black")` https://ropensci.org/technotes/2018/05/15/icon/] public databases, such as [dbSNP](https://www.ncbi.nlm.nih.gov/projects/SNP/) and [ensembl](https://www.ensembl.org/index.html). 
+
+What we `r fa_heart(colour = "#377eb8")` even more, is, to make our analyses reproducible and automate annotation and lookups.
+
+`r fa_arrow_right(colour = "black")` In this blogpost, I will show how to zoom into GWAS results and annotate the plot based on the information about that genomic region --- with `r fa_r_project()` and another specialised software.
+
+<!-- why do we need a locus zoom plot anyway ?-->
 
 
 
 <!-- data -->
-## Get summary statistics
+## 1. Get summary statistics
 
-For this we need first some summary association statistics. 
+First, we need some summary association statistics. 
 
-There are lots of [ressources](https://github.com/sinarueeger/statistical-genetics-resources/blob/master/statgen-data.md#gwas-summary-statistic-results) for publicly available GWAS summary association statistics. Recently, there have been two new studies on [SCZ and BD](https://www.sciencedirect.com/science/article/pii/S0092867418306585?via%3Dihub), as well as [Major depressive disorder (MDD)](https://www.nature.com/articles/s41588-018-0090-3). For all studies of PGC, summary statistics can be downloaded [here](https://www.med.unc.edu/pgc/results-and-downloads/downloads). For MDD thats search for 'MDD2 2018' and  for BD and SCZ 'BIP and SCZ results from Cell Publication, 2018'. Note, that you need to agree to conditions. 
+There are lots of [**ressources**](https://github.com/sinarueeger/statistical-genetics-resources/blob/master/statgen-data.md#gwas-summary-statistic-results) for publicly available GWAS summary association statistics. 
 
-Because direct download is not possible, we will look at another great source, GIANT. BMI. Download [here](https://portals.broadinstitute.org/collaboration/giant/index.php/GIANT_consortium_data_files#GWAMA_Age-.2FSex-Stratified_2015_BMI_and_WHR) from this [publication](https://www.biorxiv.org/content/early/2018/03/22/274654).
+Recently, there have been two new studies by the [Psychiatric Genomics Consortium](https://www.med.unc.edu/pgc/) (PGC) on [schizophrenia (SCZ) and bipoloar disorder (BD)](https://www.sciencedirect.com/science/article/pii/S0092867418306585?via%3Dihub), as well as [Major depressive disorder (MDD)](https://www.nature.com/articles/s41588-018-0090-3). For all studies of PGC, summary statistics can be downloaded [here](https://www.med.unc.edu/pgc/results-and-downloads/downloads)^[For example, if you would like to download the latest MDD results, search for *'MDD2 2018'*, for BD and SCZ search for *'BIP and SCZ results from Cell Publication, 2018'*. Anybody can download these results if they agree to certain conditions - which I think is a good thing!]. 
 
-```{r, setup, warning=FALSE,message=FALSE}
-## we are gonna need this
-library(tidyverse)
-library(cookbookRsina) ## for QQPLOT
+Because with PGC summary statistics a direct download is not possible, we will look at another great GWAS summary statistics source: the [Genetic Investigation of ANthropometric Traits](https://portals.broadinstitute.org/collaboration/giant/index.php/GIANT_consortium_data_files) (GIANT) consortium. We will look at the genetic associations with BMI. You can **download** the dataset^[Corresponding [publication](https://www.biorxiv.org/content/early/2018/03/22/274654) on bioRxiv.] [here](https://portals.broadinstitute.org/collaboration/giant/index.php/GIANT_consortium_data_files#GWAMA_Age-.2FSex-Stratified_2015_BMI_and_WHR) or - even better - load it **directly into R**.
 
-```
+
 
 ```{r, echo=TRUE, results="hide", cache=TRUE, message = FALSE}
 
-## bmi
-dat.bmi <- read_tsv(file = "https://portals.broadinstitute.org/collaboration/giant/images/2/21/BMI_All_ancestry.fmt.gzip")
+## data source
+url <- "https://portals.broadinstitute.org/collaboration/giant/images/2/21/BMI_All_ancestry.fmt.gzip"
+
+## Import BMI summary statistics
+dat.bmi <- read_tsv(file = url)
+```
+
+
+Next, we rename some columns to something more conventional.
+```{r, echo=TRUE, results="hide", cache=TRUE, message = FALSE}
 
 ## Rename some columns
 dat.bmi <- dat.bmi %>% rename(SNP = SNPNAME, P = Pvalue)
 
 ```
 
-This dataset has `r nrow(dat.bmi)` rows and `r ncol(dat.bmi)` columns.
 
-If we look at the first 3 rows, we can see that the first column indicates the chromosome, the econd the chromosomal position, the reference allele, the alternative allele, the SNP identifier, Minor allele frequencies measured in GIANT and ExAC, then the association of that SNP with BMI (beta, se, Pvalue). 
+If we look at the first 3 rows, we can see that the first column indicates the chromosome, the second the chromosomal position, then the reference allele, the alternative allele, the SNP identifier, minor allele frequencies measured in [GIANT](https://portals.broadinstitute.org/collaboration/giant/index.php/Main_Page) and [ExAC](http://exac.broadinstitute.org/) datasets, followed by the association of that SNP with BMI (beta, se, P).
 
 ```{r, head}
 head(dat.bmi, n = 3)
 ```
 
-## Plot dataset
+This dataset has `r nrow(dat.bmi)` rows and `r ncol(dat.bmi)` columns. What if we want to visualise this all at once? In particularly, we are interested if there are ANY associations between the genetic markers and BMI.
 
-Since the datset is so large, we want to plot he Pvalues with a historgram. 
 
-```{r, plotting, warning =FALSE,message=FALSE}
-ggplot(data = dat.bmi) + geom_histogram(aes(-log10(P)))
+### Visualising associations
+
+Visualising all associations at once is typically done with a Manhatten plot, where the x-axis represents the chromsome and the chromosomal position, and the y-axis the -log10(P)-value. We use the R-package [`ggman`](https://github.com/drveera/ggman) for that.
+
+```{r, mhtplot, warning =FALSE, message=FALSE}
+ggman(dat.bmi, snp = "SNP", bp = "POS", chrom = "CHR", pvalue = "P")
 
 ```
-The problem is, that the distribution is highly skewed, even when log transformed. The reason for this, is, that most pvalues are of course uniformly distributed, and only a few are hits. 
 
-So a QQplot might suit better. 
+What we can spot immediately, is, that there are lots of SNPs with P-values smaller than $$10^{-100}$$ (sample size was around [700K](https://www.biorxiv.org/content/early/2018/03/22/274654)).
 
-```{r, qqplot}
+<!-- ```{r, qqplot}
+library(cookbookRsina)
 QQplot(dat.bmi$P)
 
-```
+``` --->
 
-Now, we want to look at a specific genomic region and add annotation, so let's pick the genomic region with the lowest P-value.
+Of course, there are many other (and probably better) solutions to spot real associations, but that is not the point of this blogpost ;-).
+
+### Genomic region with lowest P-value
+
+So now that we know that there are lots of genetic markers associated with BMI, we want to look at a specific genomic region and add annotation, so let's pick the genomic region with the lowest P-value.
 
 ```{r, min, warning =FALSE}
+
 dat.bmi.min <- dat.bmi %>% slice(which.min(P))
 dat.bmi.min
+
 ```
 
-`r dat.bmi.min$SNP` is the SNP that has the lowest P-value. Next, we want to know if this SNP is part of a Gene, and if yes, which one. 
+`r dat.bmi.min$SNP` is the SNP that has the lowest P-value. 
 
-## Extracting annotation
+We can visualise the summary statistics of that genomic region ($\pm 250e3$). 
 
-There are plenty of websites to check this. But we love R, and we love to do things in a reproducible way, so lets tackle this with R. 
+```{r, prep.data, include = TRUE}
+range <- 250e3
+fto.chr <- dat.bmi.min$CHR
+fto.pos <- dat.bmi.min$POS
 
-Thankfully, there is a library that can do this very efficiently for us. Here, we look at human data, but this library can acutally expand on any species. In fact, the library can do much much more, than I am going to show. So if, say, you are interested in the sequence of Drosophila, you better checkout this package. 
+dat.bmi.fto.region <- dat.bmi %>% filter(CHR == fto.chr & POS < (fto.pos + range) & POS > (fto.pos - range)) 
 
-I learned this from here: 
+```
 
-- From: https://www.bioconductor.org/packages/devel/bioc/vignettes/biomaRt/inst/doc/biomaRt.html
-- also checkout this: https://stackoverflow.com/questions/41490657/best-way-to-get-list-of-snps-by-gene-id
+
+```{r, plot.summarystats, include = TRUE}
+
+p1 <- qplot(POS, -log10(P), data = dat.bmi.fto.region) + labs(title = "Locuszoomplot for BMI GWAS",
+       subtitle = paste("Chromosome", fto.chr, "from ", (fto.pos - range) , "to ", (fto.pos + range)), caption = paste("Data source:", url))
+print(p1)
+
+```
+
+Next, we want to know if this SNP is part of a gene, and if yes, which one. 
+
+## 2. Extracting annotation 
+
+### biomaRt
+
+Thankfully, there is an R-package called [`biomaRt`](https://github.com/ropensci/biomartr) that can do this very efficiently for us. 
+
+Our BMI example is from human data, but this library can acutally expand on any other commonly studied species. In fact, compared to what `biomaRt` is capable of, I am only going to scratch a tiny bit the surface. 
+
+A bit of **background**: Previously, I had used other R-packages (from CRAN or bioconductor) to annotate SNPs, but they all eventually became obsolete. Then I used other, rather dodgy ways of annotating. And so I was incredibly happy when I stumbled over this rOpenSci package, after listening to a rOpenSci talk by [Maëlle Salmon]() in June. 
+
+
+### Improving your learning curve
+
+I used mainly two sources to learn what I wanted to do:
+
+- [Vignettes](https://www.bioconductor.org/packages/devel/bioc/vignettes/biomaRt/inst/doc/biomaRt.html)
+- [StackOverflow](https://stackoverflow.com/questions/41490657/best-way-to-get-list-of-snps-by-gene-id)
+
+Do not confuse with `biomartr`:
+https://twitter.com/HajkDrost/status/1012280903488466945
+
+
+### Using biomaRt
 
 Before getting the gene name, I want to check if my chromosome and position in the dataset are actually matching with the info in the database. This is a handy thing, because oftentimes, only SNPs are reported. Or SNPs are reported, but on a different build. 
 
@@ -110,6 +201,11 @@ out.bm <- getBM(attributes = c(
   mart = variation
 )
 out.bm
+```
+
+This gives us - as choosen in `attributes` - the gene identifier, the SNP identifier, the chromosome name, chromsomal position (start + end), minor allele and minor allele frequency. This corresponds to this webpage entry on the [ensembl webpage](https://www.ensembl.org/Homo_sapiens/Variation/Explore?r=16:53766542-53767542;v=rs1421085;vdb=variation;vf=984887).
+
+```{r, sanitychecks, include = TRUE}
 
 ifelse(dat.bmi.min$CHR == out.bm$chr_name, "chromosome matching", "chromosome is not matching")
 ifelse(dat.bmi.min$POS == out.bm$chrom_start, "position matching", "position is not matching")
@@ -118,15 +214,21 @@ ifelse(dat.bmi.min$POS == out.bm$chrom_start, "position matching", "position is 
 
 Next, we want to get the gene name. 
 
-```{r, get-snp-info, include = TRUE}
+```{r, choose-mart, include = TRUE}
 
 ## SNPMART
 ## ---------
-snpmart = useMart(biomart = "ENSEMBL_MART_SNP", dataset="hsapiens_snp")
+snpmart <-  useMart(biomart = "ENSEMBL_MART_SNP", dataset="hsapiens_snp")
 
+```
 
+Let's check which `attributes` contain `gene`. 
+
+```{r, check-attributes, include = TRUE}
 listAttributes(snpmart) %>% slice(str_which(description, "Gene")) 
-listAttributes(variation) %>% slice(str_which(description, "Gene")) 
+```
+
+```{r, get-snp-info, include = TRUE}
 
 ## extract gene-d
 ## ----------
@@ -151,26 +253,10 @@ out.bm.ensembl
 The gene is called `r out.bm.ensembl$external_gene_name`. 
 
 
-## Plot summary stats
-```{r, prep.data, include = TRUE}
+### Extracting gene names for genomic region
 
-fto.chr <- dat.bmi.min$CHR
-fto.pos <- dat.bmi.min$POS
-range <- 250e3
+So now we know that `r dat.bmi.min$SNP` is part of `r out.bm.ensembl$external_gene_name`. But where does `r out.bm.ensembl$external_gene_name` start and end? For this purpose, we want to visualise the summary statistics of the full genomic region ($\pm 250e3$). 
 
-dat.bmi.fto.region <- dat.bmi %>% filter(CHR == fto.chr & POS < (fto.pos + range) & POS > (fto.pos - range))
-
-```
-
-
-```{r, plot.summarystats, include = TRUE}
-
-qplot(POS, -log10(P), data = dat.bmi.fto.region)
-
-```
-
-
-## Extract ALL gene names in the region
 ```{r, get-all-genes-in-range, include=TRUE, cache=TRUE}
 
 listAttributes(ensembl) %>% slice(str_which(description, "Gene")) 
@@ -184,22 +270,26 @@ out.bm.genes.region
 ```
 
 
-```{r, plot.genes, include = TRUE}
+```{r, plot.genes, include = TRUE, fig.height = 3}
 
-ggplot(data = out.bm.genes.region) + geom_linerange(aes(x = external_gene_name, ymin = start_position, ymax = end_position)) + coord_flip()
+p2 <- ggplot(data = out.bm.genes.region) + geom_linerange(aes(x = external_gene_name, ymin = start_position, ymax = end_position)) + coord_flip() + ylab("")#+ xlim(fto.pos + c(-1,1) * range)
+print(p2)
 
 ```
 
 
 <!-- GWAS + biomart info -->
-## R with origninal datasources
-
-Plot it with original dataa 
+## 3. Combining summary statistics and annotation
 
 
-## add Gtex summary stats
+```{r, summarystats-genes, include = TRUE, fig.height = 7}
 
+library(patchwork)
+p1b <- p1 + xlab("") + theme(axis.title.x=element_blank(), axis.text.x=element_blank(), axis.ticks.x=element_blank())
 
+p1b + p2 + plot_layout(ncol = 1, heights = c(3, 1))
+
+```
 
 
 <!-- locuszoom -->
@@ -208,21 +298,6 @@ Plot it with original dataa
 An easy solution is [LocusZoom](http://locuszoom.org/), a tool that takes SNPids and assocaiton summary stats as input and outputs a pretty graph, including gene annotation, LD information etc. 
 
 The tool can be used via a web interface or command line tool. 
-
-
-<!-- R + locuszoom -->
-## R through locuszoomoutput
-
-Plot it with data from locuszoom
-
-
-<!-- tooling -->
-
-## What plotting tools to use?
-
-When doing more of what I like to call *arts & crafts* (plotting multiple datasets), it might be tempting to use base-R plotting functions. Simply because we are used to use base-R to overlay different datasets. 
-
-But `ggplot2` can handle that probably better in the long run. 
 
 
 <!-- other stuff -->
@@ -284,3 +359,9 @@ out.bm.genes.region <- getBM(attributes = c('refsnp_id','allele','chrom_start','
       mart = snpmart)
 
 ```
+
+
+
+## Rmd source file
+
+Code: `.Rmd` file [here](https://github.com/sinarueeger/webpage/blob/master/blogdown/content/post/2018-07-04-plotting-local-genomic-association-results-in-r.Rmd).
