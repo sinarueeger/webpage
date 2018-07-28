@@ -355,7 +355,7 @@ We can plot `out.bm.genes.region` with a linerange plot, where each horizontal l
 
 ## rank gene names according to start position
 
-out.bm.genes.region <- out.bm.genes.region %>% mutate(external_gene_name = fct_reorder(external_gene_name, start_position, .desc = TRUE))
+out.bm.genes.region <- out.bm.genes.region %>% mutate(external_gene_name = fct_reorder(external_gene_name, start_position, .desc = TRUE)) %>% mutate(external_gene_name = fct_relevel(external_gene_name, "protein_coding"))
 
 ## plot
 p2 <- ggplot(data = out.bm.genes.region) + geom_linerange(aes(x = external_gene_name, ymin = start_position, ymax = end_position)) + coord_flip() + ylab("") #+ xlim(fto.pos + c(-1,1) * range)
@@ -376,12 +376,13 @@ out.bm.genes.region <- out.bm.genes.region %>% mutate(gene_biotype_fac = as.fact
 
 ## plot
 p2 <- ggplot(data = out.bm.genes.region) + geom_linerange(aes(x = external_gene_name, ymin = start_position, ymax = end_position, color = gene_biotype, group = gene_biotype)) + coord_flip() + ylab("") + ylim(plot.range) + geom_text(aes(x = external_gene_name, y = start_position, label = external_gene_name, color = gene_biotype), alpha = I(0.7), hjust = "right", size= 2.5) + labs(title = "",
-       subtitle = paste("Genes"), caption = paste("Data source:", gene.ensembl@host, "/", gene.ensembl@dataset)) + scale_color_discrete(name="Gene Biotype") + theme(axis.title.y=element_blank(),
+       subtitle = paste("Genes"), caption = paste("Data source:", gene.ensembl@host, "/", gene.ensembl@dataset)) + scale_colour_brewer(name="Gene Biotype", palette = "Set1") + theme(axis.title.y=element_blank(),
         axis.text.y=element_blank(),
         axis.ticks.y=element_blank(), 
         strip.text.y = element_text(angle = 0),
         legend.position="bottom", 
         panel.grid.major.y = element_blank())+ expand_limits(y=c(-1, 1))
+
 
 
 print(p2)
