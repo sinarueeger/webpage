@@ -2,7 +2,6 @@
 title: Locuszoom plot of GWAS summary statistics
 description: using the `biomaRt` R-package
 date: '2018-07-27'
-slug: content/post/2018-07-27-GWAS-annotation
 categories: [statgen,R,data visualisation]
 tags: [statgen,R,data visualisation,R,ggplot2]
 draft: true
