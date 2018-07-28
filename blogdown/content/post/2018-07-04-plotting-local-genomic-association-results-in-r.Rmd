@@ -355,7 +355,7 @@ We can plot `out.bm.genes.region` with a linerange plot, where each horizontal l
 
 ## rank gene names according to start position
 
-out.bm.genes.region <- out.bm.genes.region %>% mutate(external_gene_name = fct_reorder(external_gene_name, start_position, .desc = TRUE)) %>% mutate(external_gene_name = fct_relevel(external_gene_name, "protein_coding"))
+out.bm.genes.region <- out.bm.genes.region %>% mutate(external_gene_name = fct_reorder(external_gene_name, start_position, .desc = TRUE)) 
 
 ## plot
 p2 <- ggplot(data = out.bm.genes.region) + geom_linerange(aes(x = external_gene_name, ymin = start_position, ymax = end_position)) + coord_flip() + ylab("") #+ xlim(fto.pos + c(-1,1) * range)
@@ -363,7 +363,7 @@ print(p2)
 
 ```
 
-Let's try to make that pretty. We can group the genes by `gene_biotype` and color them accordingly. The protein coding genes are in the third color row.
+Let's try to make that pretty. We can group the genes by `gene_biotype` and color them accordingly. The protein coding genes are in the top row.
 
 ```{r, plot-genes-pretty, include = TRUE, fig.height = 5}
 
@@ -371,12 +371,13 @@ Let's try to make that pretty. We can group the genes by `gene_biotype` and colo
 plot.range <- c(min(sel.pos - range, out.bm.genes.region$start_position), max(sel.pos + range, out.bm.genes.region$end_position))
 
 ## rank gene_biotype label
-out.bm.genes.region <- out.bm.genes.region %>% mutate(gene_biotype_fac = as.factor(gene_biotype), external_gene_name = fct_reorder2(external_gene_name, start_position, gene_biotype_fac, .desc = TRUE))
+out.bm.genes.region <- out.bm.genes.region %>% mutate(gene_biotype_fac = fct_relevel(as.factor(gene_biotype), "protein_coding"), external_gene_name = fct_reorder2(external_gene_name, start_position, gene_biotype_fac, .desc = TRUE))
+
 
 
 ## plot
-p2 <- ggplot(data = out.bm.genes.region) + geom_linerange(aes(x = external_gene_name, ymin = start_position, ymax = end_position, color = gene_biotype, group = gene_biotype)) + coord_flip() + ylab("") + ylim(plot.range) + geom_text(aes(x = external_gene_name, y = start_position, label = external_gene_name, color = gene_biotype), alpha = I(0.7), hjust = "right", size= 2.5) + labs(title = "",
-       subtitle = paste("Genes"), caption = paste("Data source:", gene.ensembl@host, "/", gene.ensembl@dataset)) + scale_colour_brewer(name="Gene Biotype", palette = "Set1") + theme(axis.title.y=element_blank(),
+p2 <- ggplot(data = out.bm.genes.region) + geom_linerange(aes(x = external_gene_name, ymin = start_position, ymax = end_position, color = gene_biotype, group = gene_biotype)) + coord_flip() + ylab("") + ylim(plot.range) + geom_text(aes(x = external_gene_name, y = start_position, label = external_gene_name, color = gene_biotype_fac), alpha = I(0.7), hjust = "right", size= 2.5) + labs(title = "",
+       subtitle = paste("Genes"), caption = paste("Data source:", gene.ensembl@host, "/", gene.ensembl@dataset)) + scale_colour_discrete(name="Gene Biotype") + theme(axis.title.y=element_blank(),
         axis.text.y=element_blank(),
         axis.ticks.y=element_blank(), 
         strip.text.y = element_text(angle = 0),
