@@ -1,19 +1,18 @@
 ---
 title: Locuszoom plot of GWAS summary statistics
 description: using the `biomaRt` R-package
-date: '2018-07-27'
+date: '2018-07-30'
 categories: [statgen,R,data visualisation]
 tags: [statgen,R,data visualisation,R,ggplot2]
 draft: true
-math: true
 header:
   caption: ''
   image: ''
 ---
 
+
 ```{r, setup, include=FALSE,warning=FALSE,message=FALSE}
 library(icon) ## for fa icons, installed via gh: https://github.com/ropenscilabs/icon
-
 ```
 
 <!-- what do we want -->
@@ -88,7 +87,7 @@ We will look at BMI, because it can be accessed easily^[Recently, there have bee
 ```{r, load-packages, include=FALSE,warning=FALSE,message=FALSE}
 ## we are gonna need this
 library(tidyverse)
-theme_set(theme_bw()) ## make all ggplots white-ish
+theme_set(theme_bw())  ## make all ggplots white-ish
 ```
 
 ```{r, load-data, echo=TRUE, results="hide", cache=TRUE, message = FALSE, warning = FALSE}
@@ -96,29 +95,24 @@ theme_set(theme_bw()) ## make all ggplots white-ish
 ## Data Source URL
 url <- "https://portals.broadinstitute.org/collaboration/giant/images/2/21/BMI_All_ancestry.fmt.gzip"
 
-## Import BMI summary statistics
-## dat.bmi <- read_tsv(file = url) ## taking too long, let's use fread instead.
+## Import BMI summary statistics dat.bmi <- read_tsv(file = url) ##
+## taking too long, let's use fread instead.
 
 dat.bmi <- data.table::fread(url, verbose = FALSE)
-
 ```
 
  I added `verbose = FALSE` because it will complain that there is an unexpected character in column 1, which appears to be numerical. This is because chromosome X will only appear towards the end of the dataset. 
 
 Next, we rename some columns to something more conventional.
 ```{r, rename-data, echo=TRUE, results="hide", cache=TRUE, message = FALSE}
-
 ## Rename some columns
 dat.bmi <- dat.bmi %>% rename(SNP = SNPNAME, P = Pvalue)
-
 ```
 
 Now, let's look at the data.
 
 ```{r, overview-data, warning = FALSE}
-
 skimr::skim(dat.bmi)
-
 ```
 
 
@@ -141,7 +135,7 @@ ggman::ggman(dat.bmi, snp = "SNP", bp = "POS", chrom = "CHR", pvalue = "P")
 
 ```
 
-We can spot immediately, that there are loads of SNPs with P-values smaller than $$10^{-100}$$ (sample size was around [700K](https://www.biorxiv.org/content/early/2018/03/22/274654)).
+We can spot immediately, that there are loads of SNPs with P-values smaller than $10^{-100}$ (sample size was around [700K](https://www.biorxiv.org/content/early/2018/03/22/274654)).
 
 <!-- ```{r, qqplot}
 library(cookbookRsina)
@@ -163,25 +157,24 @@ dat.bmi.sel
 
 ```
 
-SNP identifier `r dat.bmi.sel$SNP` that has the lowest P-value (P = `r dat.bmi.sel$P`). 
+SNP identifier `r dat.bmi.sel$SNP` that has the lowest P-value ($P = `r dat.bmi.sel$P`$). 
 
 
 Now we can visualise the summary statistics of that genomic region ($\pm 500 x 10^{3}$). 
 
 ```{r, prep-selection-data, include = TRUE}
-range <- 500e3
+range <- 5e+05
 sel.chr <- dat.bmi.sel$CHR
 sel.pos <- dat.bmi.sel$POS
 
-dat.bmi.sel.region <- dat.bmi %>% filter(CHR == sel.chr, between(POS, sel.pos - range, sel.pos + range))
-
+dat.bmi.sel.region <- dat.bmi %>% filter(CHR == sel.chr, between(POS, sel.pos - 
+      range, sel.pos + range))
 ```
 
 
 ```{r, plot-summarystats, include = TRUE}
 
-p1 <- ggplot(data = dat.bmi.sel.region) + geom_point(aes(POS, -log10(P)), shape = 1) + labs(title = "Locuszoomplot for BMI GWAS",
-       subtitle = paste("Summary statistics for chromosome", sel.chr, "from", format((sel.pos - range), big.mark = "'") , "to", format((sel.pos + range), big.mark = "'"), "bp" ), caption = paste("Data source:", url))
+p1 <- ggplot(data = dat.bmi.sel.region) + geom_point(aes(POS, -log10(P)), shape = 1) + labs(title = "Locuszoomplot for BMI GWAS", subtitle = paste("Summary statistics for chromosome", sel.chr, "from", format((sel.pos - range), big.mark = "'"), "to", format((sel.pos + range), big.mark = "'"), "bp"), caption = paste("Data source:", url))
 print(p1)
 
 ```
@@ -208,7 +201,7 @@ So far, I did not fully grasp the benefits of `biomartr` compared to `biomaRt` f
 
 I used mainly two sources to learn what I wanted to do:
 
-- [Vignette of biomaRt](https://www.bioconductor.org/packages/devel/bioc/vignettes/biomaRt/inst/doc/biomaRt.html) on Bioconductor^[I recently listened to a very informative podcast by [Saskia Freytag](https://twitter.com/trashystats) and [NJ Tierney](https://twitter.com/nj_tierney) where they talk about the differences between CRAN and Bioconductor (there are many!). The podcast is called [Credibly courious](https://soundcloud.com/crediblycurious/episode-1-cran-and-bioconductor).].
+- [Vignette of biomaRt](https://www.bioconductor.org/packages/devel/bioc/vignettes/biomaRt/inst/doc/biomaRt.html) on Bioconductor^[I recently listened to an informative podcast by [Saskia Freytag](https://twitter.com/trashystats) and [NJ Tierney](https://twitter.com/nj_tierney) where they talk about the differences between CRAN and Bioconductor (there are many!). The podcast is called [Credibly courious](https://soundcloud.com/crediblycurious/episode-1-cran-and-bioconductor).].
 - [A question on StackOverflow](https://stackoverflow.com/questions/41490657/best-way-to-get-list-of-snps-by-gene-id)
 
 ### Using biomaRt
@@ -223,32 +216,33 @@ Next we specify which database to use. You can use the functions `listMart()`, `
 
 ```{r, choose-mart, include = TRUE}
 
-snp.ensembl <- useEnsembl(biomart="snp", dataset="hsapiens_snp")
-gene.ensembl <- useEnsembl(biomart="ensembl", dataset="hsapiens_gene_ensembl")
+snp.ensembl <- useEnsembl(biomart = "snp", dataset = "hsapiens_snp")
+gene.ensembl <- useEnsembl(biomart = "ensembl", dataset = "hsapiens_gene_ensembl")
 
 class(snp.ensembl)
 
-# other ways of selecting the mart
-# snp.mart <- useMart(biomart = "ENSEMBL_MART_SNP", dataset="hsapiens_snp")
-# gene.mart <- useMart("ensembl", dataset="hsapiens_gene_ensembl")
+# other ways of selecting the mart snp.mart <- useMart(biomart =
+# 'ENSEMBL_MART_SNP', dataset='hsapiens_snp') gene.mart <-
+# useMart('ensembl', dataset='hsapiens_gene_ensembl')
+
 ```
 
 Last, we extract the gene id to which our SNP belongs using the function `getBM()`. Along with that we also extract other information, like the minor allele frequency `minor_allele_freq`. To check which attributes and filters are available, run `listAttributes(snp.ensembl)` and `listFilters(snp.ensembl)`. 
 
 ```{r, get-snp-chr-pos, include = TRUE}
 
-out.bm <- getBM(attributes = c(
-  "ensembl_gene_stable_id",
-  'refsnp_id',
-  'chr_name',
-  'chrom_start',
-  'chrom_end',
-  'minor_allele',
-  'minor_allele_freq'),
-  filters = 'snp_filter',
-  values = dat.bmi.sel$SNP,
-  mart = snp.ensembl
-)
+out.bm <- getBM(
+  attributes = c("ensembl_gene_stable_id", 
+                 "refsnp_id", 
+                 "chr_name", 
+                 "chrom_start", 
+                 "chrom_end", 
+                 "minor_allele", 
+                 "minor_allele_freq"),
+  filters = "snp_filter", 
+  values = dat.bmi.sel$SNP, 
+  mart = snp.ensembl)
+
 ```
 This gives us - as chosen in `attributes` - the gene identifier, the SNP identifier, the chromosome name, chromosomal position (start + end), minor allele and minor allele frequency. The output in `out.bm` corresponds to this webpage entry on the [ensembl webpage](https://www.ensembl.org/Homo_sapiens/Variation/Explore?r=16:53766542-53767542;v=rs1421085;vdb=variation;vf=984887).
 
@@ -263,7 +257,9 @@ This is a handy thing, because oftentimes only SNP identifiers are reported. Or 
 
 ```{r, sanitychecks, include = TRUE}
 
-ifelse(sel.pos == out.bm$chrom_start, "\u2713: same assembley (GRCh38)", "\u2717: not the same assembley")
+ifelse(sel.pos == out.bm$chrom_start, 
+       "\u2713: same assembley (GRCh38)", 
+       "\u2717: not the same assembley")
 
 ```
 
@@ -275,14 +271,8 @@ snp.ensembl.grch37 <- useMart(host='http://grch37.ensembl.org',
                      biomart='ENSEMBL_MART_SNP', 
                      dataset='hsapiens_snp')
 
-out.bm.grch37 <- getBM(attributes = c(
-  "ensembl_gene_stable_id",
-  'refsnp_id',
-  'chr_name',
-  'chrom_start',
-  'chrom_end',
-  'minor_allele',
-  'minor_allele_freq'),
+out.bm.grch37 <- getBM(
+  attributes = c('ensembl_gene_stable_id', 'refsnp_id', 'chr_name', 'chrom_start', 'chrom_end', 'minor_allele', 'minor_allele_freq'),
   filters = 'snp_filter',
   values = dat.bmi.sel$SNP,
   mart = snp.ensembl.grch37
@@ -295,7 +285,9 @@ Let's check again.
 
 ```{r, sanitychecks-grch37, include = TRUE}
 
-ifelse(sel.pos == out.bm.grch37$chrom_start, "\u2713: same assembley (grch37)", "\u2717: not the same assembley")
+ifelse(sel.pos == out.bm.grch37$chrom_start,
+       "\u2713: same assembley (grch37)", 
+       "\u2717: not the same assembley")
 
 ```
 
@@ -315,7 +307,8 @@ Now use `ensembl_gene_stable_id` and `associated_gene` as additional attributes.
 
 ## extract gene
 ## ----------
-out.bm.snp2gene <- getBM(attributes = c('refsnp_id', 'allele', 'chrom_start', 'chr_name', 'ensembl_gene_stable_id'), 
+out.bm.snp2gene <- getBM(
+  attributes = c('refsnp_id', 'allele', 'chrom_start', 'chr_name', 'ensembl_gene_stable_id'), 
       filters = c('snp_filter'), 
       values = dat.bmi.sel$SNP, 
       mart = snp.ensembl)
@@ -339,11 +332,12 @@ The gene is called `r out.bm.gene$external_gene_name`.
 
 ### Extracting gene names for genomic region
 
-So now we know that `r dat.bmi.sel$SNP` is part of `r out.bm.gene$external_gene_name`. But where does `r out.bm.gene$external_gene_name` start and end? And what are the genes nearby? For this purpose, we want to visualise the summary statistics of the full genomic region ($\pm 250e3$). 
+So now we know that `r dat.bmi.sel$SNP` is part of `r out.bm.gene$external_gene_name`. But where does `r out.bm.gene$external_gene_name` start and end? And what are the genes nearby? For this purpose, we want to visualise the summary statistics of the full genomic region ($\pm 250 \cdot 10^3$ Mb). 
 
 ```{r, get-all-genes-in-range, include=TRUE, cache=TRUE}
 
-out.bm.genes.region <- getBM(attributes = c('start_position','end_position','ensembl_gene_id','external_gene_name', 'gene_biotype'), 
+out.bm.genes.region <- getBM(
+  attributes = c('start_position','end_position','ensembl_gene_id','external_gene_name', 'gene_biotype'), 
       filters = c('chromosome_name','start','end'), 
       values = list(sel.chr, sel.pos - range, sel.pos + range), 
       mart = gene.ensembl)
@@ -357,11 +351,11 @@ We can plot `out.bm.genes.region` with a linerange plot, where each horizontal l
 ```{r, plot-genes, include = TRUE, fig.height = 3}
 
 ## rank gene names according to start position
-
-out.bm.genes.region <- out.bm.genes.region %>% mutate(external_gene_name = fct_reorder(external_gene_name, start_position, .desc = TRUE)) 
+out.bm.genes.region <- out.bm.genes.region %>% mutate(external_gene_name = fct_reorder(external_gene_name, 
+      start_position, .desc = TRUE))
 
 ## plot
-p2 <- ggplot(data = out.bm.genes.region) + geom_linerange(aes(x = external_gene_name, ymin = start_position, ymax = end_position)) + coord_flip() + ylab("") #+ xlim(fto.pos + c(-1,1) * range)
+p2 <- ggplot(data = out.bm.genes.region) + geom_linerange(aes(x = external_gene_name, ymin = start_position, ymax = end_position)) + coord_flip() + ylab("")
 print(p2)
 
 ```
@@ -371,24 +365,22 @@ Let's try to make that pretty. We can group the genes by `gene_biotype` and colo
 ```{r, plot-genes-pretty, include = TRUE, fig.height = 5}
 
 ## define plot range for x-axis
-plot.range <- c(min(sel.pos - range, out.bm.genes.region$start_position), max(sel.pos + range, out.bm.genes.region$end_position))
+plot.range <- c(min(sel.pos - range, out.bm.genes.region$start_position), 
+      max(sel.pos + range, out.bm.genes.region$end_position))
 
 ## rank gene_biotype label
-out.bm.genes.region <- out.bm.genes.region %>% mutate(gene_biotype_fac = fct_relevel(as.factor(gene_biotype), "protein_coding"), external_gene_name = fct_reorder2(external_gene_name, start_position, gene_biotype_fac, .desc = TRUE))
-
+out.bm.genes.region <- out.bm.genes.region %>% mutate(gene_biotype_fac = fct_relevel(as.factor(gene_biotype), 
+      "protein_coding"), external_gene_name = fct_reorder2(external_gene_name, 
+      start_position, gene_biotype_fac, .desc = TRUE))
 
 
 ## plot
-p2 <- ggplot(data = out.bm.genes.region) + geom_linerange(aes(x = external_gene_name, ymin = start_position, ymax = end_position, colour = gene_biotype, group = gene_biotype)) + coord_flip() + ylab("") + ylim(plot.range) + geom_text(aes(x = external_gene_name, y = start_position, label = external_gene_name, colour = gene_biotype_fac), alpha = I(0.7), hjust = "right", size= 2.5) + labs(title = "",
-       subtitle = paste("Genes"), caption = paste("Data source:", gene.ensembl@host, "/", gene.ensembl@dataset)) + scale_colour_discrete(name="Gene Biotype") + theme(axis.title.y=element_blank(),
+p2 <- ggplot(data = out.bm.genes.region) + geom_linerange(aes(x = external_gene_name, ymin = start_position, ymax = end_position, colour = gene_biotype, group = gene_biotype)) + coord_flip() + ylab("") + ylim(plot.range) + geom_text(aes(x = external_gene_name, y = start_position, label = external_gene_name, colour = gene_biotype_fac), alpha = I(0.7), hjust = "right", size= 2.5) + labs(title = "", subtitle = paste("Genes"), caption = paste("Data source:", gene.ensembl@host, "/", gene.ensembl@dataset)) + scale_colour_discrete(name="Gene Biotype") + theme(axis.title.y=element_blank(),
         axis.text.y=element_blank(),
         axis.ticks.y=element_blank(), 
         strip.text.y = element_text(angle = 0),
         legend.position="bottom", 
-     #   panel.border = element_blank(),
-        panel.grid.major.y = element_blank())+ expand_limits(y=c(-1, 1))
-
-
+        panel.grid.major.y = element_blank()) + expand_limits(y=c(-1, 1))
 
 print(p2)
 
@@ -414,7 +406,7 @@ p1b + p2 + plot_layout(ncol = 1, heights = c(6, 6))
 
 ## Wouldn't it be nice...
 
-- ... to polish that plot even more? For example, the colour code is not ideal...
+- ... to polish that plot even more? For starters, the colour code is not ideal...
 - ... to add information about the correlation between SNPs, like in [LocusZoom plots](http://locuszoom.org/)? 
 - ... or have an interactive plot: hovering over the SNP points would light up the corresponding genes or give some other information, like the allele frequency. 
 

@@ -37,9 +37,7 @@ enablefa = true
     highlightJsUrl = ""
     highlightJsLocalUrl = ""
     color_theme = "blue"
-    MathJaxCDN = "//cdn.bootcss.com"
-    MathJaxVersion = "2.7.1"
-
+    
 [Permalinks]
     post = "/:year/:month/:day/:filename/"
     
