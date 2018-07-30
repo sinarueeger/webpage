@@ -299,7 +299,6 @@ Let's check which `attributes` contain the string `gene` or `Gene`.
 
 ```{r, check-attributes, include = TRUE}
 listAttributes(snp.ensembl) %>% slice(str_which(name, "gene")) 
-listAttributes(snp.ensembl) %>% slice(str_which(name, "Gene"))
 ```
 
 Now use `ensembl_gene_stable_id` and `associated_gene` as additional attributes.
