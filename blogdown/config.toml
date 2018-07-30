@@ -10,6 +10,8 @@ ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]
 enableEmoji = true
 enablefa = true
 
+
+
 [Author]
     name = "Sina Rüeger"
     profile = "https://twitter.com/sinarueeger"
@@ -35,6 +37,8 @@ enablefa = true
     highlightJsUrl = ""
     highlightJsLocalUrl = ""
     color_theme = "blue"
+    MathJaxCDN = "//cdn.bootcss.com"
+    MathJaxVersion = "2.7.1"
 
 [Permalinks]
     post = "/:year/:month/:day/:filename/"
