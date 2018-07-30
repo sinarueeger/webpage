@@ -65,9 +65,9 @@ What we `r fa_heart(colour = "#377eb8")` even more, is, to make our analyses rep
 
 <!-- why do we need a locus zoom plot anyway ?-->
 
-[1. Get summary statistics](#get-summary-statistics)
-[2. Extracting annotation](#extracting-annotation)
-[3. Combining summary statistics and annotation](#end)
+1. [Get summary statistics](#get-summary-statistics)
+2. [Extracting annotation](#extracting-annotation)
+3. [Combining summary statistics and annotation](#end)
 
 
 
