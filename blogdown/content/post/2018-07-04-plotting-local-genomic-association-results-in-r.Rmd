@@ -64,6 +64,7 @@ What we `r fa_heart(colour = "#377eb8")` even more, is, to make our analyses rep
 `r fa_arrow_right(colour = "black")` In this blogpost, I will show how to zoom into GWAS results and annotate the plot based on the information about that genomic region using `r fa_r_project()`.
 
 <!-- why do we need a locus zoom plot anyway ?-->
+Here is the plan:
 
 1. [Get summary statistics](#get-summary-statistics)
 2. [Extract annotation](#extracting-annotation)
