@@ -4,7 +4,7 @@ description: using the `biomaRt` R-package
 date: '2018-07-30'
 categories: [statgen,R,data visualisation]
 tags: [statgen,R,data visualisation,R,ggplot2]
-draft: true
+draft: false
 header:
   caption: ''
   image: ''
@@ -295,7 +295,7 @@ ifelse(sel.pos == out.bm.grch37$chrom_start,
 
 Next, we want to get the gene name where `r dat.bmi.sel$SNP` falls into. 
 
-Let's check which `attributes` contain the string `gene` or `Gene`. 
+Let's check which `attributes` contain the string `gene`. 
 
 ```{r, check-attributes, include = TRUE}
 listAttributes(snp.ensembl) %>% slice(str_which(name, "gene")) 
