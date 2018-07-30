@@ -20,11 +20,11 @@ In the world of [genome-wide association studies](https://www.acsh.org/news/2018
 
 *For example:*
 
-- *We might get asked how frequent the SNP `rs1421085` is in a certain population. *
+- *We might get asked how frequent the SNP `rs1421085` is in a range of populations. *
 - *We need to extract all known SNPs that are within 1 Mb of `rs1421085`. *
 - *A genomic region turns out to be highly relevant for some disease and we want to know all genes contained in that genomic region.*
 
-The list of SNPs come typically from summarised data. Minimally, these datasets contain the SNP identifier (for example `rs1421085`), the effect size (`b`) and the standard error (`se`). Sometimes the position (`POS`) and chromosome (`CHR`) is provided instead of the SNP identifier, and sometimes both is available. Then there is usually other information coming from the study data, for example the allele frequency in the study. However, hardly ever do the datasets contain annotation, such as the gene where the SNP resides or the allele frequency in a certain population.
+Unless you sit on lots of genetic data, the list of SNPs come from a summarised form. Minimally, these summary statistic datasets contain the SNP identifier (for example `rs1421085`), the effect size (`b`) and the standard error (`se`). Sometimes the position (`POS`) and chromosome (`CHR`) is provided instead of the SNP identifier, and sometimes both is available. Then there is usually other information coming from the study data, for example the allele frequency in the study. However, hardly ever do the datasets contain annotation, such as the gene where the SNP resides or the allele frequency in a certain population.
 
 This makes sense. Genetic data from cohorts will be used for years and won't change, but the annotation will change over the years. Take the chromosomal position of SNPs, that changes every couple of years. 
 
@@ -148,7 +148,7 @@ Of course, there are many other solutions to spot real associations, but this is
 ### Identify genomic region with lowest P-value
 
 Now that we know that there are lots of genetic markers associated with BMI, we want to look at a specific genomic region and figure out what genes it contains. 
-So let's pick the genomic region with the lowest P-value.
+For illustration, we pick the genomic region with the lowest P-value.
 
 ```{r, define-bmi-selection, warning =FALSE}
 
@@ -212,7 +212,7 @@ First we need to load the `biomaRt` [package from bioconductor](https://biocondu
 library(biomaRt) 
 ```
 
-Next we specify which database to use. You can use the functions `listMart()`, `listEnsembl` and `listDatasets()` to select from the right biomart and dataset. We will need to extract SNPs and genes, hence we will need to create two `Mart`'s.
+Next we specify which database to use. You can use the functions `listMart()`, `listEnsembl()` and `listDatasets()` to select from the right biomart and dataset. We will need to extract SNPs and genes, hence we will need to create two `Mart`'s.
 
 ```{r, choose-mart, include = TRUE}
 
@@ -298,7 +298,8 @@ Next, we want to get the gene name where `r dat.bmi.sel$SNP` falls into.
 Let's check which `attributes` contain the string `gene` or `Gene`. 
 
 ```{r, check-attributes, include = TRUE}
-listAttributes(snp.ensembl) %>% slice(str_which(name, c("gene", "Gene"))) 
+listAttributes(snp.ensembl) %>% slice(str_which(name, "gene")) 
+listAttributes(snp.ensembl) %>% slice(str_which(name, "Gene"))
 ```
 
 Now use `ensembl_gene_stable_id` and `associated_gene` as additional attributes.
@@ -360,7 +361,7 @@ print(p2)
 
 ```
 
-Let's try to make that pretty. We can group the genes by `gene_biotype` and colour them accordingly. The protein coding genes are in the top row.
+Let's try to make that pretty. We can group the genes by `gene_biotype` and colour them accordingly. And we move the protein coding genes to the top row.
 
 ```{r, plot-genes-pretty, include = TRUE, fig.height = 5}
 
