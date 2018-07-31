@@ -202,7 +202,7 @@ So far, I did not fully grasp the benefits of `biomartr` compared to `biomaRt` f
 
 I used mainly two sources to learn what I wanted to do:
 
-- [Vignette of biomaRt](https://www.bioconductor.org/packages/devel/bioc/vignettes/biomaRt/inst/doc/biomaRt.html) on Bioconductor^[I recently listened to an informative podcast by [Saskia Freytag](https://twitter.com/trashystats) and [NJ Tierney](https://twitter.com/nj_tierney) where they talk about the differences between CRAN and Bioconductor (there are many!). The podcast is called [Credibly courious](https://soundcloud.com/crediblycurious/episode-1-cran-and-bioconductor).].
+- [Vignette of biomaRt](https://www.bioconductor.org/packages/devel/bioc/vignettes/biomaRt/inst/doc/biomaRt.html) on Bioconductor^[I recently listened to a podcast by [Saskia Freytag](https://twitter.com/trashystats) and [NJ Tierney](https://twitter.com/nj_tierney) where they talk about the differences between CRAN and Bioconductor (there are many!). The podcast is called [Credibly courious](https://soundcloud.com/crediblycurious/episode-1-cran-and-bioconductor).].
 - [A question on StackOverflow](https://stackoverflow.com/questions/41490657/best-way-to-get-list-of-snps-by-gene-id)
 
 ### Using biomaRt
