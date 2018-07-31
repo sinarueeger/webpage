@@ -19,7 +19,7 @@ blogdown::hugo_build()
 ## 3) commit changes to github >> do in terminal
 path <- getwd()
 
-comment <- "'changed all fa_ icons to ii_'"
+comment <- "'changing fonts (again?! :-)'"
 
 ## b) commit changes of webpage folder
 ## add files system("git add ...")
