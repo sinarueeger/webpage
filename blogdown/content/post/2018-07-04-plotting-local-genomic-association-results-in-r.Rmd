@@ -55,9 +55,11 @@ In the illustration below, we want to know the gene starting and end positions a
  
 
 ## Getting it done
+<!---
 
 <!-- how can we achieve this? -->
 There are currently more than 10 Mio SNPs known, and knowing their functions and genes by heart would equal to some super power. Which is why we `r fa_heart(colour = "#a6cee3")`^[Awesome icons in R? `r fa_band_aid(colour = "orange")` `r fa_chess_queen(colour = "gray")` `r fa_bicycle(colour = "green")` `r fa_birthday_cake(colour = "pink")` `r fa_arrow_right(colour = "black")` checkout [these instructions by Mitchell O'Hara-Wild on the rOpenSci webpage](https://ropensci.org/technotes/2018/05/15/icon/).] public databases, such as [dbSNP](https://www.ncbi.nlm.nih.gov/projects/SNP/) and [ensembl](https://www.ensembl.org/index.html)^[Thanks to my biology colleagues for explaining me the differences between these databases and what a biomart is!]. 
+
 
 What we `r fa_heart(colour = "#377eb8")` even more, is, to make our analyses reproducible and automate annotation and lookups.
 

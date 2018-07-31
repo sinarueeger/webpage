@@ -19,7 +19,7 @@ blogdown::hugo_build()
 ## 3) commit changes to github >> do in terminal
 path <- getwd()
 
-comment <- "'itemize toc'"
+comment <- "'fa items'"
 
 ## b) commit changes of webpage folder
 ## add files system("git add ...")

@@ -65,6 +65,11 @@
                             <a class="button-square button-social hint--top" data-hint="Google+" title="Google+" href="{{ . }}">
                                 <i class="fa fa-google-plus"></i>
                             </a>
+                            {{ end }}
+                        {{ with .Site.Params.googlescholar }}
+                            <a class="button-square button-social hint--top" data-hint="Google Scholar" title="Google Scholar" href="{{ . }}">
+                                <i class="fas fa-book"></i>
+                            </a>
                         {{ end }}
                         {{ with .Site.Params.email }}
                             <a class="button-square button-social hint--top" data-hint="Email" title="Email" href="mailto:{{ . }}">

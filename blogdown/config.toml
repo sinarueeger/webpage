@@ -27,7 +27,7 @@ enablefa = true
     linkedin = "https://www.linkedin.com/in/sinarueeger/"
     twitter = "https://twitter.com/sinarueeger"
     email = "sina.rueeger@gmail.com"
-    gplus = "https://scholar.google.com/citations?view_op=list_works&hl=de&authuser=1&user=OD9gCh4AAAAJ"
+    googlescholar = "https://scholar.google.com/citations?view_op=list_works&hl=de&authuser=1&user=OD9gCh4AAAAJ"
     opengraph = false
     shareTwitter = false
     shareFacebook = false
