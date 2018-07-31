@@ -4,7 +4,7 @@ description: using the `biomaRt` R-package
 date: '2018-07-30'
 categories: [statgen,R,data visualisation]
 tags: [statgen,R,data visualisation,R,ggplot2]
-slug: locuszoomplotannotation
+slug: locuszoomplot
 draft: false
 header:
   caption: ''
