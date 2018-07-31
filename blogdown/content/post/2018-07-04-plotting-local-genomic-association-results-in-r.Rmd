@@ -1,11 +1,11 @@
 ---
 title: Locuszoom plot of GWAS summary statistics
 description: using the `biomaRt` R-package
-date: '2018-07-31'
+date: '2018-07-30'
 categories: [statgen,R,data visualisation]
 tags: [statgen,R,data visualisation,R,ggplot2]
 slug: locuszoomplot
-draft: true
+draft: false
 header:
   caption: ''
   image: ''
@@ -16,7 +16,6 @@ header:
 #library(icon) ## for fa icons, installed via gh: https://github.com/ropenscilabs/icon
 ```
 
-&#f1fd;
 
 <!-- what do we want -->
 In the world of [genome-wide association studies](https://www.acsh.org/news/2018/07/27/genome-wide-association-studies-acsh-explains-13234) (GWAS) we often get a list of genetic markers ([SNPs](https://en.wikipedia.org/wiki/Single-nucleotide_polymorphism)) that seem for some reason relevant for a particular outcome. At the same time, we have little knowledge about these genetic variants that come in cryptic combinations of characters and numbers. 
@@ -51,39 +50,6 @@ We might want to know the corresponding gene of a SNP.
 
 In the illustration below, we want to know the gene starting and end positions around the FTO gene region to create an informative locuszoom plot. 
 
-
-```{r, sketch, echo=FALSE, fig.height = 5}
-# From https://jackolney.github.io/blog/post/2016-08-15-ggplot2-font/
-# Install the package direct from GitHub with devtools
-devtools::install_github("yixuan/showtext")
-library(showtext)
-library(ggplot2)
-# Download font
-font_add_google(name = "Caveat", family = "Caveat", regular.wt = 400, bold.wt = 700)
-
-    # Perhaps the only tricky bit is remembering to run the following function to enable webfonts
-    showtext.auto()
-
-    # Generate some random numbers
-    set.seed(123)
-    x = rnorm(1000)
-    y = rnorm(1000, mean = 1)
-
-    # Throw them into a data.frame
-    dat <- data.frame(x, y)
-
-    # Put together out plot
-    ggOut <- ggplot(dat, aes(x = x, y = y))
-    ggOut <- ggOut + geom_point(alpha = 0.5, col = "red")
-    ggOut <- ggOut + ggtitle("An example plot", subtitle = "Aren't these fonts great?")
-    ggOut <- ggOut + theme(text = element_text(family = "Caveat"))
-    ggOut
-    
-
-```
-
-
-
 <figure>
 <img src="/post/annotation/locuszoom-drawing.jpg" alt="Drawing of a table." align="middle" style="width: 400px;"/>
 <figcaption><small>In this case, we want to visualise the GWAS P-value (-log10(P)) of a genomic region (with each point representing a SNP), with the corresponding genes at the bottom. This is similar to a plot done with [LocusZoom](http://locuszoom.org/), a tool that takes summary statistics as input and outputs a pretty graph for a desired genomic region, including gene annotation, LD information and more.
@@ -95,7 +61,7 @@ font_add_google(name = "Caveat", family = "Caveat", regular.wt = 400, bold.wt = 
 <!---
 
 <!-- how can we achieve this? -->
-There are currently more than 10 Mio SNPs known, and knowing their functions and genes by heart would equal to some super power. Which is why we `r icon::ii_heart()`^[Awesome icons in R? `r icon::ii_camera()` `r icon::ii_thumbsup()` `r icon::ii_social_apple()` `r icon::ii_paperclip()` `r icon::ii_arrow_right_a()` checkout [these instructions by Mitchell O'Hara-Wild on the rOpenSci webpage](https://ropensci.org/technotes/2018/05/15/icon/).] public databases, such as [dbSNP](https://www.ncbi.nlm.nih.gov/projects/SNP/) and [ensembl](https://www.ensembl.org/index.html)^[Thanks to my biology colleagues for explaining me the differences between these databases and what a biomart is!]. 
+There are currently more than 10 Mio SNPs known, and knowing their functions and genes by heart would equal to some super power. Which is why we `r icon::ii_heart()`^[Awesome icons in R? `r icon::ii_camera()` `r icon::ii_thumbsup()` `r icon::ii_social_apple()` `r icon::ii_paperclip()` `r icon::ii_arrow_right_a()` checkout [these instructions by Mitchell O'Hara-Wild on the rOpenSci webpage](https://ropensci.org/technotes/2018/05/15/icon/).] public databases, such as [dbSNP](https://www.ncbi.nlm.nih.gov/projects/SNP/) and [ensembl](https://www.ensembl.org/index.html)^[Thanks to my colleagues with biology background for explaining me the differences between these databases and what a biomart is!]. 
 
 
 
@@ -168,11 +134,10 @@ This dataset has `r nrow(dat.bmi)` rows and `r ncol(dat.bmi)` columns. What if w
 
 ### Visualising associations
 
-Visualising all associations at once can be done with a Manhattan plot, where the x-axis represents chromosome`CHR` and the chromosomal position `POS`, and the y-axis the `-log10(P)`-value. Let's use the R-package [`ggman` by Veera Manikandan](https://github.com/drveera/ggman) for that. 
+Visualising all associations at once can be done with a Manhattan plot, where the x-axis represents chromosome`CHR` and the chromosomal position `POS`, and the y-axis the `-log10(P)`-value. Let's use the R-package `qqman`^[A guide to DYI manhattan plots by [Yan Holtz](https://github.com/holtzy/) for the [R graph gallery](https://www.r-graph-gallery.com/wp-content/uploads/2018/02/Manhattan_plot_in_R.html)] for that. 
 
 ```{r, mhtplot, warning =FALSE, message=FALSE}
-## ggman installed via gh: https://github.com/drveera/ggman
-ggman::ggman(dat.bmi, snp = "SNP", bp = "POS", chrom = "CHR", pvalue = "P", lineColour = "black", clumps.colour = "black")
+qqman::manhattan(dat.bmi %>% mutate(CHR = as.numeric(as.character(fct_recode(CHR, "23" = "X")))) %>%   filter(-log10(P)>1), chr="CHR", bp="POS", snp="SNP", p="P", suggestiveline =FALSE, genomewideline = FALSE, chrlabs = c(1:22, "X"), cex = 0.4)
 
 ```
 
