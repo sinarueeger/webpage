@@ -16,7 +16,7 @@ header:
 #library(icon) ## for fa icons, installed via gh: https://github.com/ropenscilabs/icon
 ```
 
-\f1fd
+&#f1fd;
 
 <!-- what do we want -->
 In the world of [genome-wide association studies](https://www.acsh.org/news/2018/07/27/genome-wide-association-studies-acsh-explains-13234) (GWAS) we often get a list of genetic markers ([SNPs](https://en.wikipedia.org/wiki/Single-nucleotide_polymorphism)) that seem for some reason relevant for a particular outcome. At the same time, we have little knowledge about these genetic variants that come in cryptic combinations of characters and numbers. 
@@ -52,7 +52,7 @@ We might want to know the corresponding gene of a SNP.
 In the illustration below, we want to know the gene starting and end positions around the FTO gene region to create an informative locuszoom plot. 
 
 
-```{r, sketch, echo=FALSE,results='asis', fig.height = 5}
+```{r, sketch, echo=FALSE, fig.height = 5}
 # From https://jackolney.github.io/blog/post/2016-08-15-ggplot2-font/
 # Install the package direct from GitHub with devtools
 devtools::install_github("yixuan/showtext")
@@ -172,7 +172,7 @@ Visualising all associations at once can be done with a Manhattan plot, where th
 
 ```{r, mhtplot, warning =FALSE, message=FALSE}
 ## ggman installed via gh: https://github.com/drveera/ggman
-ggman::ggman(dat.bmi, snp = "SNP", bp = "POS", chrom = "CHR", pvalue = "P")
+ggman::ggman(dat.bmi, snp = "SNP", bp = "POS", chrom = "CHR", pvalue = "P", lineColour = "gray", colour = 1)
 
 ```
 
