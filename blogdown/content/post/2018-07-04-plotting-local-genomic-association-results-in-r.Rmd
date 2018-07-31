@@ -5,16 +5,18 @@ date: '2018-07-30'
 categories: [statgen,R,data visualisation]
 tags: [statgen,R,data visualisation,R,ggplot2]
 slug: locuszoomplot
-draft: false
+draft: true
 header:
   caption: ''
   image: ''
 ---
 
 
-```{r, setup, include=FALSE,warning=FALSE,message=FALSE}
+```{r, setup, include = FALSE,warning=FALSE,message=FALSE}
 #library(icon) ## for fa icons, installed via gh: https://github.com/ropenscilabs/icon
 ```
+
+\f1fd
 
 <!-- what do we want -->
 In the world of [genome-wide association studies](https://www.acsh.org/news/2018/07/27/genome-wide-association-studies-acsh-explains-13234) (GWAS) we often get a list of genetic markers ([SNPs](https://en.wikipedia.org/wiki/Single-nucleotide_polymorphism)) that seem for some reason relevant for a particular outcome. At the same time, we have little knowledge about these genetic variants that come in cryptic combinations of characters and numbers. 
@@ -22,13 +24,13 @@ In the world of [genome-wide association studies](https://www.acsh.org/news/2018
 
 *For example:*
 
-- *We might get asked how frequent the SNP `rs1421085` is in a range of populations. *
+- *We might get asked how frequent the SNP [`rs1421085`](https://www.ensembl.org/Homo_sapiens/Variation/Explore?r=16:53766542-53767542;v=rs1421085;vdb=variation;vf=984887) is in [a range of populations.](https://www.ensembl.org/Homo_sapiens/Variation/Population?r=16:53766542-53767542;v=rs1421085;vdb=variation;vf=984887) *
 - *We need to extract all known SNPs that are within 1 Mb of `rs1421085`. *
 - *A genomic region turns out to be highly relevant for some disease and we want to know all genes contained in that genomic region.*
 
-Unless you sit on lots of genetic data, the list of SNPs come from a summarised form. Minimally, these summary statistic datasets contain the SNP identifier (for example `rs1421085`), the effect size (`b`) and the standard error (`se`). Sometimes the position (`POS`) and chromosome (`CHR`) is provided instead of the SNP identifier, and sometimes both is available. Then there is usually other information coming from the study data, for example the allele frequency in the study. However, hardly ever do the datasets contain annotation, such as the gene where the SNP resides or the allele frequency in a certain population.
+Unless you sit on lots of genetic data, the list of SNPs come from a summarised form. Minimally, these summary statistic datasets contain the SNP identifier (for example `rs1421085`), the effect size (`b`) and the standard error (`se`). Sometimes the position (`POS`) and chromosome (`CHR`) is provided instead of the SNP identifier, and sometimes both are available. Then there is usually other information coming from the study data, for example the allele frequency in the study. However, hardly ever do the datasets contain annotation, such as the [gene](https://www.cancer.gov/publications/dictionaries/cancer-terms/def/gene) where the SNP resides or the allele frequency in a certain population.
 
-This makes sense. Genetic data from cohorts will be used for years and won't change, but the annotation will change over the years. Take the chromosomal position of SNPs, that changes every couple of years. 
+This makes sense. Genetic data from cohorts will be used for years and won't change, but the annotation will change over the years. Take the chromosomal position of SNPs, that changes [with every new human genome reference assembley](https://en.wikipedia.org/wiki/Reference_genome). 
 
 To get our hands on annotation, we need to consult external databases that are - lucky us! - public. But first, let us define what we want to see at the [end](#end) of the blogpost.
 
@@ -49,9 +51,42 @@ We might want to know the corresponding gene of a SNP.
 
 In the illustration below, we want to know the gene starting and end positions around the FTO gene region to create an informative locuszoom plot. 
 
+
+```{r, sketch, echo=FALSE,results='asis', fig.height = 5}
+# From https://jackolney.github.io/blog/post/2016-08-15-ggplot2-font/
+# Install the package direct from GitHub with devtools
+devtools::install_github("yixuan/showtext")
+library(showtext)
+library(ggplot2)
+# Download font
+font_add_google(name = "Caveat", family = "Caveat", regular.wt = 400, bold.wt = 700)
+
+    # Perhaps the only tricky bit is remembering to run the following function to enable webfonts
+    showtext.auto()
+
+    # Generate some random numbers
+    set.seed(123)
+    x = rnorm(1000)
+    y = rnorm(1000, mean = 1)
+
+    # Throw them into a data.frame
+    dat <- data.frame(x, y)
+
+    # Put together out plot
+    ggOut <- ggplot(dat, aes(x = x, y = y))
+    ggOut <- ggOut + geom_point(alpha = 0.5, col = "red")
+    ggOut <- ggOut + ggtitle("An example plot", subtitle = "Aren't these fonts great?")
+    ggOut <- ggOut + theme(text = element_text(family = "Caveat"))
+    ggOut
+    
+
+```
+
+
+
 <figure>
 <img src="/post/annotation/locuszoom-drawing.jpg" alt="Drawing of a table." align="middle" style="width: 400px;"/>
-<figcaption><small>In this case, we want to visualise the GWAS summary statistics of a genomic region (with each point representing a SNP), with the corresponding genes at the bottom. This is similar to a plot done with [LocusZoom](http://locuszoom.org/), a tool that takes summary statistics as input and outputs a pretty graph for a desired genomic region, including gene annotation, LD information and more.
+<figcaption><small>In this case, we want to visualise the GWAS P-value (-log10(P)) of a genomic region (with each point representing a SNP), with the corresponding genes at the bottom. This is similar to a plot done with [LocusZoom](http://locuszoom.org/), a tool that takes summary statistics as input and outputs a pretty graph for a desired genomic region, including gene annotation, LD information and more.
 </small></figcaption>
 </figure>
  
@@ -115,7 +150,7 @@ Next, we rename some columns to something more conventional.
 dat.bmi <- dat.bmi %>% rename(SNP = SNPNAME, P = Pvalue)
 ```
 
-Now, let's look at the data.
+Now, let's look at the data with the [`skimr`](https://github.com/ropensci/skimr) package.
 
 ```{r, overview-data, warning = FALSE}
 skimr::skim(dat.bmi)
@@ -212,18 +247,17 @@ I used mainly two sources to learn what I wanted to do:
 
 ### Using biomaRt
 
-First we need to load the `biomaRt` [package from bioconductor](https://bioconductor.org/packages/release/bioc/html/biomaRt.html).
+First we need to load the `biomaRt` [package from Bioconductor](https://bioconductor.org/packages/release/bioc/html/biomaRt.html).
 
 ```{r, load-biomart, include = TRUE}
 library(biomaRt) 
 ```
 
-Next we specify which database to use. You can use the functions `listMart()`, `listEnsembl()` and `listDatasets()` to select from the right biomart and dataset. We will need to extract SNPs and genes, hence we will need to create two `Mart`'s.
+Next we specify which database to use. You can use the functions `listMart()`, `listEnsembl()` and `listDatasets()` to select from the right biomart and dataset. We will need to extract SNPs, hence the `biomart = "snp"`.
 
 ```{r, choose-mart, include = TRUE}
 
 snp.ensembl <- useEnsembl(biomart = "snp", dataset = "hsapiens_snp")
-gene.ensembl <- useEnsembl(biomart = "ensembl", dataset = "hsapiens_gene_ensembl")
 
 class(snp.ensembl)
 
@@ -324,6 +358,7 @@ out.bm.snp2gene
 
 ## Extract string
 ## ----------
+gene.ensembl <- useEnsembl(biomart = "ensembl", dataset = "hsapiens_gene_ensembl") # we will need an additional mart for genes
 out.bm.gene <- getBM(attributes = c('external_gene_name'), 
       filters = c('ensembl_gene_id'),
       values = unique(out.bm.snp2gene$ensembl_gene_stable_id), 
@@ -361,8 +396,10 @@ out.bm.genes.region <- out.bm.genes.region %>% mutate(external_gene_name = fct_r
       start_position, .desc = TRUE))
 
 ## plot
-p2 <- ggplot(data = out.bm.genes.region) + geom_linerange(aes(x = external_gene_name, ymin = start_position, ymax = end_position)) + coord_flip() + ylab("")
-print(p2)
+ggplot(data = out.bm.genes.region) + 
+      geom_linerange(aes(x = external_gene_name, ymin = start_position, ymax = end_position)) + 
+  coord_flip() + 
+  ylab("")
 
 ```
 
