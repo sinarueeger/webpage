@@ -2,6 +2,7 @@ baseurl = "/"
 title = "Analysing genetic data"
 theme = "ghostwriter"
 languageCode = "en-us"
+canonifyURLs = true
 copyright = "Sina R&uuml;eger"
 disqusShortname = "sinarueeger-github-io"
 publishDir = "../sinarueeger.github.io"
@@ -39,7 +40,7 @@ enablefa = true
     color_theme = "blue"
     
 [Permalinks]
-    post = "/:year/:month/:day/:filename/"
+    post = "/:year/:month/:day/:slug/"
     
 
 [[menu.main]]
