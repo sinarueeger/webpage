@@ -79,6 +79,7 @@ In the world of [genome-wide association studies](https://www.acsh.org/news/2018
 - *We need to extract all known SNPs that are within 1 Mb of `rs1421085`. *
 - *A genomic region turns out to be highly relevant for some disease and we want to know all genes contained in that genomic region.*
 
+
 Unless you sit on lots of genetic data, the list of SNPs come from a summarised form. Minimally, these summary statistic datasets contain the SNP identifier (`SNPNAME`, for example `rs149969323`), the effect size (`beta`) and the standard error (`se`). Sometimes the position (`POS`) and chromosome (`CHR`) is provided instead of the SNP identifier, and sometimes both are available. Then there is usually other information coming from the study data, for example the allele frequency in the study `r icon::ii_arrow_right_a()` this is on the LHS in table below. However, hardly ever do the datasets contain <font color="#31a354">annotation</font, such as the [gene](https://www.cancer.gov/publications/dictionaries/cancer-terms/def/gene) where the SNP resides, the phenotypes it is associated with or the minor allele frequency (MAF) in a certain population or  `r icon::ii_arrow_right_a()` this is illustrated in the <font color="#31a354">green</font> colored part in table below.
 
 ```{r sketch-table, echo = FALSE, results = 'asis', cache = TRUE}
