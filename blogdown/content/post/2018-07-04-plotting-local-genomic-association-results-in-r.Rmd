@@ -212,7 +212,7 @@ This dataset has `r nrow(dat.bmi)` rows and `r ncol(dat.bmi)` columns. What if w
 
 ### Visualising associations
 
-Visualising all associations at once can be done with a Manhattan plot, where the x-axis represents chromosome`CHR` and the chromosomal position `POS`, and the y-axis the `-log10(P)`-value. Let's use the R-package `qqman`^[A guide to DYI manhattan plots by [Yan Holtz](https://github.com/holtzy/) for the [R graph gallery](https://www.r-graph-gallery.com/wp-content/uploads/2018/02/Manhattan_plot_in_R.html)] for that. 
+Visualising all associations at once can be done with a Manhattan plot, where the x-axis represents chromosome`CHR` and the chromosomal position `POS`, and the y-axis the `-log10(P)`-value. Let's use the R-package `qqman`^[A guide to crafting Manhattan plots by [Yan Holtz](https://github.com/holtzy/) for the [R graph gallery](https://www.r-graph-gallery.com/wp-content/uploads/2018/02/Manhattan_plot_in_R.html)] for that. 
 
 ```{r, mhtplot, warning =FALSE, message=FALSE}
 qqman::manhattan(dat.bmi %>% mutate(CHR = as.numeric(as.character(fct_recode(CHR, "23" = "X")))) %>%   filter(-log10(P)>1), chr="CHR", bp="POS", snp="SNP", p="P", suggestiveline =FALSE, genomewideline = FALSE, chrlabs = c(1:22, "X"), cex = 0.4)
@@ -280,7 +280,7 @@ I have only come across this package a few weeks ago, so I apologise in advance 
 
 So far, I did not fully grasp the benefits of `biomartr` compared to `biomaRt` for annotation of human data. But I will definitely [look more into it](https://ropensci.github.io/biomartr/articles/Functional_Annotation.html).
 
-Thanks to [Marianna Foos](https://twitter.com/MariannaFoos) for pointing out another great R-package dealing with SNP annotation called [`rsnps`](https://cran.r-project.org/web/packages/rsnps/vignettes/rsnps_vignette.html)!
+[Marianna Foos](https://twitter.com/MariannaFoos) pointed out another great R-package dealing with SNP annotation called [`rsnps`](https://cran.r-project.org/web/packages/rsnps/vignettes/rsnps_vignette.html). 
 
 ### Learning resources
 
@@ -489,6 +489,8 @@ p1b <- p1 + xlab("") + theme(axis.title.x=element_blank(), axis.text.x=element_b
 p1b + p2 + plot_layout(ncol = 1, heights = c(6, 6))
 
 ```
+
+Having both plots combined, we can spot that the are 6 protein coding genes in the region. But the P-value peak is located in gene FTO.
 
 
 ## Wouldn't it be nice...
