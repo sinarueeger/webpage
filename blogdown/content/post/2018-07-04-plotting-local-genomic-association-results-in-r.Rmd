@@ -106,7 +106,8 @@ library(kableExtra)
 kable(out.bm.table %>% as_tibble %>% dplyr::select(CHR, POS, SNPNAME, REF, ALT, beta, se, external_gene_name, phenotype_name, minor_allele_freq) %>% dplyr::rename(Gene = external_gene_name, Phenotype = phenotype_name, `Global minor allele freq.` = minor_allele_freq)) %>%
   kable_styling("striped", full_width = F) %>%
   column_spec(8:10, bold = F, color = "white", background = "#31a354") %>%
-  add_header_above(c("GWAS summary statistics dataset" = 7, "Annotation" = 3))
+  add_header_above(c("GWAS summary statistics dataset" = 7, "Annotation" = 3)) %>%  
+  kable_styling(font_size = 12)
   
 ```
 
