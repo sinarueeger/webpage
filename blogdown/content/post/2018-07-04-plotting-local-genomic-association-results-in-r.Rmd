@@ -12,10 +12,62 @@ header:
 ---
 
 
-```{r, setup, include = FALSE,warning=FALSE,message=FALSE}
+
+```{r, setup, include = FALSE, warning=FALSE, message=FALSE}
+library(showtext)
+library(tidyverse)
 #library(icon) ## for fa icons, installed via gh: https://github.com/ropenscilabs/icon
 ```
 
+<!--make a plot, that did not work with knitting-->
+```{r, sketch-data, eval = TRUE, echo = FALSE, warning=FALSE}
+## get data
+url <- "https://portals.broadinstitute.org/collaboration/giant/images/2/21/BMI_All_ancestry.fmt.gzip"
+dat.bmi <- data.table::fread(url, verbose = FALSE)
+start <- 45e6
+end <- 55e6
+dat.bmi.sketch <- dat.bmi %>% filter(CHR == 12 & POS >=  start & POS <= end)
+
+
+```
+
+```{r, sketch, eval = FALSE, echo = FALSE}
+
+# Code bits and showtext package from https://github.com/yixuan/showtext
+## Loading Google fonts (http://www.google.com/fonts)
+font_add_google(name = "Caveat", family = "Caveat", regular.wt = 400, bold.wt = 700)
+
+## Automatically use showtext to render text for future devices
+showtext_auto()
+
+## Tell showtext the resolution of the device,
+## only needed for bitmap graphics. Default is 96
+## showtext_opts(dpi = 96)
+
+
+## Plotting functions as usual
+col.blue <- "#377eb8"
+col.red <- "#e41a1c"
+font <- "Caveat"
+
+png("../../static/post/annotation/locuszoom-sketch.png", 800, 600, res = 96)
+
+op <- par(cex.lab = 1.8, cex.axis = 1.3, cex.main = 2, las = 1, family = font, mar = c(5, 5, 5, 1))
+plot(dat.bmi.sketch$POS, -log10(dat.bmi.sketch$Pvalue), xlab = "Position (bp)", ylab = "-log10(P-value)", ylim = c(-10, 40), yaxt="n")
+axis(2, at = seq(-10,40, 10), labels = c("", seq(0, 40, 10)))
+title("Zoom into GWAS results")
+dat.bmi.sketch.min <- dat.bmi.sketch %>% slice(which.min(Pvalue))
+text(dat.bmi.sketch.min$POS, -log10(dat.bmi.sketch.min$Pvalue), "Each dot is a SNP",cex = 1.5, col = col.red, srt = 0, pos = 4)
+
+## add horizontal lines
+text(end - 2e6, -5, "This is a gene",cex = 1.5, col = col.blue, srt = 0, pos = 4)
+text(start + 4e5, -10, "This is another gene", cex = 1.5, col = col.blue, pos = 4)
+lines(c(start + 3e6, end - 2e6), c(-5, -5), col = col.blue, lwd = 5)
+lines(c(start + 1e5, start + 4e5), c(-10, -10), col = col.blue, lwd = 5)
+par(op)
+dev.off()
+
+```
 
 <!-- what do we want -->
 In the world of [genome-wide association studies](https://www.acsh.org/news/2018/07/27/genome-wide-association-studies-acsh-explains-13234) (GWAS) we often get a list of genetic markers ([SNPs](https://en.wikipedia.org/wiki/Single-nucleotide_polymorphism)) that seem for some reason relevant for a particular outcome. At the same time, we have little knowledge about these genetic variants that come in cryptic combinations of characters and numbers. 
@@ -27,7 +79,37 @@ In the world of [genome-wide association studies](https://www.acsh.org/news/2018
 - *We need to extract all known SNPs that are within 1 Mb of `rs1421085`. *
 - *A genomic region turns out to be highly relevant for some disease and we want to know all genes contained in that genomic region.*
 
-Unless you sit on lots of genetic data, the list of SNPs come from a summarised form. Minimally, these summary statistic datasets contain the SNP identifier (for example `rs1421085`), the effect size (`b`) and the standard error (`se`). Sometimes the position (`POS`) and chromosome (`CHR`) is provided instead of the SNP identifier, and sometimes both are available. Then there is usually other information coming from the study data, for example the allele frequency in the study. However, hardly ever do the datasets contain annotation, such as the [gene](https://www.cancer.gov/publications/dictionaries/cancer-terms/def/gene) where the SNP resides or the allele frequency in a certain population.
+Unless you sit on lots of genetic data, the list of SNPs come from a summarised form. Minimally, these summary statistic datasets contain the SNP identifier (`SNPNAME`, for example `rs149969323`), the effect size (`beta`) and the standard error (`se`). Sometimes the position (`POS`) and chromosome (`CHR`) is provided instead of the SNP identifier, and sometimes both are available. Then there is usually other information coming from the study data, for example the allele frequency in the study `r icon::ii_arrow_right_a()` this is on the LHS in table below. However, hardly ever do the datasets contain annotation, such as the [gene](https://www.cancer.gov/publications/dictionaries/cancer-terms/def/gene) where the SNP resides, the allele frequency in a certain population or the diseases it is associated with `r icon::ii_arrow_right_a()` this is illustrated in the <font color="#31a354">green</font> colored part in table below.
+
+```{r sketch-table, echo = FALSE, results = 'asis', cache = TRUE}
+
+## SNP ids from https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4382211/
+dat.bmi.head <- dat.bmi %>% filter(SNPNAME %in% c("rs657452", "rs12286929","rs7903146", "rs11057405","rs1167827"))
+## annotate dat.bmi.sketch
+library(biomaRt)
+snp.ensembl <- useEnsembl(biomart = "snp", dataset = "hsapiens_snp")
+out.bm.snp <- getBM(
+  attributes = c('ensembl_gene_stable_id','phenotype_name', 'refsnp_id','minor_allele_freq'), 
+      filters = 'snp_filter', 
+      values = dat.bmi.head$SNPNAME, 
+      mart = snp.ensembl)
+
+gene.ensembl <- useEnsembl(biomart = "ensembl", dataset = "hsapiens_gene_ensembl") # we will need an additional mart for genes
+out.bm.gene <- getBM(attributes = c('external_gene_name','ensembl_gene_id'), 
+      filters = c('ensembl_gene_id'),
+      values = unique(out.bm.snp$ensembl_gene_stable_id), 
+      mart = gene.ensembl)
+
+out.bm.table <- dat.bmi.head %>% right_join(out.bm.snp, by = c("SNPNAME" = "refsnp_id")) %>% right_join(out.bm.gene, by = c("ensembl_gene_stable_id" = "ensembl_gene_id")) %>% filter(phenotype_name != "")
+
+library(kableExtra)
+kable(out.bm.table %>% as_tibble %>% dplyr::select(CHR, POS, SNPNAME, REF, ALT, beta, se, external_gene_name, phenotype_name, minor_allele_freq) %>% dplyr::rename(Gene = external_gene_name, Phenotype = phenotype_name, `Global minor allele freq.` = minor_allele_freq)) %>%
+  kable_styling("striped", full_width = F) %>%
+  column_spec(8:10, bold = F, color = "white", background = "#31a354") %>%
+  add_header_above(c("GWAS summary statistics dataset" = 7, "Annotation" = 3))
+  
+```
+
 
 This makes sense. Genetic data from cohorts will be used for years and won't change, but the annotation will change over the years. Take the chromosomal position of SNPs, that changes [with every new human genome reference assembley](https://en.wikipedia.org/wiki/Reference_genome). 
 
@@ -38,24 +120,19 @@ To get our hands on annotation, we need to consult external databases that are -
 
 For this blogpost, we keep it simple and only focus on the **genes contained in a genomic region**, but this can be easily extended to any other annotation.
 
-<!-- ### Annotation of each SNP
 
-We might want to know the corresponding gene of a SNP.
+In the illustration below^[Thanks to [Maëlle Salmon](https://twitter.com/ma_salmon) you get a real plot here instead of a blurry hand drawing. She gave me lots of feedback on my first version - much appreciated!], we want to know the gene starting and end positions around one particular gene region to create an informative locuszoom plot. 
 
-<figure>
-<img src="/post/annotation/table-drawing.jpg" alt="Drawing of a table." align="middle" style="width: 400px;"/>
-<figcaption><small>Here, we know the SNP identifier, the chromosome and the position form the GWAS results, but not the corresponding gene.</small></figcaption>
-</figure> -->
- 
-
-In the illustration below, we want to know the gene starting and end positions around the FTO gene region to create an informative locuszoom plot. 
 
 <figure>
-<img src="/post/annotation/locuszoom-drawing.jpg" alt="Drawing of a table." align="middle" style="width: 400px;"/>
-<figcaption><small>In this case, we want to visualise the GWAS P-value (-log10(P)) of a genomic region (with each point representing a SNP), with the corresponding genes at the bottom. This is similar to a plot done with [LocusZoom](http://locuszoom.org/), a tool that takes summary statistics as input and outputs a pretty graph for a desired genomic region, including gene annotation, LD information and more.
+<img src="/post/annotation/locuszoom-sketch.png" alt="Drawing of a table." align="middle" style="width: 600px;"/>
+<figcaption><small>In this case, we want to visualise the GWAS P-value (-log10(P-value)) of a genomic region (with each point representing a SNP), with the corresponding genes at the bottom. This is similar to a plot done with [LocusZoom](http://locuszoom.org/), a tool that takes summary statistics as input and outputs a pretty graph for a desired genomic region, including gene annotation, LD information and more.
 </small></figcaption>
 </figure>
  
+Annotation of a SNP can be its gene, the function of the gene, which which phenotypes the gene is associated. 
+
+
 
 ## Getting it done
 <!---
@@ -87,8 +164,8 @@ First, we need some GWAS summary statistics.
 
 There are lots of [**resources**](https://github.com/sinarueeger/statistical-genetics-resources/blob/master/statgen-data.md#gwas-summary-statistic-results) for publicly available GWAS summary statistics. 
 
-
-We will look at BMI, because it can be accessed easily^[Recently, there have been two new studies by the [Psychiatric Genomics Consortium](https://www.med.unc.edu/pgc/) (PGC) on [schizophrenia (SCZ) and bipoloar disorder (BD)](https://www.sciencedirect.com/science/article/pii/S0092867418306585?via%3Dihub), as well as [Major depressive disorder (MDD)](https://www.nature.com/articles/s41588-018-0090-3). For all studies of PGC, summary statistics can be downloaded [here](https://www.med.unc.edu/pgc/results-and-downloads/downloads). For example, if you would like to download the latest MDD results, search for *'MDD2 2018'*, for BD and SCZ search for *'BIP and SCZ results from Cell Publication, 2018'*. Anybody can download these results, but need to acknowledge and agree to a list of conditions - which I think is an excellent approach!] and because it is fairly small for a genomic dataset. The data is from the [Genetic Investigation of ANthropometric Traits](https://portals.broadinstitute.org/collaboration/giant/index.php/GIANT_consortium_data_files) (GIANT) consortium. You can **download** the dataset^[Data source: [Yengo et al. (2018)](https://www.biorxiv.org/content/early/2018/03/22/274654).] [here](https://portals.broadinstitute.org/collaboration/giant/index.php/GIANT_consortium_data_files#GWAMA_Age-.2FSex-Stratified_2015_BMI_and_WHR) or load it **directly into R**.
+<!-- For example, if you would like to download the latest MDD results, search for *'MDD2 2018'*, for BD and SCZ search for *'BIP and SCZ results from Cell Publication, 2018'*.--> 
+We will look at BMI, because it can be accessed easily^[Initially, I wanted to use data from two recent studies by the [Psychiatric Genomics Consortium](https://www.med.unc.edu/pgc/) (PGC) on [schizophrenia (SCZ) and bipoloar disorder (BD)](https://www.sciencedirect.com/science/article/pii/S0092867418306585?via%3Dihub), as well as [Major depressive disorder (MDD)](https://www.nature.com/articles/s41588-018-0090-3). Like most consortia, PGC provides summary statistics that can be [downloaded](https://www.med.unc.edu/pgc/results-and-downloads/downloads).  However, before downloading anything, the user needs to acknowledge and agree to a list of conditions - which I think is an excellent approach! - therefore we cannot directly load it into R.] and because it is fairly small for a genomic dataset. The data is from the [Genetic Investigation of ANthropometric Traits](https://portals.broadinstitute.org/collaboration/giant/index.php/GIANT_consortium_data_files) (GIANT) consortium. You can **download** the dataset^[Data source: [Yengo et al. (2018)](https://www.biorxiv.org/content/early/2018/03/22/274654).] [here](https://portals.broadinstitute.org/collaboration/giant/index.php/GIANT_consortium_data_files#GWAMA_Age-.2FSex-Stratified_2015_BMI_and_WHR) or load it **directly into R**.
 
 
 ```{r, load-packages, include=FALSE,warning=FALSE,message=FALSE}
@@ -202,6 +279,7 @@ I have only come across this package a few weeks ago, so I apologise in advance 
 
 So far, I did not fully grasp the benefits of `biomartr` compared to `biomaRt` for annotation of human data. But I will definitely [look more into it](https://ropensci.github.io/biomartr/articles/Functional_Annotation.html).
 
+Thanks to [Marianna Foos](https://twitter.com/MariannaFoos) for pointing out another great R-package dealing with SNP annotation called [`rsnps`](https://cran.r-project.org/web/packages/rsnps/vignettes/rsnps_vignette.html)!
 
 ### Learning resources
 
@@ -425,4 +503,3 @@ Totally `r emo::ji("wink")` Seems like great material for future blogposts!
 
 - The R Markdown file is [here](https://github.com/sinarueeger/webpage/blob/master/blogdown/content/post/2018-07-04-plotting-local-genomic-association-results-in-r.Rmd).
 - Some more `biomaRt` code snippets are in a [gist](https://gist.github.com/sinarueeger/4430492e67639fccaeacf4340f7cb7df).
-
