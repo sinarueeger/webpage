@@ -492,7 +492,6 @@ p1b + p2 + plot_layout(ncol = 1, heights = c(6, 6))
 
 Having both plots combined, we can spot that the are 6 protein coding genes in the region. But the P-value peak is located in gene FTO.
 
-
 ## Wouldn't it be nice...
 
 - ... to polish that plot even more? For starters, the colour code is not ideal...
@@ -506,3 +505,6 @@ Totally `r emo::ji("wink")` Seems like great material for future blogposts!
 
 - The R Markdown file is [here](https://github.com/sinarueeger/webpage/blob/master/blogdown/content/post/2018-07-04-plotting-local-genomic-association-results-in-r.Rmd).
 - Some more `biomaRt` code snippets are in a [gist](https://gist.github.com/sinarueeger/4430492e67639fccaeacf4340f7cb7df).
+
+
+If you know another R-package to solve a similar problem or have feedback, you can comment below `r emo::ji("point_down")`.
