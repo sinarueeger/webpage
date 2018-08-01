@@ -79,7 +79,7 @@ In the world of [genome-wide association studies](https://www.acsh.org/news/2018
 - *We need to extract all known SNPs that are within 1 Mb of `rs1421085`. *
 - *A genomic region turns out to be highly relevant for some disease and we want to know all genes contained in that genomic region.*
 
-Unless you sit on lots of genetic data, the list of SNPs come from a summarised form. Minimally, these summary statistic datasets contain the SNP identifier (`SNPNAME`, for example `rs149969323`), the effect size (`beta`) and the standard error (`se`). Sometimes the position (`POS`) and chromosome (`CHR`) is provided instead of the SNP identifier, and sometimes both are available. Then there is usually other information coming from the study data, for example the allele frequency in the study `r icon::ii_arrow_right_a()` this is on the LHS in table below. However, hardly ever do the datasets contain annotation, such as the [gene](https://www.cancer.gov/publications/dictionaries/cancer-terms/def/gene) where the SNP resides, the allele frequency in a certain population or the diseases it is associated with `r icon::ii_arrow_right_a()` this is illustrated in the <font color="#31a354">green</font> colored part in table below.
+Unless you sit on lots of genetic data, the list of SNPs come from a summarised form. Minimally, these summary statistic datasets contain the SNP identifier (`SNPNAME`, for example `rs149969323`), the effect size (`beta`) and the standard error (`se`). Sometimes the position (`POS`) and chromosome (`CHR`) is provided instead of the SNP identifier, and sometimes both are available. Then there is usually other information coming from the study data, for example the allele frequency in the study `r icon::ii_arrow_right_a()` this is on the LHS in table below. However, hardly ever do the datasets contain annotation, such as the [gene](https://www.cancer.gov/publications/dictionaries/cancer-terms/def/gene) where the SNP resides, the phenotypes it is associated with or the minor allele frequency (MAF) in a certain population or  `r icon::ii_arrow_right_a()` this is illustrated in the <font color="#31a354">green</font> colored part in table below.
 
 ```{r sketch-table, echo = FALSE, results = 'asis', cache = TRUE}
 
@@ -103,7 +103,7 @@ out.bm.gene <- getBM(attributes = c('external_gene_name','ensembl_gene_id'),
 out.bm.table <- dat.bmi.head %>% right_join(out.bm.snp, by = c("SNPNAME" = "refsnp_id")) %>% right_join(out.bm.gene, by = c("ensembl_gene_stable_id" = "ensembl_gene_id")) %>% filter(phenotype_name != "")
 
 library(kableExtra)
-kable(out.bm.table %>% as_tibble %>% dplyr::select(CHR, POS, SNPNAME, REF, ALT, beta, se, external_gene_name, phenotype_name, minor_allele_freq) %>% dplyr::rename(Gene = external_gene_name, Phenotype = phenotype_name, `Global minor allele freq.` = minor_allele_freq)) %>%
+kable(out.bm.table %>% as_tibble %>% dplyr::select(CHR, POS, SNPNAME, REF, ALT, beta, se, external_gene_name, phenotype_name, minor_allele_freq) %>% dplyr::rename(Gene = external_gene_name, Phenotype = phenotype_name, `Global MAF` = minor_allele_freq)) %>%
   kable_styling("striped", full_width = F) %>%
   column_spec(8:10, bold = F, color = "white", background = "#31a354") %>%
   add_header_above(c("GWAS summary statistics dataset" = 7, "Annotation" = 3)) %>%  
@@ -122,7 +122,7 @@ To get our hands on annotation, we need to consult external databases that are -
 For this blogpost, we keep it simple and only focus on the **genes contained in a genomic region**, but this can be easily extended to any other annotation.
 
 
-In the illustration below^[Thanks to [Maëlle Salmon](https://twitter.com/ma_salmon) you get a real plot here instead of a blurry hand drawing. She gave me lots of feedback on my first version - much appreciated!], we want to know the gene starting and end positions around one particular gene region to create an informative locuszoom plot. 
+In the illustration below^[Thanks to [Maëlle Salmon](https://twitter.com/ma_salmon) you get a real plot here instead of a blurry hand drawing `r emo::ji("wink")` She gave lots of feedback on my first version - much appreciated!], we want to know the gene starting and end positions around one particular gene region to create an informative locuszoom plot. 
 
 
 <figure>
