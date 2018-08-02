@@ -70,7 +70,7 @@ dev.off()
 ```
 
 <!-- what do we want -->
-In the world of [genome-wide association studies](https://www.acsh.org/news/2018/07/27/genome-wide-association-studies-acsh-explains-13234) (GWAS) we^[Data analysts] often get a list of genetic markers ([SNPs](https://en.wikipedia.org/wiki/Single-nucleotide_polymorphism)) that seem for some reason relevant for a particular outcome. At the same time, we have little knowledge about these genetic variants that come in cryptic combinations of characters and numbers. 
+In the world of [genome-wide association studies](https://www.acsh.org/news/2018/07/27/genome-wide-association-studies-acsh-explains-13234) (GWAS) we often get a list of genetic markers ([SNPs](https://en.wikipedia.org/wiki/Single-nucleotide_polymorphism)) that seem for some reason relevant for a particular outcome. At the same time, we have little knowledge about these genetic variants that come in cryptic combinations of characters and numbers. 
 
 
 *For example:*
