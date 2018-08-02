@@ -466,8 +466,7 @@ p2 <- ggplot(data = out.bm.genes.region) +
   coord_flip() + ylab("") +
   ylim(plot.range) + 
   geom_text(aes(x = external_gene_name, y = start_position, label = external_gene_name, colour = gene_biotype_fac), fontface = 2, alpha = I(0.7), hjust = "right", size= 2.5) + 
-  labs(title = "", subtitle = paste("Genes"), caption = paste("Data source:", gene.ensembl@host, "/", gene.ensembl@dataset)) +
-  scale_colour_discrete(name="Gene Biotype") +
+  labs(title = "", subtitle = paste("Genes"), caption = paste("Data source:", gene.ensembl@host, "/", gene.ensembl@dataset), color = "Gene Biotype") +
   theme(axis.title.y=element_blank(),
         axis.text.y=element_blank(),
         axis.ticks.y=element_blank(), 
