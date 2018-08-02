@@ -76,10 +76,10 @@ In the world of [genome-wide association studies](https://www.acsh.org/news/2018
 *For example:*
 
 - *We might get asked how frequent the SNP [`rs1421085`](https://www.ensembl.org/Homo_sapiens/Variation/Explore?r=16:53766542-53767542;v=rs1421085;vdb=variation;vf=984887) is in [a range of populations.](https://www.ensembl.org/Homo_sapiens/Variation/Population?r=16:53766542-53767542;v=rs1421085;vdb=variation;vf=984887) *
-- *We need to extract all known SNPs that are within 1 Mb of `rs1421085`. *
+- *We need to extract all known SNPs that are within 1 Mb of [`rs1421085`](https://www.ensembl.org/Homo_sapiens/Variation/Explore?r=16:53766542-53767542;v=rs1421085;vdb=variation;vf=984887). *
 - *A genomic region turns out to be highly relevant for some disease and we want to know all genes contained in that genomic region.*
 
-Unless you sit on lots of genetic data, the list of SNPs come from a summarised form. Minimally, these summary statistic datasets contain the SNP identifier (`SNPNAME`), the effect size (`beta`) and the standard error (`se`). Sometimes the position (`POS`) and chromosome (`CHR`) is provided instead of the SNP identifier, and sometimes both are available. Then there is usually other information coming from the study data, for example the allele frequency in the study `r icon::ii_arrow_right_a()` this is shown on the LHS in table below. However, hardly ever do the datasets contain <font color="#31a354">annotation</font>, such as the [gene](https://www.cancer.gov/publications/dictionaries/cancer-terms/def/gene) where the SNP resides, the phenotypes it is associated with or the minor allele frequency (MAF) in a certain population or  `r icon::ii_arrow_right_a()` this is illustrated in the <font color="#31a354">green</font> colored part in table below.
+Unless you sit on lots of genetic data, the list of SNPs come from a summarised form. Minimally, these summary statistic datasets contain the SNP identifier (`SNPNAME`), the effect size (`beta`) and the standard error (`se`). Sometimes the position (`POS`) and chromosome (`CHR`) is provided instead of the SNP identifier, and sometimes both are available. Then there is usually other information coming from the study data, for example the allele frequency in the study `r icon::ii_arrow_right_a()` this is shown on the LHS in table below. However, hardly ever do the datasets contain <font color="#31a354">annotation</font>, such as the [gene](https://www.cancer.gov/publications/dictionaries/cancer-terms/def/gene) where the SNP resides, the phenotypes it is associated with or the minor allele frequency (MAF) in a certain population `r icon::ii_arrow_right_a()` this is illustrated in the <font color="#31a354">green</font> colored part in table below.
 
 ```{r sketch-table, echo = FALSE, results = 'asis', cache = TRUE}
 
@@ -507,7 +507,7 @@ If this were work done for a real project, this would now be the time to get bac
 
 - ... to polish that plot even more? For starters, the colour code is not ideal...
 - ... to add information about the correlation between SNPs, like in [LocusZoom plots](http://locuszoom.org/)? 
-- ... or have an interactive plot: hovering over the SNP points would light up the corresponding genes or give some other information, like the allele frequency. 
+- ... or have an interactive plot^[[Liza Darrous](https://twitter.com/LizaMGD) pointed out the interactive Manhattan R function [manhanttanly](https://moderndata.plot.ly/manhattanly-r-package-for-interactive-manhattan-plots/).]: hovering over the SNP points would light up the corresponding genes or give some other information, like the allele frequency. 
 
 Totally `r emo::ji("wink")` Seems like great material for future blogposts!
 
