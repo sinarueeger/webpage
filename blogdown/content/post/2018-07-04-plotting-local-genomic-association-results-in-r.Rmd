@@ -196,6 +196,7 @@ We will look at BMI, because it can be accessed easily^[Initially, I wanted to u
 ## we are gonna need this
 library(tidyverse)
 theme_set(theme_bw())  ## make all ggplots white-ish
+
 ```
 
 ```{r, load-data, echo=TRUE, results="hide", cache=TRUE, message = FALSE, warning = FALSE}
@@ -392,8 +393,33 @@ Let's check again.
 ifelse(sel.pos == out.bm.grch37$chrom_start,
        "\u2713: same assembley (grch37)", 
        "\u2717: not the same assembley")
+```
+
+
+[Flavia Hodel](https://twitter.com/flaviahodel) pointed out that adding the argument `GRCh = 37` works too. 
+
+```{r, get-snp-chr-pos-grch37-alternative, include = TRUE}
+
+snp.ensembl.grch37.alt <- useEnsembl(biomart = "snp", dataset = "hsapiens_snp", GRCh = 37)
+
+
+out.bm.grch37 <- getBM(
+  attributes = c('ensembl_gene_stable_id', 'refsnp_id', 'chr_name', 'chrom_start', 'chrom_end', 'minor_allele', 'minor_allele_freq'),
+  filters = 'snp_filter',
+  values = dat.bmi.sel$SNP,
+  mart = snp.ensembl.grch37.alt
+)
+out.bm.grch37
 
 ```
+```{r, sanitychecks-grch37-alternative, include = TRUE}
+
+ifelse(sel.pos == out.bm.grch37$chrom_start,
+       "\u2713: same assembley (grch37)", 
+       "\u2717: not the same assembley")
+
+```
+
 
 ### Extracting gene name for one SNP
 
@@ -422,7 +448,8 @@ out.bm.snp2gene
 
 ## Extract string
 ## ----------
-gene.ensembl <- useEnsembl(biomart = "ensembl", dataset = "hsapiens_gene_ensembl") # we will need an additional mart for genes
+gene.ensembl <- useEnsembl(biomart = "ensembl", dataset = "hsapiens_gene_ensembl", GRCh = 37) # we will need an additional mart for genes
+## because we are using positions from GRCh = 37 in a next query, we need to pass that information on.
 out.bm.gene <- getBM(attributes = c('external_gene_name'), 
       filters = c('ensembl_gene_id'),
       values = unique(out.bm.snp2gene$ensembl_gene_stable_id), 
@@ -487,7 +514,7 @@ p2 <- ggplot(data = out.bm.genes.region) +
   coord_flip() + ylab("") +
   ylim(plot.range) + 
   geom_text(aes(x = external_gene_name, y = start_position, label = external_gene_name, colour = gene_biotype_fac), fontface = 2, alpha = I(0.7), hjust = "right", size= 2.5) + 
-  labs(title = "", subtitle = paste("Genes"), caption = paste("Data source:", gene.ensembl@host, "/", gene.ensembl@dataset), color = "Gene Biotype") +
+  labs(title = "", subtitle = paste0("Genes"), caption = paste0("Data source: ", gene.ensembl@host, " + Data set: ", gene.ensembl@dataset), color = "Gene Biotype") +
   theme(axis.title.y=element_blank(),
         axis.text.y=element_blank(),
         axis.ticks.y=element_blank(), 
