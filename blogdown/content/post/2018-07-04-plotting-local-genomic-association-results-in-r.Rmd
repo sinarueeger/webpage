@@ -396,7 +396,7 @@ ifelse(sel.pos == out.bm.grch37$chrom_start,
 ```
 
 
-[Flavia Hodel](https://twitter.com/flaviahodel) pointed out that adding the argument `GRCh = 37` works too - that's handy!
+[Flavia Hodel](https://twitter.com/flaviahodel) pointed out that adding the argument `GRCh = 37` works too! That's handy argument (but limited to GRCh versions 37 and 38).
 
 ```{r, get-snp-chr-pos-grch37-alternative, include = TRUE}
 
