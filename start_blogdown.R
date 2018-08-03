@@ -19,7 +19,7 @@ blogdown::hugo_build()
 ## 3) commit changes to github >> do in terminal
 path <- getwd()
 
-comment <- "'adapting p2 paste > paste0 (feedback flavia)'"
+comment <- "'Adding arg GRCh = 37 (tip flavia)'"
 
 ## b) commit changes of webpage folder
 ## add files system("git add ...")
