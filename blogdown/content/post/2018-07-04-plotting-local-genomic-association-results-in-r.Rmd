@@ -12,12 +12,13 @@ header:
 ---
 
 
-
 ```{r, setup, include = FALSE, warning=FALSE, message=FALSE}
 library(showtext)
 library(tidyverse)
 #library(icon) ## for fa icons, installed via gh: https://github.com/ropenscilabs/icon
 ```
+
+
 
 <!--make a plot, that did not work with knitting-->
 ```{r, sketch-data, eval = TRUE, echo = FALSE, warning=FALSE}
@@ -104,10 +105,10 @@ out.bm.table <- dat.bmi.head %>% right_join(out.bm.snp, by = c("SNPNAME" = "refs
 
 library(kableExtra)
 kable(out.bm.table %>% as_tibble %>% dplyr::select(CHR, POS, SNPNAME, REF, ALT, beta, se, external_gene_name, phenotype_name, minor_allele_freq) %>% dplyr::rename(Gene = external_gene_name, `Linked phenotype` = phenotype_name, `Global MAF` = minor_allele_freq)) %>%
-  kable_styling("striped", full_width = F) %>%
-  column_spec(8:10, bold = F, color = "white", background = "#31a354") %>%
-  add_header_above(c("GWAS summary statistics dataset" = 7, "Annotation" = 3)) %>%  
-  kable_styling(font_size = 13)
+  kableExtra::kable_styling("striped", full_width = F) %>%
+  kableExtra::column_spec(8:10, bold = F, color = "white", background = "#31a354") %>%
+  kableExtra::add_header_above(c("GWAS summary statistics dataset" = 7, "Annotation" = 3)) %>%  
+  kableExtra::kable_styling(font_size = 13)
   
 ```
 
@@ -152,7 +153,32 @@ Here is the plan:
 3. [Combine summary statistics and annotation](#end)
 
 
+Before tackling the first item, we want to have all R-packages installed & ready to use:
 
+```{r, install-packages, echo=TRUE}
+## Packages needed to run code
+## ----------------------------
+# install.packages("dplyr")     ## data manipulation
+# install.packages("data.table") ## read data, fast!
+# install.packages("forcats")   ## dealing with factors
+# install.packages("ggplot2")   ## dataviz
+# install.packages("magrittr")  ## piping
+# install.packages("metafolio")  ## colorpalette
+# install.packages("skimr")     ## summarising data
+# install.packages("qqman")     ## Manhattan plot
+# install.packages("patchwork") ## assembling plots
+
+# source("https://bioconductor.org/biocLite.R")
+# biocLite("biomaRt")           ## annotation
+
+## Optional packages for Rmd
+## --------------------------
+# install.packages("kableExtra") ## making pretty tables
+# install.packages("devtools")
+# devtools::install_github("hadley/emo")        ## emojis
+# devtools::install_github("ropenscilabs/icon") ## icons
+
+```
 
 
 <!-- data -->
@@ -218,11 +244,6 @@ qqman::manhattan(dat.bmi %>% mutate(CHR = as.numeric(as.character(fct_recode(CHR
 
 We can spot immediately, that there are loads of SNPs with P-values smaller than $10^{-100}$ (sample size was around [700K](https://www.biorxiv.org/content/early/2018/03/22/274654)).
 
-<!-- ```{r, qqplot}
-library(cookbookRsina)
-QQplot(dat.bmi$P)
-
-``` --->
 
 Of course, there are many other solutions to spot real associations, but this is not the point of this blogpost ;-).
 
