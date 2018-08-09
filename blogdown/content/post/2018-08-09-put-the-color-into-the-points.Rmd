@@ -1,0 +1,284 @@
+---
+title: Put the color into the points
+date: '2018-08-09'
+slug: add-ld
+categories: [statgen,R,data visualisation]
+tags: [statgen,R,data visualisation,R,ggplot2]
+description: ''
+draft: true
+header:
+  caption: ''
+  image: ''
+---
+
+
+```{r, setup, include = FALSE, warning=FALSE, message=FALSE}
+library(showtext)
+library(tidyverse)
+theme_set(theme_bw())  ## make all ggplots white-ish
+#library(icon) ## for fa icons, installed via gh: https://github.com/ropenscilabs/icon
+```
+
+```{r, load-data, echo=TRUE, results="hide", cache=TRUE, message = FALSE, warning = FALSE}
+
+## Data Source URL
+url <- "https://portals.broadinstitute.org/collaboration/giant/images/2/21/BMI_All_ancestry.fmt.gzip"
+
+#url <- "jenger.riken.jp/1analysisresult_qtl_download/All_2017_BMI_BBJ_autosome.txt.gz"
+
+## Import BMI summary statistics dat.bmi <- read_tsv(file = url) ##
+## taking too long, let's use fread instead.
+
+dat.bmi <- data.table::fread(url, verbose = FALSE)
+
+## Rename some columns
+dat.bmi <- dat.bmi %>% rename(SNP = SNPNAME, P = Pvalue)
+
+## Extract region
+dat.bmi.sel <- dat.bmi %>% slice(which.min(P))
+dat.bmi.sel
+
+## range region
+range <- 5e+05
+sel.chr <- dat.bmi.sel$CHR
+sel.pos <- dat.bmi.sel$POS
+
+dat.bmi.sel.region <- dat.bmi %>% filter(CHR == sel.chr, between(POS, sel.pos - 
+      range, sel.pos + range))
+
+```
+
+
+```{r, load-biomart, include = TRUE}
+
+library(biomaRt) 
+
+snp.ensembl <- useEnsembl(biomart = "snp", dataset = "hsapiens_snp")
+gene.ensembl <- useEnsembl(biomart = "ensembl", dataset = "hsapiens_gene_ensembl", GRCh = 37) # we will need an additional mart for genes
+out.bm.genes.region <- getBM(
+  attributes = c('start_position','end_position','ensembl_gene_id','external_gene_name', 'gene_biotype'), 
+      filters = c('chromosome_name','start','end'), 
+      values = list(sel.chr, sel.pos - range, sel.pos + range), 
+      mart = gene.ensembl)
+head(out.bm.genes.region)
+
+```
+
+
+Let's try to make that pretty. We can group the genes by `gene_biotype` and colour them accordingly. And we move the protein-coding genes to the top row and color it black.
+
+```{r, plot-genes-pretty, include = TRUE, fig.height = 5}
+
+
+## rank gene names according to start position
+out.bm.genes.region <- out.bm.genes.region %>% mutate(external_gene_name = fct_reorder(external_gene_name, 
+      start_position, .desc = TRUE))
+
+## define plot range for x-axis
+plot.range <- c(min(sel.pos - range, out.bm.genes.region$start_position), 
+      max(sel.pos + range, out.bm.genes.region$end_position))
+
+## rank gene_biotype label
+out.bm.genes.region <- out.bm.genes.region %>% mutate(gene_biotype_fac = fct_relevel(as.factor(gene_biotype), 
+      "protein_coding"), external_gene_name = fct_reorder2(external_gene_name, 
+      start_position, gene_biotype_fac, .desc = TRUE))
+
+
+## plot
+p2 <- ggplot(data = out.bm.genes.region) + 
+  geom_linerange(aes(x = external_gene_name, ymin = start_position, ymax = end_position, colour = gene_biotype_fac, group = gene_biotype_fac)) +
+  coord_flip() + ylab("") +
+  ylim(plot.range) + 
+  geom_text(aes(x = external_gene_name, y = start_position, label = external_gene_name, colour = gene_biotype_fac), fontface = 2, alpha = I(0.7), hjust = "right", size= 2.5) + 
+  labs(title = "", subtitle = paste0("Genes"), caption = paste0("Data source: ", gene.ensembl@host, " + Data set: ", gene.ensembl@dataset), color = "Gene Biotype") +
+  theme(axis.title.y=element_blank(),
+        axis.text.y=element_blank(),
+        axis.ticks.y=element_blank(), 
+        strip.text.y = element_text(angle = 0),
+        legend.position="bottom", 
+        panel.grid.major.y = element_blank()) + 
+  expand_limits(y=c(-1, 1)) +
+  scale_color_manual(values = c("black", metafolio::gg_color_hue(nlevels(out.bm.genes.region$gene_biotype_fac)-1)))
+  ## hack to have 11 colors, but probably merging some gene biotype groups could make sense too. 
+  ## consider colorblindr::palette_OkabeIto_black
+print(p2)
+
+```
+
+
+
+```{r, plot-summarystats, include = TRUE}
+
+p1 <- ggplot(data = dat.bmi.sel.region) + 
+  geom_point(aes(POS, -log10(P)), shape = 1) + 
+  labs(title = "Locuszoomplot for BMI GWAS", subtitle = paste("Summary   statistics for chromosome", sel.chr, "from", format((sel.pos - range), big.mark = "'"), "to", format((sel.pos + range), big.mark = "'"), "bp"), caption = paste("Data source:", url))
+print(p1)
+
+```
+
+
+
+
+```{r, summarystats-genes, include = TRUE, fig.height = 9}
+
+library(patchwork)
+
+p1b <- p1 + xlab("") + theme(axis.title.x=element_blank(), axis.text.x=element_blank(), axis.ticks.x=element_blank()) + xlim(plot.range)
+
+p1b + p2 + plot_layout(ncol = 1, heights = c(6, 6))
+
+```
+
+
+
+Make that dot plot colorful. 
+
+
+```{r, calc-ld}
+dat.bmi.sel.region
+
+library(httr)
+library(jsonlite)
+library(xml2)
+
+## get all possible genomes names of 1KG phase_3
+server <- "https://rest.ensembl.org"
+ext <- "/info/variation/populations/homo_sapiens?filter=LD"
+
+r <- GET(paste(server, ext, sep = ""), content_type("application/json"))
+stop_for_status(r)
+fromJSON(toJSON(content(r)))
+
+## get LD for 1 variant
+## ------------------------
+## https://rest.ensembl.org/documentation/info/ld_id_get
+server <- "https://rest.ensembl.org"
+ext <- glue::glue("/ld/human/{dat.bmi.sel$SNP}/1000GENOMES:phase_3:CEU?;window_size=5000")
+## Window size in kb. The maximum allowed value for the window size is 500 kb. LD is computed for the given variant and all variants that are located within the specified window.
+
+r <- GET(paste(server, ext, sep = ""), content_type("application/json"))
+stop_for_status(r)
+LD <- as_tibble(fromJSON(toJSON(content(r)))) %>% unnest() %>% mutate(r2 = as.numeric(r2))
+
+dim(LD)
+
+head(LD)
+
+
+```
+
+```{r, ld-pairwise-region}
+
+
+## LD pairwise region
+## -------------------
+## https://rest.ensembl.org/documentation/info/ld_region_get
+#ext <- "/ld/human/region/6:25837556..25843455/1000GENOMES:phase_3:KHV?"
+## Query region. A maximum of 1Mb is allowed.
+
+x <- "rs8050136"
+
+
+f.extract.ld <- function(SNP.id2 = NULL)
+{
+  SNP.id1 <- dat.bmi.sel$SNP
+  ext <- glue::glue("/ld/human/pairwise/{SNP.id1}/{SNP.id2}?population_name=1000GENOMES:phase_3:CEU")
+  server <- "https://rest.ensembl.org"
+
+  #ext <- glue::glue("/ld/human/region/{sel.chr}:{sel.pos - range/2}..{sel.pos + range/2}/1000GENOMES:phase_3:CEU?") ##>> timing out, not working
+
+  r <- GET(paste(server, ext, sep = ""), content_type("application/json"))
+stop_for_status(r)
+
+  out <- as_tibble(fromJSON(toJSON(content(r)))) %>% unnest()
+  return(out)
+}
+
+LD <- purrr::map(dat.bmi.sel.region %>% select(SNP) %>% unlist(), f.extract.ld) %>% mutate(r2 = as.numeric(r2)) %>% bind_rows() %>% unnest()
+
+
+dat.bmi.sel.region <- dat.bmi.sel.region %>% left_join(LD %>% select(variation2, r2), by = c("SNP" = "variation2"))
+
+
+```
+
+
+
+
+```{r, calc-maf-per-pop}
+
+## https://rest.ensembl.org/documentation/info/variation_id
+server <- "https://rest.ensembl.org"
+
+ext <- glue::glue("/variation/human/{dat.bmi.sel$SNP}?content-type=application/json;population_genotypes=1")
+
+r <- GET(paste(server, ext, sep = ""), content_type("application/json"))
+stop_for_status(r)
+
+# use this if you get a simple nested list back, otherwise inspect its structure
+# head(data.frame(t(sapply(content(r),c))))
+(fromJSON(toJSON(content(r))))
+## corresponding to : https://www.ensembl.org/Homo_sapiens/Variation/Population?db=core;r=16:53766542-53767542;v=rs1421085;vdb=variation;vf=984887
+
+
+## read sample files from 1kg
+#ext <- glue::glue("/variation/human/{dat.bmi.sel$SNP}?content-type=application/json;genotypes=1")
+
+```
+
+```{r, plot-summarystats-ld, include = TRUE}
+
+p1.color <- ggplot(data = dat.bmi.sel.region) + 
+  geom_point(aes(POS, -log10(P), color = r2), shape = 16) + 
+  labs(title = "Locuszoomplot for BMI GWAS", subtitle = paste("Summary statistics for chromosome", sel.chr, "from", format((sel.pos - range), big.mark = "'"), "to", format((sel.pos + range), big.mark = "'"), "bp"), caption = paste("Data source:", url)) +
+  geom_point(data = dat.bmi.sel.region %>% filter(SNP == "rs1421085"), aes(POS, -log10(P)), color = "black", shape = 16) + scale_color_distiller(type = "div", palette = "Spectral", limits = c(0,1))
+
+#+ gghighlight(SNP == "rs1421085")
+# + scale_colour_gradient(limits = c(0,1))
+
+```
+
+
+```{r, summarystats-genes-ld, include = TRUE, fig.height = 9}
+
+library(patchwork)
+
+p1b <- p1.color + xlab("") + theme(axis.title.x=element_blank(), axis.text.x=element_blank(), axis.ticks.x=element_blank()) + xlim(plot.range)
+
+p1b + p2 + plot_layout(ncol = 1, heights = c(6, 6))
+
+```
+
+
+
+
+
+
+
+## Alternatives
+
+### `emeraLD`
+
+https://github.com/statgen/emeraLD/blob/master/emeraLD2R.r
+
+### `rsnps`
+
+https://cran.r-project.org/web/packages/rsnps/vignettes/rsnps_vignette.html
+
+```{r, calc-ld}
+#devtools::install_github("ropensci/rsnps")
+library(rsnps)
+ld_search("rs332") ## not working, and if, only working for phase1
+snps <- c("rs332", "rs420358", "rs1837253", "rs1209415715", "rs111068718")
+ncbi_snp_query(snps)
+```
+
+
+
+
+
+
+
+```{r, setup, include = TRUE}
+sessionInfo()
+```
