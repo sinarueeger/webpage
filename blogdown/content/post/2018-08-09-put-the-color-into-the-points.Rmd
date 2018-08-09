@@ -167,7 +167,7 @@ head(LD)
 
 ```
 
-```{r, ld-pairwise-region}
+```{r, ld-pairwise-region, cache = TRUE}
 
 
 ## LD pairwise region
@@ -185,7 +185,7 @@ f.extract.ld <- function(SNP.id2 = NULL)
   ext <- glue::glue("/ld/human/pairwise/{SNP.id1}/{SNP.id2}?population_name=1000GENOMES:phase_3:CEU")
   server <- "https://rest.ensembl.org"
 
-  #ext <- glue::glue("/ld/human/region/{sel.chr}:{sel.pos - range/2}..{sel.pos + range/2}/1000GENOMES:phase_3:CEU?") ##>> timing out, not working
+#ext <- glue::glue("/ld/human/region/{sel.chr}:{sel.pos - range/2}..{sel.pos + range/2}/1000GENOMES:phase_3:CEU?") ##>> timing out, not working
 
   r <- GET(paste(server, ext, sep = ""), content_type("application/json"))
 stop_for_status(r)
