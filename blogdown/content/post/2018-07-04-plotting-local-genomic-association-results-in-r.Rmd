@@ -204,10 +204,13 @@ theme_set(theme_bw())  ## make all ggplots white-ish
 ## Data Source URL
 url <- "https://portals.broadinstitute.org/collaboration/giant/images/2/21/BMI_All_ancestry.fmt.gzip"
 
+#url <- "jenger.riken.jp/1analysisresult_qtl_download/All_2017_BMI_BBJ_autosome.txt.gz"
+
 ## Import BMI summary statistics dat.bmi <- read_tsv(file = url) ##
 ## taking too long, let's use fread instead.
 
 dat.bmi <- data.table::fread(url, verbose = FALSE)
+
 ```
 
  I added `verbose = FALSE` because it will complain that there is an unexpected character in column 1, which appears to be numerical. This is because chromosome X will only appear towards the end of the dataset. 
@@ -344,8 +347,10 @@ out.bm <- getBM(
                  "chrom_end", 
                  "minor_allele", 
                  "minor_allele_freq"),
+                # "ensembl_transcript_stable_id",
+                # "consequence_type_tv"),
   filters = "snp_filter", 
-  values = dat.bmi.sel$SNP, 
+  values = "rs1421085",#dat.bmi.sel$SNP, 
   mart = snp.ensembl)
 
 ```

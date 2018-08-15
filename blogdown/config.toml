@@ -7,6 +7,7 @@ copyright = "Sina R&uuml;eger"
 disqusShortname = "sinarueeger-github-io"
 publishDir = "../sinarueeger.github.io"
 ignoreFiles = ["\\.Rmd$", "\\.Rmarkdown$", "_files$", "_cache$"]
+rssLimit = 10
 
 enableEmoji = true
 enablefa = true

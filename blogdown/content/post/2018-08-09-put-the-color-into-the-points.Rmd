@@ -48,6 +48,8 @@ dat.bmi.sel.region <- dat.bmi %>% filter(CHR == sel.chr, between(POS, sel.pos -
 
 ```
 
+https://gist.github.com/sinarueeger/e7fe973c4baccd7645dd01cc57dcb72c
+
 
 ```{r, load-biomart, include = TRUE}
 
