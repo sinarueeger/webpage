@@ -1,9 +1,17 @@
 ---
-title: Put the color into the points
+title: 'Put the color into the points'
 date: '2018-08-09'
 slug: add-ld
-categories: [statgen,R,data visualisation]
-tags: [statgen,R,data visualisation,R,ggplot2]
+categories: 
+  - statgen
+  - R
+  - data visualisation
+tags: 
+  - statgen
+  - R
+  - data visualisation
+  - R
+  - ggplot2
 description: ''
 draft: true
 header:

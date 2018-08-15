@@ -1,15 +1,24 @@
 ---
-title: Locuszoom plot of GWAS summary statistics
-description: using the `biomaRt` R-package
+title: 'Locuszoom plot of GWAS summary statistics'
+description: 'using the `biomaRt` R-package'
 date: '2018-07-30'
-categories: [statgen,R,data visualisation]
-tags: [statgen,R,data visualisation,R,ggplot2]
+categories: 
+  - statgen
+  - R
+  - data visualisation
+tags: 
+  - statgen
+  - R
+  - data visualisation
+  - R
+  - ggplot2
 slug: locuszoomplot
 draft: false
 header:
   caption: ''
   image: ''
 ---
+
 
 
 ```{r, setup, include = FALSE, warning=FALSE, message=FALSE}
