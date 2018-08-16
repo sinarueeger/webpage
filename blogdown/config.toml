@@ -51,7 +51,8 @@ enablefa = true
     
 [[menu.main]]
     name = "Resources"
-    url = "https://github.com/sinarueeger/statistical-genetics-resources/"
+    url = "/page/resources/"
+#    url = "https://github.com/sinarueeger/statistical-genetics-resources/"
     weight = 2
     
 
