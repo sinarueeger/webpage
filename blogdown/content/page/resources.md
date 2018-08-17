@@ -16,4 +16,4 @@ description = ""
 - Source code [here](https://github.com/sinarueeger/map-1000genomes)
 - Download html [here](https://github.com/sinarueeger/map-1000genomes/blob/master/map-1000genomes-populations.html)
 
-<iframe seamless src="https://github.com/sinarueeger/map-1000genomes/blob/master/map-1000genomes-populations.html" width="100%" height="500"></iframe>
+<iframe seamless src="/misc/map-1000genomes-populations.html" width="100%" height="500"></iframe>
