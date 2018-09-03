@@ -19,47 +19,42 @@ header:
   image: ''
 ---
 
-One of the most painful and weirdly difficult things to do in my field is to calculate correlations from a genome reference panel.  
-And correlations have to be computed *ALL THE TIME*. 
-
-I have this foggy memory that I once loaded one xx MB into R, on a server, on the master, and then I applied the correlation function not accounting for the NAs. But I might have been dreaming this though - one of my biggest nightmares is to kill an HPC.
-
-After all, R is a software for statistical computing, so why not calculating the correlation - THE statistics - in R? 
-For starters, it requires to have the data somewhere stored. For 1000 genomes reference panel you need xxx MB. 
-Second, R "handles large datasets badly". I put that in quotes, because I have no idea how to say that otherwise and I also have no idea why. It just seems super inefficient. If you need to import a large file, think twice, or tweak it. For example, for correlations this would mean, only importing a range of columns. But reference panels typically come in vcf format, so good luck with that. 
-Lastly, try to calculate a 1000 by 1000 correlation matrix in R. Uses loads of memory! Even if you do ... 
-
-There are a couple of options out there: 
-1. have 1000 genomes stored somewhere, use some special tool like [emeraLD](https://github.com/statgen/emeraLD/blob/master/emeraLD2R.r) (input vcf files), [plink](https://www.cog-genomics.org/plink/1.9/ld) or [LDSTORE](http://www.christianbenner.com/#ldstore) (input bgen or binary plink), all requiring computing space and ... 
-2. precompute matrices, store and access them (requires HPC)
-3. use an API that does all this for you. 
-
-For example: the [locuszoom](https://genome.sph.umich.edu/wiki/LocusZoom_Standalone#Download) standalone function comes with all reference panels needed to calculate LD. This has advantages (always up to date, reproducible, independent) and disadvantages (BIG! MB)
-
-
-- [**emeraLD**](https://github.com/statgen/emeraLD)
-  - 🔺 LD
-  - Input file formats: VCF
-  
-- -[QCTOOL](http://www.well.ox.ac.uk/~gav/qctool_v2/))
-   🔺 LD
-  - Input file formats: bgen, binary plink (no vcf, meaning, reference panels in vcf format have to be transformed first into a bgen file with [Q## Reference panels
-
-Before doing this, lets 
-
-
-## Quick but incomplete solution: `rsnps`
-
-A perfect solution would be to use the function `ld_search` from R package [`rsnps`](https://cran.r-project.org/web/packages/rsnps/vignettes/rsnps_vignette.html). It has arguments to choose the reference panel, the population, the distance from the focal SNP... The problem is, that it only uses old reference panels (HapMap and 1KG-phase1). That means, some newer reference panel populations are left out. Besides, for some reason `ld_search` returns me an error. 
-
-
-```{r, rsnps-calc-ld}
-#devtools::install_github("ropensci/rsnps")
-library(rsnps)
-ld_search("rs12286929") ## not working, and if, only working for phase1
+```{r, setup, include = FALSE, warning=FALSE, message=FALSE}
+library(showtext)
+suppressPackageStartupMessages(library(tidyverse))
+theme_set(theme_bw())  ## make all ggplots white-ish
 ```
 
-## The other incomplete option: using `https://rest.ensembl.org`
+
+For me, a weirdly difficult thing to accomplish, is, to calculate the correlations between genetic markers and store these in a matrix. Thing is - correlations have to be computed *ALL THE TIME* for many statistical methods in genetics. And in this blogpost I am exploring how to do this efficiently.
+
+<!---------- ------------------------------->
+## Goal - what do we want?
+<!---------- ------------------------------->
+
+At the end, we want to know the genetic correlation between two or more markers in a specific human population. 
+
+<!---------- ------------------------------->
+## Two approaches
+<!---------- ------------------------------->
+
+There are two ways of doing this: 
+1. Download the genetic data from which you want to estimate your correlations + calculate the correlations using some efficient approach. 
+2. Access precomputed correlations. 
+
+Approach 1. is flexible and can be quickly updated to new reference panels. Downside: requires large computation and storage space. Recomputing might not be always necessary. 
+Approach 2. does not require large computation and storage space. Downside: limited to certain ranges of data. Limited to older reference panels. 
+
+Approach 2 is suitable if small cor matrix is needed. Approach 1 is suitable, if large matrix is needed. 
+
+I will be focussing for now on approach 2, and then explore approach 1 in a next blogpost. 
+
+To spoil it beforhand: not easy. only 1 snp vs many. Limited to 500 KB. Maybe a hack? (locuszoomplot)
+
+
+<!---------- ------------------------------->
+## Kinda works: `https://rest.ensembl.org`
+<!---------- ------------------------------->
 
 Let's quickly repeat what our goal is:
 
@@ -70,11 +65,13 @@ Extract the correlation between SNPs of 1000 Genomes reference panel
 
 ```{r, example}
 snp <- "rs199141"
+library(rsnps)
 sm <- ncbi_snp_summary(snp) %>% separate(chrpos, c("chr", "pos"))
 sel.chr <- sm$chr
 sel.pos <- 	as.numeric(sm$pos)
 range <- 500e3 ## in bp
 range.kb <- range/1e3
+
 ```
 
 ### LD between SNP1 and region
@@ -171,11 +168,29 @@ stop_for_status(r)
 ```
 
 
-## A complete solution: API provided by sph.umich
+<!---------- ------------------------------->
+## Things that do not work
+<!---------- ------------------------------->
+
+### `rsnps`
+
+A perfect solution would be to use the function `ld_search` from R package [`rsnps`](https://cran.r-project.org/web/packages/rsnps/vignettes/rsnps_vignette.html). It has arguments to choose the reference panel, the population, the distance from the focal SNP... The problem is, that it only uses old reference panels (HapMap and 1KG-phase1). That means, some newer reference panel populations are left out. Besides, for some reason `ld_search` returns me an error. 
+
+
+```{r, rsnps-calc-ld}
+#devtools::install_github("ropensci/rsnps")
+library(rsnps)
+ld_search("rs12286929") ## not working, and if, only working for phase1
+```
+https://github.com/ropensci/rsnps/issues/60
+
+
+### API provided by sph.umich
 
 [API](http://portaldev.sph.umich.edu/docs/api/v1/?shell#single-variant-statistics)
 Accessing precomputed things.
 
+https://github.com/statgen/locuszoom-api/issues/21#issuecomment-414434704
 
 ```
 ## List all available reference panels
@@ -188,6 +203,8 @@ system(shell.command)
 
 ```
 
+
+## PLOT
 
 
 ```{r, plot-summarystats-ld, include = TRUE}
@@ -226,11 +243,6 @@ In this blogpost, we will complete that locuszoomplot by adding the LD informati
 
 Let's quickly restablish the plot from last time. 
 
-```{r, setup, include = FALSE, warning=FALSE, message=FALSE}
-library(showtext)
-lippressPackageStartupMessages(library(tidyverse))
-theme_set(theme_bw())  ## make all ggplots white-ish
-```
 
 Loading the data
 
@@ -290,6 +302,6 @@ The reason for 1. is,
 
 
 
-```{r, setup, include = TRUE}
+```{r, sessioninfo, include = TRUE}
 sessionInfo()
 ```
