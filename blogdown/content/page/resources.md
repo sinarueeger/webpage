@@ -5,6 +5,13 @@ author = "Sina R&uuml;eger"
 description = ""
 +++
 
+## Talks
+
+- [Geek Girls Carrots Geneva](https://www.meetup.com/Geek-Girls-Carrots-Geneva/events/253652159/), 12-Sept-2018, [Slides](https://github.com/sinarueeger/talks/blob/master/20180912-geek-girls-carrots/slides.html), [Github](https://github.com/sinarueeger/talks/tree/master/20180912-geek-girls-carrots)
+
+
+Source code to all presentation is on [github](https://github.com/sinarueeger/talks).
+
 ## Resources in Statistical Genetics
 
 - [Data](https://github.com/sinarueeger/statistical-genetics-resources/blob/master/statgen-data.md)
