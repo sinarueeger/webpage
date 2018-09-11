@@ -7,10 +7,8 @@ description = ""
 
 ## Talks
 
-- [Geek Girls Carrots Geneva](https://www.meetup.com/Geek-Girls-Carrots-Geneva/events/253652159/), 12-Sept-2018, [Slides](https://sinarueeger.github.io/geekgirlscarrots/slides#1), [Github](https://github.com/sinarueeger/talks/tree/master/20180912-geek-girls-carrots)
+- [Geek Girls Carrots Geneva](https://www.meetup.com/Geek-Girls-Carrots-Geneva/events/253652159/), 12-Sept-2018, [Slides](https://sinarueeger.github.io/20180912-geek-girls-carrots/slides#1), [Github](https://github.com/sinarueeger/20180912-geek-girls-carrots)
 
-
-Source code to all presentation is on [github](https://github.com/sinarueeger/talks).
 
 ## Resources in Statistical Genetics
 
