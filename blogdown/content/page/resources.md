@@ -8,7 +8,6 @@ description = ""
 ## Talks
 
 - [Geek Girls Carrots Geneva](https://www.meetup.com/Geek-Girls-Carrots-Geneva/events/253652159/), 12-Sept-2018, [Slides](https://sinarueeger.github.io/20180912-geek-girls-carrots/slides#1), [Github](https://github.com/sinarueeger/20180912-geek-girls-carrots)
-
 - PhD public defense, 21-Sept-2018, [Slides](https://sinarueeger.github.io/publicdefense/slides#1), [Github](https://github.com/sinarueeger/publicdefense)
 
 
