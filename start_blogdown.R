@@ -19,7 +19,7 @@ blogdown::hugo_build()
 ## 3) commit changes to github >> do in terminal
 path <- getwd()
  
-comment <- "'adding correct slides'"
+comment <- "'adding public defense'"
 
 ## b) commit changes of webpage folder
 ## add files system("git add ...")
