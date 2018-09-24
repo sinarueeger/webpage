@@ -7,10 +7,12 @@ description = "Things about me."
 
 <img src="/img/portrait.jpg" alt="This is me." align="middle" style="width: 200px;"/>
 
-## My journey
-<p align="justify">I studied Data Analysis & Process Design at the School of Engineering in Winterthur, where I fell in love with applied statistics. I deepened my knowledge in statistical modelling with a Master's degree and by working as a research assistant. During my time as a biostatistician I enjoyed the interdisciplinary aspect and grew an interest in analysing genetic data - which ultimately lead me to my current position to Lausanne.</p>
 
-<p align="justify">Since 2013, I am a PhD student in <b>Statistical Genetics</b> under the supervision of <a href="https://wp.unil.ch/sgg/">Zolt&#225;n Kutalik</a> at the Institute of Social and Preventive Medicine at the Lausanne University Hospital in Switzerland. The focus of my PhD is the analysis of GWAS, -omics and epidemiological data.</p>
+<p align="justify">I am a postdoc in the <a href="https://fellay-lab.epfl.ch/">Fellay Lab</a> at EPFL where I focus on the <b>data analysis of human genomic data</b> in the context of infectious diseases. </p>
+
+## My journey
+<p align="justify">I studied Data Analysis & Process Design at the School of Engineering in Winterthur, where I fell in love with applied statistics. I deepened my knowledge in statistical modelling with a Master's degree and by working as a research assistant. During my time as a biostatistician I enjoyed the interdisciplinary aspect and grew an interest in analysing genetic data - which ultimately inspired me to do a PhD in <b>Statistical Genetics</b> under the supervision of <a href="https://wp.unil.ch/sgg/">Zolt&#225;n Kutalik</a> in Lausanne, Switzerland. The focus of my PhD was the analysis of GWAS, -omics and epidemiological data.</p>
+
 
 
 ## Interests
