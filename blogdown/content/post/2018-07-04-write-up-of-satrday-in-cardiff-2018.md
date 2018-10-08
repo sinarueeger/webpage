@@ -1,12 +1,24 @@
-+++
-title = "satRday Cardiff 2018"
-description = "Recap of the one-day R conference in Wales"
-author = "Sina Rüeger"
-date = 2018-07-04T10:20:22+02:00
-tags = ["conference", "R", "satrday", "rppensci", "package", "dplyr"]
-category = ["conference", "R"]
-draft = false
-+++
+---
+title: 'satRday Cardiff 2018'
+description: 'Recap of the one-day R conference in Wales'
+date: '2018-07-04'
+categories: 
+  - R
+  - conference
+tags: 
+  - conference
+  - R
+  - satrday
+  - ropensci
+  - package
+  - dplyr
+slug: satrdaycardiff
+draft: false
+header:
+  caption: ''
+  image: ''
+---
+
 
 This is a brief write-up of my [satRdays Cardiff](http://cardiff2018.satrdays.org/) experience.
 
