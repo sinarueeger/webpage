@@ -10,7 +10,6 @@ tags:
   - statgen
   - R
   - data visualisation
-  - R
   - ggplot2
 slug: locuszoomplot
 draft: false
