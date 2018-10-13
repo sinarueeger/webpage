@@ -1,6 +1,6 @@
 ---
 title: 'satRday Cardiff 2018'
-description: 'Recap of the one-day R conference in Wales'
+description: 'Recap of the one-day R conference in Wales.'
 date: '2018-07-04'
 categories: 
   - R

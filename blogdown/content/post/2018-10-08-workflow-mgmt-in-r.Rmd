@@ -1,6 +1,6 @@
 ---
 title: 'Tidying worflows in R'
-description: 'using `drake`'
+description: 'using `drake`.'
 date: '2018-10-09'
 categories: 
   - R
