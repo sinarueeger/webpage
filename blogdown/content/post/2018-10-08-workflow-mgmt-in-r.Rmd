@@ -10,15 +10,15 @@ tags:
   - R
   - projects
 slug: workflow
-draft: true
+draft: false
 header:
   caption: ''
   image: ''
 ---
 
-Recently, I started seriously^[Seriously, meaning, different from the previous attempts.] thinking about the tidyness of project folders, and implications of it. 
+Recently, I started to seriously^[Seriously, meaning, different from the previous attempts.] think about the tidiness of data analysis project folders, and the implications of tidying up. 
 
-I was lucky enough to have the opportunity to talk about what I have figured out so far at the [Geneve R User Group](https://www.meetup.com/Geneve-R-User-Group/). While I am not done yet with reflecting on this, I wanted to write down my thoughts that lead to [my presentation](https://sinarueeger.github.io/20181004-geneve-rug/slides#1)^[Thanks to Maëlle for pointing out that this is a good thing to do!]. So all what follows is just "thinking out loud". 
+I was lucky enough to talk about what I have figured out so far at the [Geneve R User Group](https://www.meetup.com/Geneve-R-User-Group/). While I am not done yet with reflecting on this^[Just started reading [Good enough practices in scientific computing](https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1005510) - great paper!], I wanted to write down my thoughts that lead to [my presentation](https://sinarueeger.github.io/20181004-geneve-rug/slides#1)^[Thanks to Maëlle for pointing out that this is a good thing to do!]. So all what follows is just "thinking out loud". 
 
 <figure>
 <img src="/post/workflow/trailer.mp4" alt="Trailer" align="middle" style="width: 400px;"/>
@@ -38,15 +38,15 @@ To me a project folder is anything that contains the (R-)scripts necessary to ru
  
 Ideally you should be able to take that folder as it is, run it on another computer and get the same results. Unfortunately, this is not always the case - at least with my project folders.
 
-I think that the tidyness of a project folder, how it is structured and how it tells the user to execute what and when, correlate strongly with the whole repeatability, replicability and reproducibility aspect. 
+I think that the tidiness of a project folder, how it is structured and how it tells the user to execute what and when, correlate strongly with the whole repeatability, replicability and reproducibility aspect. 
 
 ## Why now?
 
-The reason I started to dig deeper into workflow management possibilities in R, is, that I was changing jobs, and I had to clean up my old project folders from almost 5 years of analysing genetic data `r emo::ji("scream")`. And so I faced this gigantic mess, spread over several servers and computers, some version controlled, others not, with implemeted "best practices" from different waves of trying to improve. I tried to clean up as good as I could, but I told myself that this would not happen again. At my [new job](https://fellay-lab.epfl.ch/) I would use version control for everything and I would use something make-like (e.g. [remake](https://github.com/richfitz/remake)) to indicate the "recipe" of a project and be in control of what is recomputed and what is not^[And while at it, I would totally decrease my coffee consumption too and never procrastinate again `r emo::ji("wink")`.].
+The reason I started to dig deeper into workflow management possibilities in R, is, that I was changing jobs, and I had to clean up my old project folders from almost 5 years of analysing genetic data `r emo::ji("scream")`. And so I faced this gigantic mess, spread over several servers and computers, some version controlled, others not, with implemented "best practices" from different waves of trying to improve. I tried to clean up as good as I could, but I told myself that this would not happen again. At my [new job](https://fellay-lab.epfl.ch/) I would use version control for everything and I would use something make-like (e.g. [remake](https://github.com/richfitz/remake)) to indicate the "recipe" of a project and be in control of what is recomputed and what is not^[And while at it, I would totally decrease my coffee consumption too and never procrastinate again `r emo::ji("wink")`.].
 
 ## Carrot and stick
 
-I have a longtime interest in tidyness in general and from studying my own behaviour I came up with the theory that tidyness is only present when a) somebody tells you to do it, or b) you are rewarded for it. 
+I have a longtime interest in tidiness in general and from studying my own behaviour I came up with the theory that tidiness is only present when a) somebody tells you to do it, or b) you are rewarded for it. 
 
 Here are some examples: 
 
@@ -65,12 +65,12 @@ Here are some examples:
 
 ## Challenges
 
-I started by wondering, why it is so difficult for me to maintain a tidy folder when sticking to the default folder structure. And I came up with a list (which is certainly going to change over time):
+I started by wondering why maintaining a tidy and coherent folder structure was so difficult for me to maintain. So I came up with a list (which is certainly going to change over time):
 
 - Having  **different places** for computation (Laptop, Server1, Server2, ...).
-- Did not use **`git`** consistently for a long time.
-- Unlcear separation of the folders **`data`** (raw input data), `processed-data` and `output-data` (results).
-- **Data deliveries**: data hardly ever arrives in one tidy folder, but instead comes at different timepoints and so poses other challenges.
+- Not using **`git`** consistently.
+- Unclear separation of the folders **`data`** (raw input data), `processed-data` and `output-data` (results).
+- **Data deliveries**: data hardly ever arrives in one tidy folder, but instead comes at different time points and so poses other challenges.
 - Having many different **best practices** implemented: so each project would have it's own set of folder names and file naming convention, leading to little **overview of the analysis and its iteration steps** → cleaning, modelling, visualisation, reports.
 - Using similar code in many different R scripts → **redundant** code.
 - Having no punishment for not cleaning up (and also not really seeing the benefit).
@@ -78,39 +78,31 @@ I started by wondering, why it is so difficult for me to maintain a tidy folder 
 
 ## What I want
 
-Then I asked myself what I want to achieve with implementing (and sticking!) to something new. 
+Then I asked myself what I want to achieve with implementing (and sticking to) something new. 
 
 1. Making it easy for colleagues at work to **rerun** (and **understand**) the project → *"repeatability"*
 2. Making it easy for others to **rerun** and to **understand** the project → [*"reproducibility"*](https://twitter.com/jtleek/status/759822823552606208)
 3. Making it easy for others to rerun the code **with different data** → [*"replicability"*](https://twitter.com/jtleek/status/759822823552606208)
 
-Next I looked for solutions:
-
-- **Tidy folders**
-    - clear folder naming, e.g. `data`, `bin`, `code`, but not `data1`, `data2`, `code_old`, `_archive`
-    - only files with purposes (no `B_model_old.R`)
-- **Clear instructions** → one file should contain a sort of **recipe** of the analysis.
-- **Modular code** → using **functions** instead of free floating code.
-- **Minimising** redundant computation → **caching** results.
-- Using **unit tests**^[Thanks for my colleague Thomas for giving me the idea!].
+Next I looked for solutions. First I would need to use coherent folder names. Second I would need to have a file that indicates the recipe of an analysis. Third, I would implement most free floating and redundant code into functions. Fourth, I would minimise unnecessary computation by caching results. Fifth, I would start using unit tests^[Thanks to my colleague for the idea!].
 
 
 ## The options
 
-There are many different options out there. I was thinking of going back to useing `make`, that I used years ago. Then I came accross [{remake}](https://github.com/richfitz/remake), which seemed just what I needed. A colleague at work was using `stu` and was recommending it. But then the Swiss Insitute of Bioinformatics offered a course on *Make-like declarative workflows with R* thaught by [Kirill Müller](https://github.com/krlmlr), which I could not attend. Luckily, thanks to the awesome [online course material](https://github.com/krlmlr/drake-sib-zurich), I could learn it by myself. 
+There are many different ready-to-use software packages out there. I was thinking of going back to using `make`, that I used years ago. Then I came across [{remake}](https://github.com/richfitz/remake), which seemed just what I needed. A colleague at work was using `stu` and was recommending it. But then the Swiss Institute of Bioinformatics offered a course on *Make-like declarative workflows with R* taught by [Kirill Müller](https://github.com/krlmlr), which I could not attend. Luckily, thanks to the awesome [online course material](https://github.com/krlmlr/drake-sib-zurich), I could learn it by myself. 
 
 ## Drake
 
 The presentation *Make-like declarative workflows with R* presented the R-package [{drake}](https://github.com/ropensci/drake) (drake = Data Frames in R for Make^[I am still wondering how "Data Frames in R for Make" adds up to "drake" `r emo::ji("thinking")`.]). 
 
-Drake was created by [Will Landau](https://twitter.com/wmlandau) and reviewed by  [rOpenSci](https://ropensci.org/). On the github page of drake it says that drake is a "general-purpose workflow manager for data-driven tasks". Sounds perfect!
+{Drake} was created by [Will Landau](https://twitter.com/wmlandau) and reviewed by  [rOpenSci](https://ropensci.org/). On the github page it says that {drake} is a "general-purpose workflow manager for data-driven tasks". Sounds perfect!
 
-The way I understand it, is, that it borrows some features from `make` but adds stuff so that its up to the task of changing data. Therefore it caches runs (future runs only start from the part where something, including data, has changed). It is scalable to parallel computing. And it is intuitive to use, meaning, colleagues can learn it quickly. 
+The way I understand it, is, that it is based on `make` (and overlaps with the R-package {remake}). Therefore when making a change to an analysis and re-running it, it only re-computes what has changed. But compared to `make`, {drake} is much more convenient to use. Plus it is scalable to parallel computing. And it is intuitive to use, meaning, colleagues can learn it quickly. 
 
 
 ### Getting started
 
-Best is, to run the mini example, and then go from there. Drake has many examples provided, you can check them by running `drake::drake_examples()`.
+Best is, to run the mini example provided in the package, and then go from there. Drake has many other examples provided, you can check them by running `drake::drake_examples()`.
 
 
 1. `install.packages("drake")`
@@ -142,52 +134,51 @@ vis_drake_graph(config)
 1. checkout `.drake/` folder. This is where all the cached work is stored. 
 
 
-By running this example, you will see that `drake_plan()` is used to create a recipe of the analysis and `make()` is used to execute that recipe. `make()` will create objects, such as `fit` and `hist` in the example. 
+By running this example, you will see that `drake_plan()` is used to create a recipe of the analysis and `make()` is used to execute that recipe. `make()` will create objects, such as `fit` and `hist` in the example and store them in the folder `.drake/`.
 
-Next, `readd()` is used to return an object from cache. This is handy when we only want to diplay an object. `loadd()` on the other hand is used to load an object into our session (similarly to `load`).
+`readd()` is used to return an object from cache. This is handy when we only want to diplay an object. `loadd()` on the other hand is used to load an object into our session (similarly to `load`).
 
 ### 
 
 To checkout further options, I recommend the [slides](https://github.com/cstawitz/RLadies_Sea_drake)
-from [Christine Stawitz](https://github.com/cstawitz) (presentation at R-Ladies Seattle in June 2018). The slides contain a really good overview of the options drake provides. 
+from [Christine Stawitz](https://github.com/cstawitz) (presentation at R-Ladies Seattle in June 2018). The slides contain a really good overview of the options {drake} provides. 
 
 ### Examples
 
 I also created [some tiny examples](https://github.com/sinarueeger/workflow-example) that use genetic data. It has four folders:
 
-1. `wild-west`: this is the default. 
-2. `wild-west-pro`: same as 1. but with an `README.md`
+1. `wild-west`: this is how I was structuring folders till now (this example was used to introduce the analysis during the presentation).
+2. `wild-west-pro`: same as 1. but with an `README.md`.
 3. `drake`: implementing 1. into drake.
-4. `drake-adv`: implementing 1. into a more realistic folder structure with more hierarchical folders.
+4. `drake-adv`: implementing 1. into a more realistic, hierarchical folder structure.
 
-1. is mainly used to introduce the analysis. 
 
-The examples use genetic data that was originally used in the [crowdAI openSNP height prediction](https://www.crowdai.org/challenges/opensnp-height-prediction) challenge. The full openSNP data set was prepared by [Olivier Naret](https://github.com/onaret) and can be downloaded [here](https://zenodo.org/record/1442755#.W8BGbVJ9jOQ). The examples use a small subset of the full dataset and can be downloaded [here](https://github.com/sinarueeger/create-data-workflow-example). 
+
+The examples use genetic data that was originally used in the [crowdAI openSNP height prediction](https://www.crowdai.org/challenges/opensnp-height-prediction) challenge. The full openSNP data set was prepared by my colleague [Olivier Naret](https://github.com/onaret) and can be downloaded [here](https://zenodo.org/record/1442755#.W8BGbVJ9jOQ). The examples use a small subset of the full dataset that can be downloaded [here](https://github.com/sinarueeger/create-data-workflow-example). 
 
 
 ### Resources
 
-Here are a bunch of resources that helped me to understand drake:
+Here are a bunch of resources that helped me understand {drake}:
 
 - [Github Repo](https://github.com/ropensci/drake)
-- My examples: [https://github.com/sinarueeger/workflow-example](https://github.com/sinarueeger/workflow-example)
-- [Cheatsheet](https://github.com/krlmlr/drake-sib-zurich/blob/master/cheat-sheet.pdf).
-- Check-out [this tutorial](https://github.com/krlmlr/drake-sib-zurich) by [Kirill Müller](https://twitter.com/krlmlr).
+- [This tutorial](https://github.com/krlmlr/drake-sib-zurich) and [cheatsheet](https://github.com/krlmlr/drake-sib-zurich/blob/master/cheat-sheet.pdf) by [Kirill Müller](https://twitter.com/krlmlr).
 - Overview of options: [Make-like declarative workflows with R](https://github.com/cstawitz/RLadies_Sea_drake) by [Christine Stawitz](https://github.com/cstawitz). 
 - [Best practices](https://ropensci.github.io/drake/articles/best-practices.html) for drake projects.
 - Lots of [tutorials](https://github.com/ropensci/drake#tutorials) and [examples](https://github.com/ropensci/drake#examples).
 
 
-## But wait: drake does not care about messy folders
+## But wait: {drake} does not care about messy folders
 
 True! I can have a `make.R` file anywhere and it will still work. 
-But I believe that the shift in logic that you have to learn with `drake` makes you care more about folder structure. 
+But I believe that the shift in logic that you have to get used to with {drake} makes you care more about folder structure. 
 
 ## What is next? 
 
-I want to use drake in a more complex setting. There are also other R-packages that help with project workflows. And I should invest some time to come up with a test suite for data analysis projects. 
+I am currently reading the PlosCompBio paper [Good enough practices in scientific computing](https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1005510) - great read, giving me lots of ideas!
 
-But here is what I am dreaming of: a package that has a function `tidy_up(path)` that will create two folders: with the files needed and all other files. It will also tell you: ... 
+I want to use {drake} in a more complex setting. There are also other R-packages that help with project workflows. And I should invest some time to come up with a test suite for data analysis projects. 
+
 
 ## When is the right time to tidy
 
@@ -197,11 +188,11 @@ Project folders evolve over time. Especially in the beginning of a project, we a
 
 It is probably at that stage (when we write a report) that we can "frame" that project into something that is "stable" and "portable". 
 
-Although - I am not sure we have to wait that long. I think the benefits of drake (e.g. caching) already help us at an earlier stage. 
+Although - I am not sure we have to wait that long. I think the benefits of {drake} (e.g. caching) already help us at an earlier stage. 
 
 
 ## Is it really worth it
 
-I think there is a trade-off between dedicating days to tidying up and not careing about structure at all. Same with tooling. For example, if we use a tool, say `make` but no one else but us knows how to use it, it is going to be hard for colleagues to understand my project folders. 
+I think there is a trade-off between dedicating days to tidying up and not caring about structure at all. Same with tooling. For example, if we use a tool, say `make` but no one else but us knows how to use it, it is going to be hard for colleagues to understand and use project folders that use `make`. 
 
 
