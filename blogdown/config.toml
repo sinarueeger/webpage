@@ -1,4 +1,4 @@
-baseurl = "/"
+baseurl = "https://sinarueeger.github.io/"
 title = "Analysing genetic data"
 theme = "ghostwriter"
 languageCode = "en-us"
