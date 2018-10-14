@@ -16,11 +16,11 @@ header:
   image: ''
 ---
 
-Recently, I started to seriously^[Seriously, meaning, different from the previous attempts.] think about the tidiness of data analysis project folders, and the implications of tidying up. 
+Recently, I started to seriously^[Seriously, meaning, different from previous, half-hearted attempts.] think about the tidiness of data analysis project folders, and the implications of tidying up. 
 
-I was lucky enough to talk about what I have figured out so far at the [Geneve R User Group](https://www.meetup.com/Geneve-R-User-Group/). While I am not done yet with reflecting on this^[Just started reading [Good enough practices in scientific computing](https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1005510) - great paper!], I wanted to write down my thoughts that lead to [my presentation](https://sinarueeger.github.io/20181004-geneve-rug/slides#1)^[Thanks to Maëlle for pointing out that this is a good thing to do!]. So all what follows is just "thinking out loud". 
+I was lucky enough to talk about what I have figured out so far at the [Genève R User Group](https://www.meetup.com/Geneve-R-User-Group/). While I am not done yet with reflecting on this^[Just started reading [Good enough practices in scientific computing](https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1005510) - great paper!], I wanted to write down my thoughts that lead to [my presentation](https://sinarueeger.github.io/20181004-geneve-rug/slides#1)^[Thanks to Maëlle for pointing out that this is a good thing to do!]. So what follows is just "thinking out loud". 
 
-<video width="100%" controls>
+<video width="70%" controls>
 <source src="/post/workflow/trailer.mp4">
 Trailer. Your browser does not support the video tag.
 </video>
@@ -29,7 +29,7 @@ Trailer. Your browser does not support the video tag.
 
 ## What is a "project folder"?
 
-To me a project folder is anything that contains the (R-)scripts necessary to run a data analysis and create the corresponding report. It is like a framed piece of work that you can take and place somewhere else. It is likely to take the form of the Figure from the [R4DS](http://r4ds.had.co.nz/explore-intro.html) book below:
+To me a project folder is anything that contains the (R-)scripts necessary to run a data analysis and create the corresponding report. It is like a framed piece of work that you can take and place somewhere else. And probably it will take the form of the Figure from the [R4DS](http://r4ds.had.co.nz/explore-intro.html) book below:
 
 <figure>
 <img src="/post/workflow/workflow.png" alt="Drawing of a table." align="middle" style="width: 600px;"/>
@@ -43,11 +43,11 @@ I think that the tidiness of a project folder, how it is structured and how it t
 
 ## Why now?
 
-The reason I started to dig deeper into workflow management possibilities in R, is, that I was changing jobs, and I had to clean up my old project folders from almost 5 years of analysing genetic data `r emo::ji("scream")`. And so I faced this gigantic mess, spread over several servers and computers, some version controlled, others not, with implemented "best practices" from different waves of trying to improve. I tried to clean up as good as I could, but I told myself that this would not happen again. At my [new job](https://fellay-lab.epfl.ch/) I would use version control for everything and I would use something make-like (e.g. [remake](https://github.com/richfitz/remake)) to indicate the "recipe" of a project and be in control of what is recomputed and what is not^[And while at it, I would totally decrease my coffee consumption too and never procrastinate again `r emo::ji("wink")`.].
+The reason I started to dig deeper into workflow management possibilities in R, is, that I was changing jobs, and I had to clean up my old project folders from almost 5 years of analysing genetic data `r emo::ji("scream")`. And so I faced ~~this gigantic mess~~ a bit of a mess, spread over several servers and computers, some version controlled, others not, with implemented "best practices" from different waves of trying to improve. I tried to clean up as good as I could, but I told myself that this would not happen again. At my [new job](https://fellay-lab.epfl.ch/) I would use version control for everything and I would use something make-like (e.g. [remake](https://github.com/richfitz/remake)) to indicate the "recipe" of a project and be in control of what is recomputed and what is not^[And while at it, I would totally decrease my coffee consumption too and never procrastinate again `r emo::ji("wink")`.].
 
-## Carrot and stick
+## Why we tidy up: authority and incentive
 
-I have a longtime interest in tidiness in general and from studying my own behaviour I came up with the theory that tidiness is only present when a) somebody tells you to do it, or b) you are rewarded for it. 
+I have a long-time interest in tidiness in general and from studying my own behaviour I came up with the theory that tidiness is only present when a) somebody tells you to do it, or b) you are rewarded for it. 
 
 Here are some examples: 
 
@@ -72,7 +72,7 @@ I started by wondering why maintaining a tidy and coherent folder structure was 
 - Not using **`git`** consistently.
 - Unclear separation of the folders **`data`** (raw input data), `processed-data` and `output-data` (results).
 - **Data deliveries**: data hardly ever arrives in one tidy folder, but instead comes at different time points and so poses other challenges.
-- Having many different **best practices** implemented: so each project would have it's own set of folder names and file naming convention, leading to little **overview of the analysis and its iteration steps** → cleaning, modelling, visualisation, reports.
+- Having many different **best practices** implemented: so each project would have its own set of folder names and file naming convention, leading to little **overview of the analysis and its iteration steps** → cleaning, modelling, visualisation, reports.
 - Using similar code in many different R scripts → **redundant** code.
 - Having no punishment for not cleaning up (and also not really seeing the benefit).
 
@@ -98,7 +98,7 @@ The presentation *Make-like declarative workflows with R* presented the R-packag
 
 {Drake} was created by [Will Landau](https://twitter.com/wmlandau) and reviewed by  [rOpenSci](https://ropensci.org/). On the github page it says that {drake} is a "general-purpose workflow manager for data-driven tasks". Sounds perfect!
 
-The way I understand it, is, that it is based on `make` (and overlaps with the R-package {remake}). Therefore when making a change to an analysis and re-running it, it only re-computes what has changed. But compared to `make`, {drake} is much more convenient to use. Plus it is scalable to parallel computing. And it is intuitive to use, meaning, colleagues can learn it quickly. 
+The way I understand it, is, that it is based on `make` (and overlaps with the R-package {remake}). Therefore when making a change to an analysis and re-running it, it only re-compute the dependent parts. But compared to `make`, {drake} is much more convenient to use. Plus it is scalable to parallel computing. And it is intuitive to use, meaning, colleagues can learn it quickly. 
 
 
 ### Getting started
@@ -141,8 +141,8 @@ By running this example, you will see that `drake_plan()` is used to create a re
 
 ### 
 
-To checkout further options, I recommend the [slides](https://github.com/cstawitz/RLadies_Sea_drake)
-from [Christine Stawitz](https://github.com/cstawitz) (presentation at R-Ladies Seattle in June 2018). The slides contain a really good overview of the options {drake} provides. 
+To checkout further options I recommend the [slides](https://github.com/cstawitz/RLadies_Sea_drake)
+from [Christine Stawitz](https://github.com/cstawitz) (presented at R-Ladies Seattle in June 2018). The slides contain a really good overview of the options {drake} provides. 
 
 ### Examples
 
@@ -169,7 +169,7 @@ Here are a bunch of resources that helped me understand {drake}:
 - Lots of [tutorials](https://github.com/ropensci/drake#tutorials) and [examples](https://github.com/ropensci/drake#examples).
 
 
-## But wait: {drake} does not care about messy folders
+## But wait: drake does not care about messy folders
 
 True! I can have a `make.R` file anywhere and it will still work. 
 But I believe that the shift in logic that you have to get used to with {drake} makes you care more about folder structure. 
@@ -183,7 +183,7 @@ I want to use {drake} in a more complex setting. There are also other R-packages
 
 ## When is the right time to tidy
 
-At the Geneve RUG meetup we were also discussing when we think is the right time to tidy up. 
+At the Genève RUG meetup we were also discussing when we think is the right time to tidy up. 
 
 Project folders evolve over time. Especially in the beginning of a project, we are busy figuring things out, wrangling data, fitting models, making plots and telling people what we found out. This can take some time. But at one point we are ready to write a report. 
 
@@ -194,6 +194,6 @@ Although - I am not sure we have to wait that long. I think the benefits of {dra
 
 ## Is it really worth it
 
-I think there is a trade-off between dedicating days to tidying up and not caring about structure at all. Same with tooling. For example, if we use a tool, say `make` but no one else but us knows how to use it, it is going to be hard for colleagues to understand and use project folders that use `make`. 
+I think there is a trade-off between dedicating days to tidying up and not caring about structure at all. Same with tooling. For example, if we use a tool, say `make` but no one else but us knows how to use it, it is going to be hard for colleagues to understand and use project folders that use `make`. We have to keep that balance in mind. 
 
 
