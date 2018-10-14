@@ -20,11 +20,12 @@ Recently, I started to seriously^[Seriously, meaning, different from the previou
 
 I was lucky enough to talk about what I have figured out so far at the [Geneve R User Group](https://www.meetup.com/Geneve-R-User-Group/). While I am not done yet with reflecting on this^[Just started reading [Good enough practices in scientific computing](https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1005510) - great paper!], I wanted to write down my thoughts that lead to [my presentation](https://sinarueeger.github.io/20181004-geneve-rug/slides#1)^[Thanks to Maëlle for pointing out that this is a good thing to do!]. So all what follows is just "thinking out loud". 
 
-<figure>
-<img src="/post/workflow/trailer.mp4" alt="Trailer" align="middle" style="width: 400px;"/>
+<video width="100%" controls>
+<source src="/post/workflow/trailer.mp4">
+Trailer. Your browser does not support the video tag.
+</video>
 <figcaption><small>Presentation trailer made with <a href="https://masalmon.eu/2018/10/07/trailer/">Maëlle Salmon's instructions</a>.
 </small></figcaption>
-</figure>
 
 ## What is a "project folder"?
 
