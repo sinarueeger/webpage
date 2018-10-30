@@ -82,8 +82,10 @@ I started by wondering why maintaining a tidy and coherent folder structure was 
 Then I asked myself what I want to achieve with implementing (and sticking to) something new. 
 
 1. Making it easy for colleagues at work to **rerun** (and **understand**) the project → *"repeatability"*
-2. Making it easy for others to **rerun** and to **understand** the project → [*"reproducibility"*](https://twitter.com/jtleek/status/759822823552606208)
-3. Making it easy for others to rerun the code **with different data** → [*"replicability"*](https://twitter.com/jtleek/status/759822823552606208)
+2. Making it easy for others to **rerun** and to **understand** the project → [*"reproducibility"*](https://simplystatistics.org/2017/03/02/rr-glossy/)^[The terminology is really confusing at times. I rely on [this](https://twitter.com/jtleek/status/759822823552606208) definition. ]
+3. Making it easy for others to rerun the code **with different data** → [*"replicability"*](https://simplystatistics.org/2017/03/02/rr-glossy/)
+
+
 
 Next I looked for solutions. First I would need to use coherent folder names. Second I would need to have a file that indicates the recipe of an analysis. Third, I would implement most free floating and redundant code into functions. Fourth, I would minimise unnecessary computation by caching results. Fifth, I would start using unit tests^[Thanks to my colleague for the idea!].
 

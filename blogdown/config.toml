@@ -12,8 +12,6 @@ rssLimit = 10
 enableEmoji = true
 enablefa = true
 
-
-
 [Author]
     name = "Sina Rüeger"
     profile = "https://twitter.com/sinarueeger"
@@ -39,7 +37,7 @@ enablefa = true
     highlightJsUrl = ""
     highlightJsLocalUrl = ""
     color_theme = "blue"
-    
+
 [Permalinks]
     post = "/:year/:month/:day/:slug/"
     
