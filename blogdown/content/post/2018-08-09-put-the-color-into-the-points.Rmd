@@ -136,6 +136,9 @@ To access the rest API at ensembl, we need the following three packages loaded.
 library(httr)
 library(jsonlite)
 library(xml2)
+library(tibble)
+library(tidyr)
+library(magrittr)
 ```
 
 ### What reference panels / population can we choose from? 
@@ -216,6 +219,10 @@ LD.matrix
 
 ```
 
+
+
+
+
 Using `LD.matrix` we could make a traditional LD matrix plot (scale white to red). But again we refrain from that because of my poor laptop. 
 
 ```{r plot-ld-matrix, echo = TRUE, eval = FALSE}
@@ -233,14 +240,15 @@ The [third and last option](https://rest.ensembl.org/documentation/info/ld_pairw
 
 f.extract.ld <- function(SNP.id2 = NULL, SNP.id1 = NULL, POP = NULL)
 {
-  ext <- glue::glue("/ld/human/pairwise/{SNP.id1}/{SNP.id2}?population_name=1000GENOMES:phase_3:{POP}") 
-  
+ # ext <- glue::glue("/ld/human/pairwise/{SNP.id1}/{SNP.id2}/1000GENOMES:phase_3:{POP}")  ## 
+  ext <- glue::glue("/ld/human/pairwise/{SNP.id1}/{SNP.id2}/") 
+ 
   server <- "https://rest.ensembl.org"
 
   r <- GET(paste(server, ext, sep = ""), content_type("application/json"))
   stop_for_status(r)
 
-  out <- as_tibble(fromJSON(toJSON(content(r)))) %>% unnest()
+  out <- as_tibble(fromJSON(toJSON(content(r)))) %>% unnest() %>% filter(stringr::str_detect(population_name, POP))
   return(out)
 }
 
