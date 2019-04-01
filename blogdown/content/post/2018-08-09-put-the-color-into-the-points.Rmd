@@ -3,6 +3,7 @@ title: 'Access precomputed LD'
 description: 'Part 1'
 date: '2018-08-09'
 slug: get-ld-remotely
+code_download: true
 categories: 
   - statgen
   - R
@@ -288,6 +289,13 @@ REST API: https://rviews.rstudio.com/2018/07/23/rest-apis-and-plumber/
 <!---------- ------------------------------->
 ## Things kinda work, but not really
 <!---------- ------------------------------->
+
+From here: https://github.com/statgen/locuszoom-api/issues/21
+
+```{bash}
+curl -G "http://portaldev.sph.umich.edu/api/v1/statistic/pair/LD/results/" --data-urlencode "filter=reference eq 1 and chromosome2 eq '16' and position2 ge 53519169 and position2 le 54119169 and variant1 eq '16:53819169_T/C' > tmp.txt"
+```
+
 
 ### ldlink
 <!------------------------------>
