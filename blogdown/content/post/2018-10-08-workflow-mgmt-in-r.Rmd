@@ -1,27 +1,30 @@
 ---
 title: Tidying workflows in R
-description: using `drake`.
+subtitle: using `drake`.
 date: '2018-10-09'
-categories: 
-  - R
-  - data visualisation
 tags: 
   - drake
   - R
   - projects
-slug: workflow
+slug: drake
 draft: false
 header:
   caption: ''
   image: ''
+output:
+  blogdown::html_page:
+    toc: true
 ---
 
 Recently, I started to seriously^[Seriously, meaning, different from previous, half-hearted attempts.] think about the tidiness of data analysis project folders, and the implications of tidying up. 
 
 I was lucky enough to talk about what I have figured out so far at the [Genève R User Group](https://www.meetup.com/Geneve-R-User-Group/). While I am not done yet with reflecting on this^[Just started reading [Good enough practices in scientific computing](https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1005510) - great paper!], I wanted to write down my thoughts that lead to [my presentation](https://sinarueeger.github.io/20181004-geneve-rug/slides#1)^[Thanks to Maëlle for pointing out that this is a good thing to do!]. So what follows is just "thinking out loud". 
 
+_Update: In February 2019, [Amanda Dobbyn](https://github.com/aedobbyn) gave a talk at R-Ladies NYC about drake. All material [here](https://dobb.ae/2019/02/12/drakes-plan/)._
+
+
 <video width="70%" controls>
-<source src="/post/workflow/trailer.mp4">
+<source src="/post/2018-10-08-workflow-mgmt-in-r/trailer.mp4">
 Trailer. Your browser does not support the video tag.
 </video>
 <figcaption><small>Presentation trailer made with <a href="https://masalmon.eu/2018/10/07/trailer/">Maëlle Salmon's instructions</a>.
@@ -32,7 +35,7 @@ Trailer. Your browser does not support the video tag.
 To me a project folder is anything that contains the (R-)scripts necessary to run a data analysis and create the corresponding report. It is like a framed piece of work that you can take and place somewhere else. And probably it will take the form of the Figure from the [R4DS](http://r4ds.had.co.nz/explore-intro.html) book below:
 
 <figure>
-<img src="/post/workflow/workflow.png" alt="Drawing of a table." align="middle" style="width: 600px;"/>
+<img src="/post/2018-10-08-workflow-mgmt-in-r/workflow.png" alt="Drawing of a table." align="middle" style="width: 600px;"/>
 <figcaption><small>Adapted from Figure in <a href="http://r4ds.had.co.nz/explore-intro.html">R4DS book</a>.
 </small></figcaption>
 </figure>
@@ -55,7 +58,7 @@ Here are some examples:
 
 
 <figure>
-<img src="/post/workflow/package-files.png" alt="Drawing of a table." align="middle" style="width: 300px;"/>
+<img src="/post/2018-10-08-workflow-mgmt-in-r/package-files.png" alt="Drawing of a table." align="middle" style="width: 300px;"/>
 <figcaption><small>R package structure. Figure from <a href="http://r-pkgs.had.co.nz/package.html.">http://r-pkgs.had.co.nz/package.html</a>.
 </small></figcaption>
 </figure>
@@ -141,10 +144,15 @@ By running this example, you will see that `drake_plan()` is used to create a re
 
 `readd()` is used to return an object from cache. This is handy when we only want to diplay an object. `loadd()` on the other hand is used to load an object into our session (similarly to `load`).
 
-### 
+### More
 
-To checkout further options I recommend the [slides](https://github.com/cstawitz/RLadies_Sea_drake)
-from [Christine Stawitz](https://github.com/cstawitz) (presented at R-Ladies Seattle in June 2018). The slides contain a really good overview of the options {drake} provides. 
+To checkout further options I recommend 
+- The [slides](https://github.com/cstawitz/RLadies_Sea_drake) from [Christine Stawitz](https://github.com/cstawitz) (presented at R-Ladies Seattle in June 2018).
+- The [material](https://dobb.ae/2019/02/12/drakes-plan/) by [Amanda Dobbyn](https://github.com/aedobbyn) (presented at R-Ladies NYC in February 2019). (_Update_)
+
+Both presentations provide a good overview of the options {drake} provides. 
+
+
 
 ### Examples
 

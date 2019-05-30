@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Tags on Sina Rüeger</title>
+    <link>https://sinarueeger.github.io/tags/</link>
+    <description>Recent content in Tags on Sina Rüeger</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>&amp;copy; 2019. All rights reserved.</copyright>
+    <lastBuildDate>Tue, 28 May 2019 00:00:00 +0200</lastBuildDate>
+    
+	<atom:link href="https://sinarueeger.github.io/tags/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title></title>
+      <link>https://sinarueeger.github.io/tags/</link>
+      <pubDate>Tue, 28 May 2019 00:00:00 +0200</pubDate>
+      
+      <guid>https://sinarueeger.github.io/tags/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>R</title>
+      <link>https://sinarueeger.github.io/tags/r/</link>
+      <pubDate>Tue, 28 May 2019 00:00:00 +0200</pubDate>
+      
+      <guid>https://sinarueeger.github.io/tags/r/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>data visualisation</title>
+      <link>https://sinarueeger.github.io/tags/data-visualisation/</link>
+      <pubDate>Tue, 28 May 2019 00:00:00 +0200</pubDate>
+      
+      <guid>https://sinarueeger.github.io/tags/data-visualisation/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>statistical genetics</title>
+      <link>https://sinarueeger.github.io/tags/statistical-genetics/</link>
+      <pubDate>Tue, 28 May 2019 00:00:00 +0200</pubDate>
+      
+      <guid>https://sinarueeger.github.io/tags/statistical-genetics/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>R-Ladies</title>
+      <link>https://sinarueeger.github.io/tags/r-ladies/</link>
+      <pubDate>Mon, 10 Dec 2018 19:00:00 +0100</pubDate>
+      
+      <guid>https://sinarueeger.github.io/tags/r-ladies/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>workflow</title>
+      <link>https://sinarueeger.github.io/tags/workflow/</link>
+      <pubDate>Mon, 10 Dec 2018 19:00:00 +0100</pubDate>
+      
+      <guid>https://sinarueeger.github.io/tags/workflow/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>maps</title>
+      <link>https://sinarueeger.github.io/tags/maps/</link>
+      <pubDate>Wed, 05 Dec 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://sinarueeger.github.io/tags/maps/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>best practices</title>
+      <link>https://sinarueeger.github.io/tags/best-practices/</link>
+      <pubDate>Tue, 04 Dec 2018 12:00:00 +0100</pubDate>
+      
+      <guid>https://sinarueeger.github.io/tags/best-practices/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>drake</title>
+      <link>https://sinarueeger.github.io/tags/drake/</link>
+      <pubDate>Tue, 09 Oct 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://sinarueeger.github.io/tags/drake/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>projects</title>
+      <link>https://sinarueeger.github.io/tags/projects/</link>
+      <pubDate>Tue, 09 Oct 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://sinarueeger.github.io/tags/projects/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

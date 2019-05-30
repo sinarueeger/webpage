@@ -1,21 +1,19 @@
 ---
 title: 'Locuszoom plot of GWAS summary statistics'
-description: 'using the `biomaRt` R-package'
+subtitle: 'using the `biomaRt` R-package'
 date: '2018-07-30'
-categories: 
-  - statgen
-  - R
-  - data visualisation
 tags: 
-  - statgen
+  - statistical genetics
   - R
   - data visualisation
-  - ggplot2
 slug: locuszoomplot
 draft: false
 header:
   caption: ''
   image: ''
+output:
+  blogdown::html_page:
+    toc: true
 ---
 
 
@@ -59,7 +57,7 @@ col.blue <- "#377eb8"
 col.red <- "#e41a1c"
 font <- "Caveat"
 
-png("../../static/post/annotation/locuszoom-sketch.png", 800, 600, res = 96)
+png("../../static/post/2018-07-04-plotting-local-genomic-association-results-in-r/locuszoom-sketch.png", 800, 600, res = 96)
 
 op <- par(cex.lab = 1.8, cex.axis = 1.3, cex.main = 2, las = 1, family = font, mar = c(5, 5, 5, 1))
 plot(dat.bmi.sketch$POS, -log10(dat.bmi.sketch$Pvalue), xlab = "Chromosomal position (bp)", ylab = "-log10(P-value)", ylim = c(-10, 40), yaxt="n")
@@ -111,7 +109,7 @@ out.bm.gene <- getBM(attributes = c('external_gene_name','ensembl_gene_id'),
 
 out.bm.table <- dat.bmi.head %>% right_join(out.bm.snp, by = c("SNPNAME" = "refsnp_id")) %>% right_join(out.bm.gene, by = c("ensembl_gene_stable_id" = "ensembl_gene_id")) %>% filter(phenotype_name != "")
 
-library(kableExtra)
+suppressPackageStartupMessages(library(kableExtra))
 kable(out.bm.table %>% as_tibble %>% dplyr::select(CHR, POS, SNPNAME, REF, ALT, beta, se, external_gene_name, phenotype_name, minor_allele_freq) %>% dplyr::rename(Gene = external_gene_name, `Linked phenotype` = phenotype_name, `Global MAF` = minor_allele_freq)) %>%
   kableExtra::kable_styling("striped", full_width = F) %>%
   kableExtra::column_spec(8:10, bold = F, color = "white", background = "#31a354") %>%
@@ -135,7 +133,7 @@ In the illustration below^[Thanks to [Maëlle Salmon](https://twitter.com/ma_sal
 
 
 <figure>
-<img src="/post/annotation/locuszoom-sketch.png" alt="Drawing of a table." align="middle" style="width: 600px;"/>
+<img src="/post/2018-07-04-plotting-local-genomic-association-results-in-r/locuszoom-sketch.png" alt="Drawing of a table." align="middle" style="width: 600px;"/>
 <figcaption><small>In this case, we want to visualise the GWAS P-value (-log10(P-value)) of a genomic region (with each point representing a SNP), with the corresponding genes at the bottom. This is similar to a plot done with [LocusZoom](http://locuszoom.org/), a tool that takes summary statistics as input and outputs a pretty graph for a desired genomic region, including gene annotation, LD information and more.
 </small></figcaption>
 </figure>

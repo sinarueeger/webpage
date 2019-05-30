@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>data visualisation on Sina Rüeger</title>
+    <link>https://sinarueeger.github.io/tags/data-visualisation/</link>
+    <description>Recent content in data visualisation on Sina Rüeger</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>&amp;copy; 2019. All rights reserved.</copyright>
+    <lastBuildDate>Tue, 28 May 2019 00:00:00 +0200</lastBuildDate>
+    
+	<atom:link href="https://sinarueeger.github.io/tags/data-visualisation/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>R-package ggGWAS</title>
+      <link>https://sinarueeger.github.io/project/gggwas/</link>
+      <pubDate>Tue, 28 May 2019 00:00:00 +0200</pubDate>
+      
+      <guid>https://sinarueeger.github.io/project/gggwas/</guid>
+      <description>ggplot2 extension for visualising GWAS summary statistics.</description>
+    </item>
+    
+    <item>
+      <title>Create a map of the 1000 Genomes project reference populations</title>
+      <link>https://sinarueeger.github.io/post/1kgmap/</link>
+      <pubDate>Wed, 05 Dec 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://sinarueeger.github.io/post/1kgmap/</guid>
+      <description>Goal Get started Data Add geographical coordinates Create leaflet Save the map Reason for deviation from the original   This post provides the R-Code to map the 26 populations of the 1000 Genomes project.
+Goal Create a map similar to the one1 on the front page of http://www.internationalgenome.org/ in a reproducible manner.
+Version on internationalgenome.org
+  Get started Packages needed:</description>
+    </item>
+    
+    <item>
+      <title>Locuszoom plot of GWAS summary statistics</title>
+      <link>https://sinarueeger.github.io/post/locuszoomplot/</link>
+      <pubDate>Mon, 30 Jul 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://sinarueeger.github.io/post/locuszoomplot/</guid>
+      <description>Goal Getting it done 1. Get summary statistics Visualising associations Identify genomic region with lowest P-value  2. Extracting annotation biomaRt Learning resources Using biomaRt Quick d-tour: assembly GRCh37 or GRCh38? Extracting gene name for one SNP Extracting gene names for genomic region  3. Combining summary statistics and annotation Wouldn’t it be nice… Source   In the world of genome-wide association studies (GWAS) we often get a list of genetic markers (SNPs) that seem for some reason relevant for a particular outcome.</description>
+    </item>
+    
+  </channel>
+</rss>

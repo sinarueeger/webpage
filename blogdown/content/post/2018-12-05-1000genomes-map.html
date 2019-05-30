@@ -1,0 +1,219 @@
+---
+title:  Create a map of the 1000 Genomes project reference populations
+description: Using the leaflet R-package
+date: '2018-12-05'
+tags: 
+  - data visualisation
+  - R
+  - maps
+slug: 1kgmap
+draft: false
+header:
+  caption: ''
+  image: ''
+output:
+  blogdown::html_page:
+    toc: true
+---
+
+<script src="/rmarkdown-libs/htmlwidgets/htmlwidgets.js"></script>
+<script src="/rmarkdown-libs/jquery/jquery.min.js"></script>
+<link href="/rmarkdown-libs/leaflet/leaflet.css" rel="stylesheet" />
+<script src="/rmarkdown-libs/leaflet/leaflet.js"></script>
+<link href="/rmarkdown-libs/leafletfix/leafletfix.css" rel="stylesheet" />
+<script src="/rmarkdown-libs/Proj4Leaflet/proj4-compressed.js"></script>
+<script src="/rmarkdown-libs/Proj4Leaflet/proj4leaflet.js"></script>
+<link href="/rmarkdown-libs/rstudio_leaflet/rstudio_leaflet.css" rel="stylesheet" />
+<script src="/rmarkdown-libs/leaflet-binding/leaflet.js"></script>
+<link href="/rmarkdown-libs/leaflet-awesomemarkers/leaflet.awesome-markers.css" rel="stylesheet" />
+<script src="/rmarkdown-libs/leaflet-awesomemarkers/leaflet.awesome-markers.min.js"></script>
+<link href="/rmarkdown-libs/fontawesome/font-awesome.min.css" rel="stylesheet" />
+
+<div id="TOC">
+<ul>
+<li><a href="#goal">Goal</a></li>
+<li><a href="#get-started">Get started</a></li>
+<li><a href="#data">Data</a></li>
+<li><a href="#add-geographical-coordinates">Add geographical coordinates</a></li>
+<li><a href="#create-leaflet">Create leaflet</a></li>
+<li><a href="#save-the-map">Save the map</a></li>
+<li><a href="#reason-for-deviation-from-the-original">Reason for deviation from the original</a></li>
+</ul>
+</div>
+
+<p>This post provides the R-Code to map the 26 populations of the <a href="http://www.internationalgenome.org/">1000 Genomes project</a>.</p>
+<div id="goal" class="section level2">
+<h2>Goal</h2>
+<p>Create a map similar to the one<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a> on the front page of <a href="http://www.internationalgenome.org/" class="uri">http://www.internationalgenome.org/</a> in a reproducible manner.</p>
+<div class="figure">
+<img src="/post/2018-12-05-1000genomes-map/1000genomes-map.png" alt="Version on internationalgenome.org" />
+<p class="caption"><em>Version on internationalgenome.org</em></p>
+</div>
+</div>
+<div id="get-started" class="section level2">
+<h2>Get started</h2>
+<p>Packages needed:</p>
+<pre class="r"><code>## accessed via ::
+# library(mapview)
+# library(readxl)
+# library(readr)
+# library(purrr)
+# library(tidyr)
+# library(forcats)
+
+library(leaflet) 
+library(dplyr) 
+library(ggmap) ## for geocode, devtools::install_github(&quot;dkahle/ggmap&quot;)</code></pre>
+<p><code>ggmap</code> requires a google map api key<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a>:</p>
+<ol style="list-style-type: decimal">
+<li>get one here: <a href="https://developers.google.com/maps/documentation/geocoding/get-api-key" class="uri">https://developers.google.com/maps/documentation/geocoding/get-api-key</a></li>
+<li>then run <code>register_google(key = "my_api_key")</code></li>
+</ol>
+</div>
+<div id="data" class="section level2">
+<h2>Data</h2>
+<ul>
+<li>The population counts and labels are from ftp.1000genomes.ebi.ac.uk/vol1/ftp/technical/working/20130606_sample_info/ (<a href="ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/technical/working/20130606_sample_info/20130606_sample_info.xlsx">download xlsx file</a>).</li>
+<li>The super population labels are from <a href="http://www.internationalgenome.org/faq/which-populations-are-part-your-study/">here</a> (pasted into a <a href="/post/2018-12-05-1000genomes-map/sample_info_superpop.csv">csv</a>, then location was inferred).</li>
+</ul>
+<p>Download the population counts and labels first:</p>
+<pre class="r"><code>url &lt;-
+&quot;ftp.1000genomes.ebi.ac.uk/vol1/ftp/technical/working/20130606_sample_info/20130606_sample_info.xlsx&quot;
+url.bitly &lt;- &quot;http://bit.ly/2MQTr02&quot;
+download.file(url, &quot;20130606_sample_info.xlsx&quot;, mode = &quot;wb&quot;)</code></pre>
+<p>Import file into R:</p>
+<pre class="r"><code>df &lt;-
+  readxl::read_excel(&quot;20130606_sample_info.xlsx&quot;, sheet = &quot;Sample Info&quot;)
+  #  &gt;&gt; Sample Info</code></pre>
+<p>Some data wrangling:</p>
+<pre class="r"><code>## count number of individuals by population
+## rename population &gt; POP
+n.pop &lt;-
+  df %&gt;% 
+  group_by(Population) %&gt;% 
+  summarise(n = n()) %&gt;% 
+  rename(POP = Population)
+
+## import super population names and details to the location of populations
+## copied from here:
+url.spop &lt;-
+  &quot;http://www.internationalgenome.org/faq/which-populations-are-part-your-study/&quot;
+## added location manually (!) - found this the only option to prevent overlapping locations. 
+## Also, description involves a mix of location and origin.
+
+## rename superpopulation &gt; SPOP
+n.spop &lt;-
+  readr::read_csv(&quot;../../static/post/2018-12-05-1000genomes-map/sample_info_superpop.csv&quot;) %&gt;% 
+  rename(POP = `Population Code`, SPOP = `Super Population Code`)
+
+## join the two information
+n.1kg &lt;- left_join(n.pop, n.spop, by = c(&quot;POP&quot; = &quot;POP&quot;))</code></pre>
+</div>
+<div id="add-geographical-coordinates" class="section level2">
+<h2>Add geographical coordinates</h2>
+<p>Parts of the code below is from a map created by <a href="https://github.com/d4tagirl">Daniela Vazquez</a> for R-Ladies: <a href="https://github.com/rladies/Map-RLadies-Growing" class="uri">https://github.com/rladies/Map-RLadies-Growing</a>.</p>
+<p>This is the part where we annotate the dataframe <code>n.1kg</code> with where the individuals live (not their ancestry).
+Repeat this until there are no <code>warnings()</code> about <code>QUERY LIMITS</code> (the <code>while</code> loop takes care of this).</p>
+<p>We will use the <code>ggmap</code> package, which accesses the google maps api.</p>
+<p>A workaround is to set <code>source = "dsk"</code> (works for a limited number of queries)<a href="#fn3" class="footnote-ref" id="fnref3"><sup>3</sup></a>.</p>
+<pre class="r"><code>n.1kg &lt;- n.1kg %&gt;% 
+  mutate(purrr::map(.$location, geocode, source = &quot;dsk&quot;)) %&gt;% 
+  tidyr::unnest()
+
+## running into the inevitable QUERY LIMITS problems, lets use the approach from https://github.com/rladies/Map-RLadies-Growing
+n.1kg.withloc &lt;- n.1kg %&gt;% 
+  filter(!is.na(lon))
+
+while(nrow(n.1kg.withloc) != nrow(n.1kg))
+{
+  #   repeat this until there are no warnings() about QUERY LIMITS
+  temp &lt;- n.1kg %&gt;% 
+    select(-lon, -lat) %&gt;% 
+    anti_join(n.1kg.withloc %&gt;% select(-lon, -lat)) %&gt;% 
+    mutate(longlat = purrr::map(.$location, geocode, source = &quot;dsk&quot;)) %&gt;% 
+    tidyr::unnest() %&gt;% 
+    filter(!is.na(lon))
+  
+  n.1kg.withloc &lt;- n.1kg.withloc %&gt;% 
+    bind_rows(temp) %&gt;% 
+    distinct()
+}
+
+n.1kg &lt;- n.1kg.withloc
+
+## glue POP and `Population Description` together
+n.1kg &lt;-
+  n.1kg %&gt;% mutate(pop.desc = paste0(POP, &quot; : &quot;, `Population Description`, &quot; (&quot;, SPOP, &quot;)&quot;))
+  
+## given that only a number of geolocation are possible with the google API, this 
+## should probably stored out
+## readr::write_csv(n.1kg, path = &quot;1kg_sample_info_location.csv&quot;)</code></pre>
+</div>
+<div id="create-leaflet" class="section level2">
+<h2>Create leaflet</h2>
+<p>Map locations a world map with leaflet</p>
+<pre class="r"><code>## if you have stroed the data in the previous chunk:
+## readr::read_csv(&quot;1kg_sample_info_location.csv&quot;)</code></pre>
+<p>Define shiny icons:</p>
+<pre class="r"><code>icons &lt;- awesomeIcons(
+  icon = &#39;user&#39;, #people&#39;,
+  iconColor = &#39;black&#39;,
+  library = &#39;fa&#39;, #ion
+  markerColor = as.character(forcats::fct_recode(as.factor(n.1kg$SPOP), 
+                                                 red = &quot;EUR&quot;, 
+                                                 blue = &quot;AFR&quot;, 
+                                                 green = &quot;AMR&quot;, 
+                                                 gray = &quot;EAS&quot;, 
+                                                 orange = &quot;SAS&quot;)) 
+  ## ok, thats not too pretty, but turns out, hex colors won&#39;t work
+)
+
+## we need to create a vector that maps cols to SPOP from the markerColor argument above
+cols &lt;- c(&quot;#E50102&quot;, &quot;#00A9DD&quot;, &quot;#57BA1F&quot;, &quot;#575757&quot;, &quot;#FD8E00&quot;)
+SPOP &lt;- c(&quot;EUR&quot;,  &quot;AFR&quot;, &quot;AMR&quot;, &quot;EAS&quot;, &quot;SAS&quot;)
+
+## separate icon that will display the information
+## ------------------------------------------------
+icon.info &lt;- awesomeIcons(
+  icon = &#39;info&#39;, #people&#39;,
+  iconColor = &#39;white&#39;,
+  library = &#39;fa&#39;, #ion
+  markerColor = &quot;white&quot;
+)</code></pre>
+<p>Create map:</p>
+<pre class="r"><code>m &lt;- leaflet(data = n.1kg) %&gt;%
+  addTiles() %&gt;%  # Add default OpenStreetMap map tiles
+  addAwesomeMarkers(lat=~lat, lng=~lon, label = ~htmltools::htmlEscape(pop.desc), icon = icons) %&gt;% 
+  addAwesomeMarkers(lat=-45, lng=-107, popup = glue::glue(&quot;Source: https://github.com/sinarueeger/map-1000genomes&quot;), icon = icon.info) %&gt;% ## this bit has potential to be displayed as a href. 
+  #glue::glue(&quot;Source: {url.bitly} + {url.spop} (manual tidying)&quot;), icon = icon.info) %&gt;% 
+  addLegend(&quot;bottomright&quot;, 
+            colors =cols,
+            labels= SPOP,
+            opacity = 1)
+
+m  # Print the map</code></pre>
+<div id="htmlwidget-1" style="width:672px;height:480px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-1">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"calls":[{"method":"addTiles","args":["//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",null,null,{"minZoom":0,"maxZoom":18,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false,"attribution":"&copy; <a href=\"http://openstreetmap.org\">OpenStreetMap<\/a> contributors, <a href=\"http://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA<\/a>"}]},{"method":"addAwesomeMarkers","args":[[13.16667,34.5003,24,22.08829,40.11995,39.9075,35,4,10,60.16952,50.416667,29.845783,13.5,40,54.75844,35.6895,10.75,0.60751,7.13833,34.05223,-10,31.54972,18.24829,55.9483399,43.41667,7.38778],[-59.53333,-111.50098,90,101.0248,-111.67031,116.39723,105,-72,8,24.93545,-4.75,-96.919704,-15.5,-4,-2.69531,139.69171,106.66667,34.76966,-11.67056,-118.24368,-76,74.34361,-66.49989,-3.1932723,11,3.89639],{"icon":"user","markerColor":["blue","blue","orange","gray","red","gray","gray","green","blue","red","red","orange","blue","red","orange","gray","gray","blue","blue","green","green","orange","green","orange","red","blue"],"iconColor":"black","spin":false,"squareMarker":false,"iconRotate":0,"font":"monospace","prefix":"fa"},null,null,{"interactive":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},null,null,null,null,["ACB : African Caribbeans in Barbados (AFR)","ASW : Americans of African Ancestry in SW USA (AFR)","BEB : Bengali from Bangladesh (SAS)","CDX : Chinese Dai in Xishuangbanna, China (EAS)","CEU : Utah Residents (CEPH) with Northern and Western European Ancestry (EUR)","CHB : Han Chinese in Beijing, China (EAS)","CHS : Southern Han Chinese (EAS)","CLM : Colombians from Medellin, Colombia (AMR)","ESN : Esan in Nigeria (AFR)","FIN : Finnish in Finland (EUR)","GBR : British in England and Scotland (EUR)","GIH : Gujarati Indian from Houston, Texas (SAS)","GWD : Gambian in Western Divisions in the Gambia (AFR)","IBS : Iberian Population in Spain (EUR)","ITU : Indian Telugu from the UK (SAS)","JPT : Japanese in Tokyo, Japan (EAS)","KHV : Kinh in Ho Chi Minh City, Vietnam (EAS)","LWK : Luhya in Webuye, Kenya (AFR)","MSL : Mende in Sierra Leone (AFR)","MXL : Mexican Ancestry from Los Angeles USA (AMR)","PEL : Peruvians from Lima, Peru (AMR)","PJL : Punjabi from Lahore, Pakistan (SAS)","PUR : Puerto Ricans from Puerto Rico (AMR)","STU : Sri Lankan Tamil from the UK (SAS)","TSI : Toscani in Italia (EUR)","YRI : Yoruba in Ibadan, Nigeria (AFR)"],{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]},{"method":"addAwesomeMarkers","args":[-45,-107,{"icon":"info","markerColor":"white","iconColor":"white","spin":false,"squareMarker":false,"iconRotate":0,"font":"monospace","prefix":"fa"},null,null,{"interactive":true,"draggable":false,"keyboard":true,"title":"","alt":"","zIndexOffset":0,"opacity":1,"riseOnHover":false,"riseOffset":250},"Source: https://github.com/sinarueeger/map-1000genomes",null,null,null,null,{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]},{"method":"addLegend","args":[{"colors":["#E50102","#00A9DD","#57BA1F","#575757","#FD8E00"],"labels":["EUR","AFR","AMR","EAS","SAS"],"na_color":null,"na_label":"NA","opacity":1,"position":"bottomright","type":"unknown","title":null,"extra":null,"layerId":null,"className":"info legend","group":null}]}],"limits":{"lat":[-45,60.16952],"lng":[-118.24368,139.69171]}},"evals":[],"jsHooks":[]}</script>
+</div>
+<div id="save-the-map" class="section level2">
+<h2>Save the map</h2>
+<pre class="r"><code>## save to png
+## ------------
+mapview::mapshot(m, file = &quot;map-1000genomes-populations.png&quot;)
+
+## save to hmtl
+## -------------
+htmlwidgets::saveWidget(m, file=&quot;map-1000genomes-populations.html&quot;)</code></pre>
+</div>
+<div id="reason-for-deviation-from-the-original" class="section level2">
+<h2>Reason for deviation from the original</h2>
+<p>I mapped the populations according to the current location but coloured them according to ancestry.</p>
+</div>
+<div class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p>This is a png and cannot be altered.<a href="#fnref1" class="footnote-back">↩</a></p></li>
+<li id="fn2"><p>Seen here: <a href="https://stackoverflow.com/questions/36175529/getting-over-query-limit-after-one-request-with-geocode" class="uri">https://stackoverflow.com/questions/36175529/getting-over-query-limit-after-one-request-with-geocode</a>.<a href="#fnref2" class="footnote-back">↩</a></p></li>
+<li id="fn3"><p>See <a href="https://stackoverflow.com/questions/36175529/getting-over-query-limit-after-one-request-with-geocode" class="uri">https://stackoverflow.com/questions/36175529/getting-over-query-limit-after-one-request-with-geocode</a>.<a href="#fnref3" class="footnote-back">↩</a></p></li>
+</ol>
+</div>

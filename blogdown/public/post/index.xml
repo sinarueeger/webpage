@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Posts on Sina Rüeger</title>
+    <link>https://sinarueeger.github.io/post/</link>
+    <description>Recent content in Posts on Sina Rüeger</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>&amp;copy; 2019. All rights reserved.</copyright>
+    <lastBuildDate>Wed, 05 Dec 2018 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://sinarueeger.github.io/post/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Create a map of the 1000 Genomes project reference populations</title>
+      <link>https://sinarueeger.github.io/post/1kgmap/</link>
+      <pubDate>Wed, 05 Dec 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://sinarueeger.github.io/post/1kgmap/</guid>
+      <description>Goal Get started Data Add geographical coordinates Create leaflet Save the map Reason for deviation from the original   This post provides the R-Code to map the 26 populations of the 1000 Genomes project.
+Goal Create a map similar to the one1 on the front page of http://www.internationalgenome.org/ in a reproducible manner.
+Version on internationalgenome.org
+  Get started Packages needed:</description>
+    </item>
+    
+    <item>
+      <title>Tidying workflows in R</title>
+      <link>https://sinarueeger.github.io/post/drake/</link>
+      <pubDate>Tue, 09 Oct 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://sinarueeger.github.io/post/drake/</guid>
+      <description>What is a “project folder”? Why now? Why we tidy up: authority and incentive Challenges What I want The options Drake Getting started More Examples Resources  But wait: drake does not care about messy folders What is next? When is the right time to tidy Is it really worth it   Recently, I started to seriously1 think about the tidiness of data analysis project folders, and the implications of tidying up.</description>
+    </item>
+    
+    <item>
+      <title>Locuszoom plot of GWAS summary statistics</title>
+      <link>https://sinarueeger.github.io/post/locuszoomplot/</link>
+      <pubDate>Mon, 30 Jul 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://sinarueeger.github.io/post/locuszoomplot/</guid>
+      <description>Goal Getting it done 1. Get summary statistics Visualising associations Identify genomic region with lowest P-value  2. Extracting annotation biomaRt Learning resources Using biomaRt Quick d-tour: assembly GRCh37 or GRCh38? Extracting gene name for one SNP Extracting gene names for genomic region  3. Combining summary statistics and annotation Wouldn’t it be nice… Source   In the world of genome-wide association studies (GWAS) we often get a list of genetic markers (SNPs) that seem for some reason relevant for a particular outcome.</description>
+    </item>
+    
+    <item>
+      <title>satRday Cardiff 2018</title>
+      <link>https://sinarueeger.github.io/post/satrdaycardiff/</link>
+      <pubDate>Wed, 04 Jul 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://sinarueeger.github.io/post/satrdaycardiff/</guid>
+      <description>This is a brief write-up of my satRdays Cardiff experience.
+First - what is a satRday?
+It is an awesome concept: attending an R conference organised by a local RUG on a Saturday.
+The programme in Cardiff had parallel sessions - tough decision-making to pick between promising talks!
+dplyr workshop Kathrine Tansey kept us busy with a workshop on dplyr in the morning.
+💻 rstudio-cloud project
+Packaging workshop Heather Turner upgraded us on packaging.</description>
+    </item>
+    
+    <item>
+      <title>Getting started with encryption of documents</title>
+      <link>https://sinarueeger.github.io/post/2018-04-04-encryption-of-files/</link>
+      <pubDate>Fri, 13 Apr 2018 20:40:59 +0200</pubDate>
+      
+      <guid>https://sinarueeger.github.io/post/2018-04-04-encryption-of-files/</guid>
+      <description>I work (broadly speaking) in epidemiology. Within collaborations we often have to share sensitive data across institutions and are therefore likely to not share IT facilities. But the most often used options - bare e-mail or file hosting - are not secure, as they both work via a server that could potentially be exposed.
+There are a handful of secure options around (ProtonMail or keybase.io, both working via encryption), but for those that trust open source projects the most and are familiar with a terminal I have written some basic instructions for asymmetric GPG encryption.</description>
+    </item>
+    
+  </channel>
+</rss>

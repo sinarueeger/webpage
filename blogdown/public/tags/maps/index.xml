@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>maps on Sina Rüeger</title>
+    <link>https://sinarueeger.github.io/tags/maps/</link>
+    <description>Recent content in maps on Sina Rüeger</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>&amp;copy; 2019. All rights reserved.</copyright>
+    <lastBuildDate>Wed, 05 Dec 2018 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://sinarueeger.github.io/tags/maps/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Create a map of the 1000 Genomes project reference populations</title>
+      <link>https://sinarueeger.github.io/post/1kgmap/</link>
+      <pubDate>Wed, 05 Dec 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://sinarueeger.github.io/post/1kgmap/</guid>
+      <description>Goal Get started Data Add geographical coordinates Create leaflet Save the map Reason for deviation from the original   This post provides the R-Code to map the 26 populations of the 1000 Genomes project.
+Goal Create a map similar to the one1 on the front page of http://www.internationalgenome.org/ in a reproducible manner.
+Version on internationalgenome.org
+  Get started Packages needed:</description>
+    </item>
+    
+  </channel>
+</rss>

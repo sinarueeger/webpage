@@ -1,0 +1,233 @@
+---
+title:  Create a map of the 1000 Genomes project reference populations
+description: Using the leaflet R-package
+date: '2018-12-05'
+tags: 
+  - data visualisation
+  - R
+  - maps
+slug: 1kgmap
+draft: false
+header:
+  caption: ''
+  image: ''
+output:
+  blogdown::html_page:
+    toc: true
+---
+
+
+This post provides the R-Code to map the 26 populations of the [1000 Genomes project](http://www.internationalgenome.org/).
+
+## Goal
+
+Create a map similar to the one^[This is a png and cannot be altered.] on the front page of http://www.internationalgenome.org/ in a reproducible manner. 
+
+![_Version on internationalgenome.org_](/post/2018-12-05-1000genomes-map/1000genomes-map.png)
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+	echo = TRUE,
+	message = FALSE,
+	warning = FALSE,
+	cache = TRUE
+)
+```
+
+## Get started
+
+Packages needed:
+
+```{r}
+
+## accessed via ::
+# library(mapview)
+# library(readxl)
+# library(readr)
+# library(purrr)
+# library(tidyr)
+# library(forcats)
+
+library(leaflet) 
+library(dplyr) 
+library(ggmap) ## for geocode, devtools::install_github("dkahle/ggmap")
+
+```
+
+`ggmap` requires a google map api key^[Seen here: https://stackoverflow.com/questions/36175529/getting-over-query-limit-after-one-request-with-geocode.]: 
+
+1. get one here: https://developers.google.com/maps/documentation/geocoding/get-api-key
+1. then run `register_google(key = "my_api_key")`
+
+
+
+## Data
+
+- The population counts and labels are from ftp.1000genomes.ebi.ac.uk/vol1/ftp/technical/working/20130606_sample_info/ ([download xlsx file](ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/technical/working/20130606_sample_info/20130606_sample_info.xlsx)).
+- The super population labels are from [here](http://www.internationalgenome.org/faq/which-populations-are-part-your-study/) (pasted into a [csv](/post/2018-12-05-1000genomes-map/sample_info_superpop.csv), then location was inferred).
+
+
+Download the population counts and labels first:
+```{r}
+url <-
+"ftp.1000genomes.ebi.ac.uk/vol1/ftp/technical/working/20130606_sample_info/20130606_sample_info.xlsx"
+url.bitly <- "http://bit.ly/2MQTr02"
+download.file(url, "20130606_sample_info.xlsx", mode = "wb")
+```
+
+Import file into R:
+```{r}
+df <-
+  readxl::read_excel("20130606_sample_info.xlsx", sheet = "Sample Info")
+  #  >> Sample Info
+```
+
+Some data wrangling:
+```{r}
+## count number of individuals by population
+## rename population > POP
+n.pop <-
+  df %>% 
+  group_by(Population) %>% 
+  summarise(n = n()) %>% 
+  rename(POP = Population)
+
+## import super population names and details to the location of populations
+## copied from here:
+url.spop <-
+  "http://www.internationalgenome.org/faq/which-populations-are-part-your-study/"
+## added location manually (!) - found this the only option to prevent overlapping locations. 
+## Also, description involves a mix of location and origin.
+
+## rename superpopulation > SPOP
+n.spop <-
+  readr::read_csv("../../static/post/2018-12-05-1000genomes-map/sample_info_superpop.csv") %>% 
+  rename(POP = `Population Code`, SPOP = `Super Population Code`)
+
+## join the two information
+n.1kg <- left_join(n.pop, n.spop, by = c("POP" = "POP"))
+```
+
+
+## Add geographical coordinates
+
+
+Parts of the code below is from a map created by [Daniela Vazquez](https://github.com/d4tagirl) for R-Ladies: https://github.com/rladies/Map-RLadies-Growing.
+
+This is the part where we annotate the dataframe `n.1kg` with where the individuals live (not their ancestry). 
+Repeat this until there are no `warnings()` about `QUERY LIMITS` (the `while` loop takes care of this).
+
+We will use the `ggmap` package, which accesses the google maps api. 
+
+A workaround is to set `source = "dsk"` (works for a limited number of queries)^[See https://stackoverflow.com/questions/36175529/getting-over-query-limit-after-one-request-with-geocode.].
+
+```{r}
+n.1kg <- n.1kg %>% 
+  mutate(purrr::map(.$location, geocode, source = "dsk")) %>% 
+  tidyr::unnest()
+
+## running into the inevitable QUERY LIMITS problems, lets use the approach from https://github.com/rladies/Map-RLadies-Growing
+n.1kg.withloc <- n.1kg %>% 
+  filter(!is.na(lon))
+
+while(nrow(n.1kg.withloc) != nrow(n.1kg))
+{
+  #   repeat this until there are no warnings() about QUERY LIMITS
+  temp <- n.1kg %>% 
+    select(-lon, -lat) %>% 
+    anti_join(n.1kg.withloc %>% select(-lon, -lat)) %>% 
+    mutate(longlat = purrr::map(.$location, geocode, source = "dsk")) %>% 
+    tidyr::unnest() %>% 
+    filter(!is.na(lon))
+  
+  n.1kg.withloc <- n.1kg.withloc %>% 
+    bind_rows(temp) %>% 
+    distinct()
+}
+
+n.1kg <- n.1kg.withloc
+
+## glue POP and `Population Description` together
+n.1kg <-
+  n.1kg %>% mutate(pop.desc = paste0(POP, " : ", `Population Description`, " (", SPOP, ")"))
+  
+## given that only a number of geolocation are possible with the google API, this 
+## should probably stored out
+## readr::write_csv(n.1kg, path = "1kg_sample_info_location.csv")
+```
+
+
+## Create leaflet
+
+Map locations a world map with leaflet
+
+```{r}
+## if you have stroed the data in the previous chunk:
+## readr::read_csv("1kg_sample_info_location.csv")
+```
+
+Define shiny icons:
+
+```{r}
+
+icons <- awesomeIcons(
+  icon = 'user', #people',
+  iconColor = 'black',
+  library = 'fa', #ion
+  markerColor = as.character(forcats::fct_recode(as.factor(n.1kg$SPOP), 
+                                                 red = "EUR", 
+                                                 blue = "AFR", 
+                                                 green = "AMR", 
+                                                 gray = "EAS", 
+                                                 orange = "SAS")) 
+  ## ok, thats not too pretty, but turns out, hex colors won't work
+)
+
+## we need to create a vector that maps cols to SPOP from the markerColor argument above
+cols <- c("#E50102", "#00A9DD", "#57BA1F", "#575757", "#FD8E00")
+SPOP <- c("EUR",  "AFR", "AMR", "EAS", "SAS")
+
+## separate icon that will display the information
+## ------------------------------------------------
+icon.info <- awesomeIcons(
+  icon = 'info', #people',
+  iconColor = 'white',
+  library = 'fa', #ion
+  markerColor = "white"
+)
+```
+
+Create map:
+```{r}
+m <- leaflet(data = n.1kg) %>%
+  addTiles() %>%  # Add default OpenStreetMap map tiles
+  addAwesomeMarkers(lat=~lat, lng=~lon, label = ~htmltools::htmlEscape(pop.desc), icon = icons) %>% 
+  addAwesomeMarkers(lat=-45, lng=-107, popup = glue::glue("Source: https://github.com/sinarueeger/map-1000genomes"), icon = icon.info) %>% ## this bit has potential to be displayed as a href. 
+  #glue::glue("Source: {url.bitly} + {url.spop} (manual tidying)"), icon = icon.info) %>% 
+  addLegend("bottomright", 
+            colors =cols,
+            labels= SPOP,
+            opacity = 1)
+
+m  # Print the map
+```
+
+## Save the map
+
+```{r, eval = FALSE}
+
+## save to png
+## ------------
+mapview::mapshot(m, file = "map-1000genomes-populations.png")
+
+## save to hmtl
+## -------------
+htmlwidgets::saveWidget(m, file="map-1000genomes-populations.html")
+```
+
+
+## Reason for deviation from the original
+
+I mapped the populations according to the current location but coloured them according to ancestry.
+
+

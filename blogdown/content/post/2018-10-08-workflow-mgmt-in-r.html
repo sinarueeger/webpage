@@ -1,0 +1,214 @@
+---
+title: Tidying workflows in R
+subtitle: using `drake`.
+date: '2018-10-09'
+tags: 
+  - drake
+  - R
+  - projects
+slug: drake
+draft: false
+header:
+  caption: ''
+  image: ''
+output:
+  blogdown::html_page:
+    toc: true
+---
+
+
+<div id="TOC">
+<ul>
+<li><a href="#what-is-a-project-folder">What is a “project folder”?</a></li>
+<li><a href="#why-now">Why now?</a></li>
+<li><a href="#why-we-tidy-up-authority-and-incentive">Why we tidy up: authority and incentive</a></li>
+<li><a href="#challenges">Challenges</a></li>
+<li><a href="#what-i-want">What I want</a></li>
+<li><a href="#the-options">The options</a></li>
+<li><a href="#drake">Drake</a><ul>
+<li><a href="#getting-started">Getting started</a></li>
+<li><a href="#more">More</a></li>
+<li><a href="#examples">Examples</a></li>
+<li><a href="#resources">Resources</a></li>
+</ul></li>
+<li><a href="#but-wait-drake-does-not-care-about-messy-folders">But wait: drake does not care about messy folders</a></li>
+<li><a href="#what-is-next">What is next?</a></li>
+<li><a href="#when-is-the-right-time-to-tidy">When is the right time to tidy</a></li>
+<li><a href="#is-it-really-worth-it">Is it really worth it</a></li>
+</ul>
+</div>
+
+<p>Recently, I started to seriously<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a> think about the tidiness of data analysis project folders, and the implications of tidying up.</p>
+<p>I was lucky enough to talk about what I have figured out so far at the <a href="https://www.meetup.com/Geneve-R-User-Group/">Genève R User Group</a>. While I am not done yet with reflecting on this<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a>, I wanted to write down my thoughts that lead to <a href="https://sinarueeger.github.io/20181004-geneve-rug/slides#1">my presentation</a><a href="#fn3" class="footnote-ref" id="fnref3"><sup>3</sup></a>. So what follows is just “thinking out loud”.</p>
+<p><em>Update: In February 2019, <a href="https://github.com/aedobbyn">Amanda Dobbyn</a> gave a talk at R-Ladies NYC about drake. All material <a href="https://dobb.ae/2019/02/12/drakes-plan/">here</a>.</em></p>
+<video width="70%" controls>
+<source src="/post/2018-10-08-workflow-mgmt-in-r/trailer.mp4">
+Trailer. Your browser does not support the video tag.
+</video>
+<figcaption>
+<small>Presentation trailer made with <a href="https://masalmon.eu/2018/10/07/trailer/">Maëlle Salmon’s instructions</a>.
+</small>
+</figcaption>
+<div id="what-is-a-project-folder" class="section level2">
+<h2>What is a “project folder”?</h2>
+<p>To me a project folder is anything that contains the (R-)scripts necessary to run a data analysis and create the corresponding report. It is like a framed piece of work that you can take and place somewhere else. And probably it will take the form of the Figure from the <a href="http://r4ds.had.co.nz/explore-intro.html">R4DS</a> book below:</p>
+<figure>
+<img src="/post/2018-10-08-workflow-mgmt-in-r/workflow.png" alt="Drawing of a table." align="middle" style="width: 600px;"/>
+<figcaption>
+<small>Adapted from Figure in <a href="http://r4ds.had.co.nz/explore-intro.html">R4DS book</a>.
+</small>
+</figcaption>
+</figure>
+<p>Ideally you should be able to take that folder as it is, run it on another computer and get the same results. Unfortunately, this is not always the case - at least with my project folders.</p>
+<p>I think that the tidiness of a project folder, how it is structured and how it tells the user to execute what and when, correlate strongly with the whole repeatability, replicability and reproducibility aspect.</p>
+</div>
+<div id="why-now" class="section level2">
+<h2>Why now?</h2>
+<p>The reason I started to dig deeper into workflow management possibilities in R, is, that I was changing jobs, and I had to clean up my old project folders from almost 5 years of analysing genetic data 😱. And so I faced <del>this gigantic mess</del> a bit of a mess, spread over several servers and computers, some version controlled, others not, with implemented “best practices” from different waves of trying to improve. I tried to clean up as good as I could, but I told myself that this would not happen again. At my <a href="https://fellay-lab.epfl.ch/">new job</a> I would use version control for everything and I would use something make-like (e.g. <a href="https://github.com/richfitz/remake">remake</a>) to indicate the “recipe” of a project and be in control of what is recomputed and what is not<a href="#fn4" class="footnote-ref" id="fnref4"><sup>4</sup></a>.</p>
+</div>
+<div id="why-we-tidy-up-authority-and-incentive" class="section level2">
+<h2>Why we tidy up: authority and incentive</h2>
+<p>I have a long-time interest in tidiness in general and from studying my own behaviour I came up with the theory that tidiness is only present when a) somebody tells you to do it, or b) you are rewarded for it.</p>
+<p>Here are some examples:</p>
+<ul>
+<li>If you want to compile an R-package you have little to no freedom in how to name folders. You must have a given folder and file structure. Otherwise it won’t compile. This dictated and unified folder structure makes it easy for R users to understand what is where in an R-package. No matter who coded it.</li>
+</ul>
+<figure>
+<img src="/post/2018-10-08-workflow-mgmt-in-r/package-files.png" alt="Drawing of a table." align="middle" style="width: 300px;"/>
+<figcaption>
+<small>R package structure. Figure from <a href="http://r-pkgs.had.co.nz/package.html.">http://r-pkgs.had.co.nz/package.html</a>.
+</small>
+</figcaption>
+</figure>
+<ul>
+<li><p>If you work on several different projects at them same time, it is beneficial to have structure, so that you can quickly dive back into a project.</p></li>
+<li><p>Following good practices also leaves you more time to do the fun stuff, like modelling and creating data visualisation.</p></li>
+</ul>
+</div>
+<div id="challenges" class="section level2">
+<h2>Challenges</h2>
+<p>I started by wondering why maintaining a tidy and coherent folder structure was so difficult for me to maintain. So I came up with a list (which is certainly going to change over time):</p>
+<ul>
+<li>Having <strong>different places</strong> for computation (Laptop, Server1, Server2, …).</li>
+<li>Not using <strong><code>git</code></strong> consistently.</li>
+<li>Unclear separation of the folders <strong><code>data</code></strong> (raw input data), <code>processed-data</code> and <code>output-data</code> (results).</li>
+<li><strong>Data deliveries</strong>: data hardly ever arrives in one tidy folder, but instead comes at different time points and so poses other challenges.</li>
+<li>Having many different <strong>best practices</strong> implemented: so each project would have its own set of folder names and file naming convention, leading to little <strong>overview of the analysis and its iteration steps</strong> → cleaning, modelling, visualisation, reports.</li>
+<li>Using similar code in many different R scripts → <strong>redundant</strong> code.</li>
+<li>Having no punishment for not cleaning up (and also not really seeing the benefit).</li>
+</ul>
+</div>
+<div id="what-i-want" class="section level2">
+<h2>What I want</h2>
+<p>Then I asked myself what I want to achieve with implementing (and sticking to) something new.</p>
+<ol style="list-style-type: decimal">
+<li>Making it easy for colleagues at work to <strong>rerun</strong> (and <strong>understand</strong>) the project → <em>“repeatability”</em></li>
+<li>Making it easy for others to <strong>rerun</strong> and to <strong>understand</strong> the project → <a href="https://simplystatistics.org/2017/03/02/rr-glossy/"><em>“reproducibility”</em></a><a href="#fn5" class="footnote-ref" id="fnref5"><sup>5</sup></a></li>
+<li>Making it easy for others to rerun the code <strong>with different data</strong> → <a href="https://simplystatistics.org/2017/03/02/rr-glossy/"><em>“replicability”</em></a></li>
+</ol>
+<p>Next I looked for solutions. First I would need to use coherent folder names. Second I would need to have a file that indicates the recipe of an analysis. Third, I would implement most free floating and redundant code into functions. Fourth, I would minimise unnecessary computation by caching results. Fifth, I would start using unit tests<a href="#fn6" class="footnote-ref" id="fnref6"><sup>6</sup></a>.</p>
+</div>
+<div id="the-options" class="section level2">
+<h2>The options</h2>
+<p>There are many different ready-to-use software packages out there. I was thinking of going back to using <code>make</code>, that I used years ago. Then I came across <a href="https://github.com/richfitz/remake">{remake}</a>, which seemed just what I needed. A colleague at work was using <code>stu</code> and was recommending it. But then the Swiss Institute of Bioinformatics offered a course on <em>Make-like declarative workflows with R</em> taught by <a href="https://github.com/krlmlr">Kirill Müller</a>, which I could not attend. Luckily, thanks to the awesome <a href="https://github.com/krlmlr/drake-sib-zurich">online course material</a>, I could learn it by myself.</p>
+</div>
+<div id="drake" class="section level2">
+<h2>Drake</h2>
+<p>The presentation <em>Make-like declarative workflows with R</em> presented the R-package <a href="https://github.com/ropensci/drake">{drake}</a> (drake = Data Frames in R for Make<a href="#fn7" class="footnote-ref" id="fnref7"><sup>7</sup></a>).</p>
+<p>{Drake} was created by <a href="https://twitter.com/wmlandau">Will Landau</a> and reviewed by <a href="https://ropensci.org/">rOpenSci</a>. On the github page it says that {drake} is a “general-purpose workflow manager for data-driven tasks”. Sounds perfect!</p>
+<p>The way I understand it, is, that it is based on <code>make</code> (and overlaps with the R-package {remake}). Therefore when making a change to an analysis and re-running it, it only re-compute the dependent parts. But compared to <code>make</code>, {drake} is much more convenient to use. Plus it is scalable to parallel computing. And it is intuitive to use, meaning, colleagues can learn it quickly.</p>
+<div id="getting-started" class="section level3">
+<h3>Getting started</h3>
+<p>Best is, to run the mini example provided in the package, and then go from there. Drake has many other examples provided, you can check them by running <code>drake::drake_examples()</code>.</p>
+<ol style="list-style-type: decimal">
+<li><code>install.packages("drake")</code></li>
+<li>Run <code>drake::drake_example("main")</code> → this will download a folder called <code>main</code>.</li>
+<li>Go to the terminal. You can look at all the files contained in <code>main</code> by writing <code>tree main</code> (this works on MacOS)</li>
+</ol>
+<pre><code>main/
+├── COPYRIGHT.md
+├── LICENSE.md
+├── README.md
+├── clean.R
+├── make.R
+├── raw_data.xlsx
+└── report.Rmd</code></pre>
+<ol style="list-style-type: decimal">
+<li>Next, open <code>make.R</code>. The key functions are <code>drake_plan()</code> and <code>make()</code>.</li>
+<li>Add the following bit before and after <code>make(plan)</code>.</li>
+</ol>
+<pre><code>config &lt;- drake_config(plan) 
+vis_drake_graph(config) </code></pre>
+<ol style="list-style-type: decimal">
+<li>Run all code for a first time.</li>
+<li>Change something (e.g. the plot function).</li>
+<li>Rerun and watch the colors change in <code>vis_drake_graph(config)</code>.</li>
+<li>Use functions <code>readd()</code> and <code>loadd()</code> to work with the produced output.</li>
+<li>checkout <code>.drake/</code> folder. This is where all the cached work is stored.</li>
+</ol>
+<p>By running this example, you will see that <code>drake_plan()</code> is used to create a recipe of the analysis and <code>make()</code> is used to execute that recipe. <code>make()</code> will create objects, such as <code>fit</code> and <code>hist</code> in the example and store them in the folder <code>.drake/</code>.</p>
+<p><code>readd()</code> is used to return an object from cache. This is handy when we only want to diplay an object. <code>loadd()</code> on the other hand is used to load an object into our session (similarly to <code>load</code>).</p>
+</div>
+<div id="more" class="section level3">
+<h3>More</h3>
+<p>To checkout further options I recommend
+- The <a href="https://github.com/cstawitz/RLadies_Sea_drake">slides</a> from <a href="https://github.com/cstawitz">Christine Stawitz</a> (presented at R-Ladies Seattle in June 2018).
+- The <a href="https://dobb.ae/2019/02/12/drakes-plan/">material</a> by <a href="https://github.com/aedobbyn">Amanda Dobbyn</a> (presented at R-Ladies NYC in February 2019). (<em>Update</em>)</p>
+<p>Both presentations provide a good overview of the options {drake} provides.</p>
+</div>
+<div id="examples" class="section level3">
+<h3>Examples</h3>
+<p>I also created <a href="https://github.com/sinarueeger/workflow-example">some tiny examples</a> that use genetic data. It has four folders:</p>
+<ol style="list-style-type: decimal">
+<li><code>wild-west</code>: this is how I was structuring folders till now (this example was used to introduce the analysis during the presentation).</li>
+<li><code>wild-west-pro</code>: same as 1. but with an <code>README.md</code>.</li>
+<li><code>drake</code>: implementing 1. into drake.</li>
+<li><code>drake-adv</code>: implementing 1. into a more realistic, hierarchical folder structure.</li>
+</ol>
+<p>The examples use genetic data that was originally used in the <a href="https://www.crowdai.org/challenges/opensnp-height-prediction">crowdAI openSNP height prediction</a> challenge. The full openSNP data set was prepared by my colleague <a href="https://github.com/onaret">Olivier Naret</a> and can be downloaded <a href="https://zenodo.org/record/1442755#.W8BGbVJ9jOQ">here</a>. The examples use a small subset of the full dataset that can be downloaded <a href="https://github.com/sinarueeger/create-data-workflow-example">here</a>.</p>
+</div>
+<div id="resources" class="section level3">
+<h3>Resources</h3>
+<p>Here are a bunch of resources that helped me understand {drake}:</p>
+<ul>
+<li><a href="https://github.com/ropensci/drake">Github Repo</a></li>
+<li><a href="https://github.com/krlmlr/drake-sib-zurich">This tutorial</a> and <a href="https://github.com/krlmlr/drake-sib-zurich/blob/master/cheat-sheet.pdf">cheatsheet</a> by <a href="https://twitter.com/krlmlr">Kirill Müller</a>.</li>
+<li>Overview of options: <a href="https://github.com/cstawitz/RLadies_Sea_drake">Make-like declarative workflows with R</a> by <a href="https://github.com/cstawitz">Christine Stawitz</a>.</li>
+<li><a href="https://ropensci.github.io/drake/articles/best-practices.html">Best practices</a> for drake projects.</li>
+<li>Lots of <a href="https://github.com/ropensci/drake#tutorials">tutorials</a> and <a href="https://github.com/ropensci/drake#examples">examples</a>.</li>
+</ul>
+</div>
+</div>
+<div id="but-wait-drake-does-not-care-about-messy-folders" class="section level2">
+<h2>But wait: drake does not care about messy folders</h2>
+<p>True! I can have a <code>make.R</code> file anywhere and it will still work.
+But I believe that the shift in logic that you have to get used to with {drake} makes you care more about folder structure.</p>
+</div>
+<div id="what-is-next" class="section level2">
+<h2>What is next?</h2>
+<p>I am currently reading the PlosCompBio paper <a href="https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1005510">Good enough practices in scientific computing</a> - great read, giving me lots of ideas!</p>
+<p>I want to use {drake} in a more complex setting. There are also other R-packages that help with project workflows. And I should invest some time to come up with a test suite for data analysis projects.</p>
+</div>
+<div id="when-is-the-right-time-to-tidy" class="section level2">
+<h2>When is the right time to tidy</h2>
+<p>At the Genève RUG meetup we were also discussing when we think is the right time to tidy up.</p>
+<p>Project folders evolve over time. Especially in the beginning of a project, we are busy figuring things out, wrangling data, fitting models, making plots and telling people what we found out. This can take some time. But at one point we are ready to write a report.</p>
+<p>It is probably at that stage (when we write a report) that we can “frame” that project into something that is “stable” and “portable”.</p>
+<p>Although - I am not sure we have to wait that long. I think the benefits of {drake} (e.g. caching) already help us at an earlier stage.</p>
+</div>
+<div id="is-it-really-worth-it" class="section level2">
+<h2>Is it really worth it</h2>
+<p>I think there is a trade-off between dedicating days to tidying up and not caring about structure at all. Same with tooling. For example, if we use a tool, say <code>make</code> but no one else but us knows how to use it, it is going to be hard for colleagues to understand and use project folders that use <code>make</code>. We have to keep that balance in mind.</p>
+</div>
+<div class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p>Seriously, meaning, different from previous, half-hearted attempts.<a href="#fnref1" class="footnote-back">↩</a></p></li>
+<li id="fn2"><p>Just started reading <a href="https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1005510">Good enough practices in scientific computing</a> - great paper!<a href="#fnref2" class="footnote-back">↩</a></p></li>
+<li id="fn3"><p>Thanks to Maëlle for pointing out that this is a good thing to do!<a href="#fnref3" class="footnote-back">↩</a></p></li>
+<li id="fn4"><p>And while at it, I would totally decrease my coffee consumption too and never procrastinate again 😉.<a href="#fnref4" class="footnote-back">↩</a></p></li>
+<li id="fn5"><p>The terminology is really confusing at times. I rely on <a href="https://twitter.com/jtleek/status/759822823552606208">this</a> definition. <a href="#fnref5" class="footnote-back">↩</a></p></li>
+<li id="fn6"><p>Thanks to my colleague for the idea!<a href="#fnref6" class="footnote-back">↩</a></p></li>
+<li id="fn7"><p>I am still wondering how “Data Frames in R for Make” adds up to “drake” 🤔.<a href="#fnref7" class="footnote-back">↩</a></p></li>
+</ol>
+</div>

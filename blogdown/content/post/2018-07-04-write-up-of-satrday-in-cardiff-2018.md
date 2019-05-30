@@ -2,14 +2,11 @@
 title: 'satRday Cardiff 2018'
 description: 'Recap of the one-day R conference in Wales.'
 date: '2018-07-04'
-categories: 
-  - R
-  - conference
 tags: 
   - conference
   - R
-  - satrday
-  - ropensci
+  - satRday
+  - rOpenSci
   - package
   - dplyr
 slug: satrdaycardiff
@@ -17,6 +14,9 @@ draft: false
 header:
   caption: ''
   image: ''
+output:
+  blogdown::html_page:
+    toc: true
 ---
 
 

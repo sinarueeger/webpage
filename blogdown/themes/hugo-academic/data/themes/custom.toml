@@ -1,0 +1,23 @@
+# from here: https://lmyint.github.io/post/hugo-academic-tips/
+# Theme metadata
+name = "custom"
+
+# Is theme light or dark?
+light = true
+
+## tuquis: 02C8A7
+## darkblue: 
+# Primary
+primary = "#0375B4" ## darkblue
+primary_light = "#4e9eca" ## lightblue
+primary_dark = "#025d90" ## superdark
+
+# Menu
+menu_primary = "#fff" ## white
+menu_text = "#34495e" ## darkbluegray
+menu_text_active = "#0375B4" ## blueish
+menu_title = "#2b2b2b" ## gray
+
+# Home sections
+home_section_odd = "rgb(255, 255, 255)" ## white
+home_section_even = "rgb(247, 247, 247)" ## gray

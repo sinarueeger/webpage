@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Recent &amp; Upcoming Talks on Sina Rüeger</title>
+    <link>https://sinarueeger.github.io/talk/</link>
+    <description>Recent content in Recent &amp; Upcoming Talks on Sina Rüeger</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <copyright>&amp;copy; 2019. All rights reserved.</copyright>
+    <lastBuildDate>Mon, 10 Dec 2018 19:00:00 +0100</lastBuildDate>
+    
+	<atom:link href="https://sinarueeger.github.io/talk/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Introduction to Drake</title>
+      <link>https://sinarueeger.github.io/talk/r-ladies/</link>
+      <pubDate>Mon, 10 Dec 2018 19:00:00 +0100</pubDate>
+      
+      <guid>https://sinarueeger.github.io/talk/r-ladies/</guid>
+      <description> Click on the Slides button above to view the built-in slides feature.   </description>
+    </item>
+    
+    <item>
+      <title>Workflow &amp; best practices for projects</title>
+      <link>https://sinarueeger.github.io/talk/r-lunchs/</link>
+      <pubDate>Tue, 04 Dec 2018 12:00:00 +0100</pubDate>
+      
+      <guid>https://sinarueeger.github.io/talk/r-lunchs/</guid>
+      <description> Click on the Slides button above to view the built-in slides feature.   </description>
+    </item>
+    
+    <item>
+      <title>Tidying workflows &amp; R community</title>
+      <link>https://sinarueeger.github.io/talk/geneve-rug/</link>
+      <pubDate>Thu, 04 Oct 2018 19:00:00 +0200</pubDate>
+      
+      <guid>https://sinarueeger.github.io/talk/geneve-rug/</guid>
+      <description> Click on the Slides button above to view the built-in slides feature.   </description>
+    </item>
+    
+    <item>
+      <title>An introduction to (problem solving with) R</title>
+      <link>https://sinarueeger.github.io/talk/geek-girls-carrots/</link>
+      <pubDate>Wed, 12 Sep 2018 18:30:00 +0200</pubDate>
+      
+      <guid>https://sinarueeger.github.io/talk/geek-girls-carrots/</guid>
+      <description> Click on the Slides button above to view the built-in slides feature.   </description>
+    </item>
+    
+  </channel>
+</rss>

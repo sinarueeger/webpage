@@ -1,0 +1,712 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Sina Rüeger</title>
+    <link>https://sinarueeger.github.io/</link>
+    <description>Recent content on Sina Rüeger</description>
+    <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator>
+    <language>en-us</language>
+    <copyright>&amp;copy; 2019. All rights reserved.</copyright>
+    <lastBuildDate>Tue, 28 May 2019 00:00:00 +0200</lastBuildDate>
+    
+	    <atom:link href="https://sinarueeger.github.io/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Integrative Statistical Analysis of -omics and GWAS data</title>
+      <link>https://sinarueeger.github.io/project/phd-thesis/</link>
+      <pubDate>Tue, 28 May 2019 00:00:00 +0200</pubDate>
+      
+      <guid>https://sinarueeger.github.io/project/phd-thesis/</guid>
+      <description>
+
+&lt;p&gt;I finished my PhD under the main supervison of &lt;a href=&#34;https://wp.unil.ch/sgg/&#34;&gt;Zolt&amp;#225;n Kutalik&lt;/a&gt; in September 2018.&lt;/p&gt;
+
+&lt;p&gt;You can download &lt;a href=&#34;https://drive.switch.ch/index.php/s/FpWZlbw4Rfq20le&#34; target=&#34;_blank&#34;&gt;my thesis&lt;/a&gt;, or checkout the &lt;a href=&#34;https://sinarueeger.github.io/publicdefense/slides#1&#34; target=&#34;_blank&#34;&gt;slides&lt;/a&gt; from my public defense.&lt;/p&gt;
+
+&lt;h2 id=&#34;abstract&#34;&gt;Abstract&lt;/h2&gt;
+
+&lt;p&gt;Increasing our knowledge about biology in humans is essential for advances in medicine, such as early-stage diagnoses of diseases, drug development, public health strategies, and precision medicine.
+One approach to tackle this task is, to collect data on different components of a biological mechanism of interest, link these parts and try to construct an underlying model that helps us to explain the disease.
+To collect data, DNA is measured and the status of a disease is recorded for each individual in a dedicated group of people.
+In a first step, an analyst compares for each genetic variant across the whole genome the genetic mutations between people with the disease and healthy people; this is called a genome-wide association study (GWAS).
+Such first association screens rarely point right away to the true causal variants, but combined with additional biomedical (-omics) data and additional statistical methods it is possible to narrow down the true cause and gain insight into the biology of a disease.
+For example, by using GWAS results for two diseases (e.g. cardiovascular disease and obesity) and a statistical method called Mendelian randomisation, we are able to examine the causal effect of obesity on cardiovascular disease, or vice versa.
+These statistical follow-up investigations often require GWAS results for genetic variants than were unmeasured.
+During my PhD, I investigated a method called summary statistic imputation that precisely aims to solve the problem of inferring GWAS results for unmeasured genetic variants. Summary statistic imputation uses GWAS results and data from public sequencing data. My main findings were that imputation accuracy varies depending on certain characteristics of a genetic variant (e.g. low accuracy for rare mutations), as well as the size of publicly available sequencing data (low accuracy for small sized sequencing data).
+A further finding is, that summary statistic imputation can compete with imputation techniques that are based on individual-level data for certain subgroups of genetic variants (e.g. common variants).&lt;/p&gt;
+
+&lt;p&gt;With the help of summary statistic imputation researchers can facilitate follow-up investigations and thus gain more insight into the biology of diseases.&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>R-package GWAS.utils</title>
+      <link>https://sinarueeger.github.io/project/gwas.utils/</link>
+      <pubDate>Tue, 28 May 2019 00:00:00 +0200</pubDate>
+      
+      <guid>https://sinarueeger.github.io/project/gwas.utils/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>R-package ggGWAS</title>
+      <link>https://sinarueeger.github.io/project/gggwas/</link>
+      <pubDate>Tue, 28 May 2019 00:00:00 +0200</pubDate>
+      
+      <guid>https://sinarueeger.github.io/project/gggwas/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Statistical Genetics Resources</title>
+      <link>https://sinarueeger.github.io/project/stat-genetics-ressources/</link>
+      <pubDate>Tue, 28 May 2019 00:00:00 +0200</pubDate>
+      
+      <guid>https://sinarueeger.github.io/project/stat-genetics-ressources/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Slides</title>
+      <link>https://sinarueeger.github.io/slides/example/</link>
+      <pubDate>Tue, 05 Feb 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://sinarueeger.github.io/slides/example/</guid>
+      <description>
+
+&lt;h1 id=&#34;welcome-to-slides&#34;&gt;Welcome to Slides&lt;/h1&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://sourcethemes.com/academic/&#34; target=&#34;_blank&#34;&gt;Academic&lt;/a&gt;&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&#34;features&#34;&gt;Features&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Efficiently write slides in Markdown&lt;/li&gt;
+&lt;li&gt;3-in-1: Create, Present, and Publish your slides&lt;/li&gt;
+&lt;li&gt;Supports speaker notes&lt;/li&gt;
+&lt;li&gt;Mobile friendly slides&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&#34;controls&#34;&gt;Controls&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Next: &lt;code&gt;Right Arrow&lt;/code&gt; or &lt;code&gt;Space&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Previous: &lt;code&gt;Left Arrow&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Start: &lt;code&gt;Home&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Finish: &lt;code&gt;End&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Overview: &lt;code&gt;Esc&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Speaker notes: &lt;code&gt;S&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Fullscreen: &lt;code&gt;F&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Zoom: &lt;code&gt;Alt + Click&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/hakimel/reveal.js#pdf-export&#34; target=&#34;_blank&#34;&gt;PDF Export&lt;/a&gt;: &lt;code&gt;E&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&#34;code-highlighting&#34;&gt;Code Highlighting&lt;/h2&gt;
+
+&lt;p&gt;Inline code: &lt;code&gt;variable&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;Code block:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-python&#34;&gt;porridge = &amp;quot;blueberry&amp;quot;
+if porridge == &amp;quot;blueberry&amp;quot;:
+    print(&amp;quot;Eating...&amp;quot;)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&#34;math&#34;&gt;Math&lt;/h2&gt;
+
+&lt;p&gt;In-line math: $x + y = z$&lt;/p&gt;
+
+&lt;p&gt;Block math:&lt;/p&gt;
+
+&lt;p&gt;$$
+f\left( x \right) = \;\frac{{2\left( {x + 4} \right)\left( {x - 4} \right)}}{{\left( {x + 4} \right)\left( {x + 1} \right)}}
+$$&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&#34;fragments&#34;&gt;Fragments&lt;/h2&gt;
+
+&lt;p&gt;Make content appear incrementally&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;{{% fragment %}} One {{% /fragment %}}
+{{% fragment %}} **Two** {{% /fragment %}}
+{{% fragment %}} Three {{% /fragment %}}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Press &lt;code&gt;Space&lt;/code&gt; to play!&lt;/p&gt;
+
+&lt;p&gt;&lt;span class=&#34;fragment &#34; &gt;
+   One
+&lt;/span&gt;
+&lt;span class=&#34;fragment &#34; &gt;
+   &lt;strong&gt;Two&lt;/strong&gt;
+&lt;/span&gt;
+&lt;span class=&#34;fragment &#34; &gt;
+   Three
+&lt;/span&gt;&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;A fragment can accept two optional parameters:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;class&lt;/code&gt;: use a custom style (requires definition in custom CSS)&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;weight&lt;/code&gt;: sets the order in which a fragment appears&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&#34;speaker-notes&#34;&gt;Speaker Notes&lt;/h2&gt;
+
+&lt;p&gt;Add speaker notes to your presentation&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-markdown&#34;&gt;{{% speaker_note %}}
+- Only the speaker can read these notes
+- Press `S` key to view
+{{% /speaker_note %}}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Press the &lt;code&gt;S&lt;/code&gt; key to view the speaker notes!&lt;/p&gt;
+
+&lt;aside class=&#34;notes&#34;&gt;
+  &lt;ul&gt;
+&lt;li&gt;Only the speaker can read these notes&lt;/li&gt;
+&lt;li&gt;Press &lt;code&gt;S&lt;/code&gt; key to view&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/aside&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&#34;themes&#34;&gt;Themes&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;black: Black background, white text, blue links (default)&lt;/li&gt;
+&lt;li&gt;white: White background, black text, blue links&lt;/li&gt;
+&lt;li&gt;league: Gray background, white text, blue links&lt;/li&gt;
+&lt;li&gt;beige: Beige background, dark text, brown links&lt;/li&gt;
+&lt;li&gt;sky: Blue background, thin dark text, blue links&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr /&gt;
+
+&lt;ul&gt;
+&lt;li&gt;night: Black background, thick white text, orange links&lt;/li&gt;
+&lt;li&gt;serif: Cappuccino background, gray text, brown links&lt;/li&gt;
+&lt;li&gt;simple: White background, black text, blue links&lt;/li&gt;
+&lt;li&gt;solarized: Cream-colored background, dark green text, blue links&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;hr /&gt;
+
+
+&lt;section data-noprocess data-shortcode-slide
+  
+      
+      data-background-image=&#34;/img/boards.jpg&#34;
+  &gt;
+
+
+&lt;h2 id=&#34;custom-slide&#34;&gt;Custom Slide&lt;/h2&gt;
+
+&lt;p&gt;Customize the slide style and background&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-markdown&#34;&gt;{{&amp;lt; slide background-image=&amp;quot;/img/boards.jpg&amp;quot; &amp;gt;}}
+{{&amp;lt; slide background-color=&amp;quot;#0000FF&amp;quot; &amp;gt;}}
+{{&amp;lt; slide class=&amp;quot;my-style&amp;quot; &amp;gt;}}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;hr /&gt;
+
+&lt;h2 id=&#34;custom-css-example&#34;&gt;Custom CSS Example&lt;/h2&gt;
+
+&lt;p&gt;Let&amp;rsquo;s make headers navy colored.&lt;/p&gt;
+
+&lt;p&gt;Create &lt;code&gt;assets/css/reveal_custom.css&lt;/code&gt; with:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-css&#34;&gt;.reveal section h1,
+.reveal section h2,
+.reveal section h3 {
+  color: navy;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;hr /&gt;
+
+&lt;h1 id=&#34;questions&#34;&gt;Questions?&lt;/h1&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://discourse.gohugo.io&#34; target=&#34;_blank&#34;&gt;Ask&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&#34;https://sourcethemes.com/academic/docs/&#34; target=&#34;_blank&#34;&gt;Documentation&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Introduction to Drake</title>
+      <link>https://sinarueeger.github.io/talk/r-ladies/</link>
+      <pubDate>Mon, 10 Dec 2018 19:00:00 +0100</pubDate>
+      
+      <guid>https://sinarueeger.github.io/talk/r-ladies/</guid>
+      <description>&lt;div class=&#34;alert alert-note&#34;&gt;
+  &lt;div&gt;
+    Click on the &lt;strong&gt;Slides&lt;/strong&gt; button above to view the built-in slides feature.
+  &lt;/div&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Create a map of the 1000 Genomes project reference populations</title>
+      <link>https://sinarueeger.github.io/post/1kgmap/</link>
+      <pubDate>Wed, 05 Dec 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://sinarueeger.github.io/post/1kgmap/</guid>
+      <description>
+&lt;script src=&#34;https://sinarueeger.github.io/rmarkdown-libs/htmlwidgets/htmlwidgets.js&#34;&gt;&lt;/script&gt;
+&lt;script src=&#34;https://sinarueeger.github.io/rmarkdown-libs/jquery/jquery.min.js&#34;&gt;&lt;/script&gt;
+&lt;link href=&#34;https://sinarueeger.github.io/rmarkdown-libs/leaflet/leaflet.css&#34; rel=&#34;stylesheet&#34; /&gt;
+&lt;script src=&#34;https://sinarueeger.github.io/rmarkdown-libs/leaflet/leaflet.js&#34;&gt;&lt;/script&gt;
+&lt;link href=&#34;https://sinarueeger.github.io/rmarkdown-libs/leafletfix/leafletfix.css&#34; rel=&#34;stylesheet&#34; /&gt;
+&lt;script src=&#34;https://sinarueeger.github.io/rmarkdown-libs/Proj4Leaflet/proj4-compressed.js&#34;&gt;&lt;/script&gt;
+&lt;script src=&#34;https://sinarueeger.github.io/rmarkdown-libs/Proj4Leaflet/proj4leaflet.js&#34;&gt;&lt;/script&gt;
+&lt;link href=&#34;https://sinarueeger.github.io/rmarkdown-libs/rstudio_leaflet/rstudio_leaflet.css&#34; rel=&#34;stylesheet&#34; /&gt;
+&lt;script src=&#34;https://sinarueeger.github.io/rmarkdown-libs/leaflet-binding/leaflet.js&#34;&gt;&lt;/script&gt;
+&lt;link href=&#34;https://sinarueeger.github.io/rmarkdown-libs/leaflet-awesomemarkers/leaflet.awesome-markers.css&#34; rel=&#34;stylesheet&#34; /&gt;
+&lt;script src=&#34;https://sinarueeger.github.io/rmarkdown-libs/leaflet-awesomemarkers/leaflet.awesome-markers.min.js&#34;&gt;&lt;/script&gt;
+&lt;link href=&#34;https://sinarueeger.github.io/rmarkdown-libs/fontawesome/font-awesome.min.css&#34; rel=&#34;stylesheet&#34; /&gt;
+
+&lt;div id=&#34;TOC&#34;&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;#goal&#34;&gt;Goal&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#get-started&#34;&gt;Get started&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#data&#34;&gt;Data&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#add-geographical-coordinates&#34;&gt;Add geographical coordinates&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#create-leaflet&#34;&gt;Create leaflet&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#save-the-map&#34;&gt;Save the map&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#reason-for-deviation-from-the-original&#34;&gt;Reason for deviation from the original&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+
+&lt;p&gt;This post provides the R-Code to map the 26 populations of the &lt;a href=&#34;http://www.internationalgenome.org/&#34;&gt;1000 Genomes project&lt;/a&gt;.&lt;/p&gt;
+&lt;div id=&#34;goal&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Goal&lt;/h2&gt;
+&lt;p&gt;Create a map similar to the one&lt;a href=&#34;#fn1&#34; class=&#34;footnote-ref&#34; id=&#34;fnref1&#34;&gt;&lt;sup&gt;1&lt;/sup&gt;&lt;/a&gt; on the front page of &lt;a href=&#34;http://www.internationalgenome.org/&#34; class=&#34;uri&#34;&gt;http://www.internationalgenome.org/&lt;/a&gt; in a reproducible manner.&lt;/p&gt;
+&lt;div class=&#34;figure&#34;&gt;
+&lt;img src=&#34;https://sinarueeger.github.io/post/2018-12-05-1000genomes-map/1000genomes-map.png&#34; alt=&#34;Version on internationalgenome.org&#34; /&gt;
+&lt;p class=&#34;caption&#34;&gt;&lt;em&gt;Version on internationalgenome.org&lt;/em&gt;&lt;/p&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;get-started&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Get started&lt;/h2&gt;
+&lt;p&gt;Packages needed:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;## accessed via ::
+# library(mapview)
+# library(readxl)
+# library(readr)
+# library(purrr)
+# library(tidyr)
+# library(forcats)
+
+library(leaflet) 
+library(dplyr) 
+library(ggmap) ## for geocode, devtools::install_github(&amp;quot;dkahle/ggmap&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;&lt;code&gt;ggmap&lt;/code&gt; requires a google map api key&lt;a href=&#34;#fn2&#34; class=&#34;footnote-ref&#34; id=&#34;fnref2&#34;&gt;&lt;sup&gt;2&lt;/sup&gt;&lt;/a&gt;:&lt;/p&gt;
+&lt;ol style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;get one here: &lt;a href=&#34;https://developers.google.com/maps/documentation/geocoding/get-api-key&#34; class=&#34;uri&#34;&gt;https://developers.google.com/maps/documentation/geocoding/get-api-key&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;then run &lt;code&gt;register_google(key = &#34;my_api_key&#34;)&lt;/code&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;
+&lt;div id=&#34;data&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Data&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;The population counts and labels are from ftp.1000genomes.ebi.ac.uk/vol1/ftp/technical/working/20130606_sample_info/ (&lt;a href=&#34;ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/technical/working/20130606_sample_info/20130606_sample_info.xlsx&#34;&gt;download xlsx file&lt;/a&gt;).&lt;/li&gt;
+&lt;li&gt;The super population labels are from &lt;a href=&#34;http://www.internationalgenome.org/faq/which-populations-are-part-your-study/&#34;&gt;here&lt;/a&gt; (pasted into a &lt;a href=&#34;https://sinarueeger.github.io/post/2018-12-05-1000genomes-map/sample_info_superpop.csv&#34;&gt;csv&lt;/a&gt;, then location was inferred).&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Download the population counts and labels first:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;url &amp;lt;-
+&amp;quot;ftp.1000genomes.ebi.ac.uk/vol1/ftp/technical/working/20130606_sample_info/20130606_sample_info.xlsx&amp;quot;
+url.bitly &amp;lt;- &amp;quot;http://bit.ly/2MQTr02&amp;quot;
+download.file(url, &amp;quot;20130606_sample_info.xlsx&amp;quot;, mode = &amp;quot;wb&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Import file into R:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;df &amp;lt;-
+  readxl::read_excel(&amp;quot;20130606_sample_info.xlsx&amp;quot;, sheet = &amp;quot;Sample Info&amp;quot;)
+  #  &amp;gt;&amp;gt; Sample Info&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Some data wrangling:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;## count number of individuals by population
+## rename population &amp;gt; POP
+n.pop &amp;lt;-
+  df %&amp;gt;% 
+  group_by(Population) %&amp;gt;% 
+  summarise(n = n()) %&amp;gt;% 
+  rename(POP = Population)
+
+## import super population names and details to the location of populations
+## copied from here:
+url.spop &amp;lt;-
+  &amp;quot;http://www.internationalgenome.org/faq/which-populations-are-part-your-study/&amp;quot;
+## added location manually (!) - found this the only option to prevent overlapping locations. 
+## Also, description involves a mix of location and origin.
+
+## rename superpopulation &amp;gt; SPOP
+n.spop &amp;lt;-
+  readr::read_csv(&amp;quot;../../static/post/2018-12-05-1000genomes-map/sample_info_superpop.csv&amp;quot;) %&amp;gt;% 
+  rename(POP = `Population Code`, SPOP = `Super Population Code`)
+
+## join the two information
+n.1kg &amp;lt;- left_join(n.pop, n.spop, by = c(&amp;quot;POP&amp;quot; = &amp;quot;POP&amp;quot;))&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;add-geographical-coordinates&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Add geographical coordinates&lt;/h2&gt;
+&lt;p&gt;Parts of the code below is from a map created by &lt;a href=&#34;https://github.com/d4tagirl&#34;&gt;Daniela Vazquez&lt;/a&gt; for R-Ladies: &lt;a href=&#34;https://github.com/rladies/Map-RLadies-Growing&#34; class=&#34;uri&#34;&gt;https://github.com/rladies/Map-RLadies-Growing&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;This is the part where we annotate the dataframe &lt;code&gt;n.1kg&lt;/code&gt; with where the individuals live (not their ancestry).
+Repeat this until there are no &lt;code&gt;warnings()&lt;/code&gt; about &lt;code&gt;QUERY LIMITS&lt;/code&gt; (the &lt;code&gt;while&lt;/code&gt; loop takes care of this).&lt;/p&gt;
+&lt;p&gt;We will use the &lt;code&gt;ggmap&lt;/code&gt; package, which accesses the google maps api.&lt;/p&gt;
+&lt;p&gt;A workaround is to set &lt;code&gt;source = &#34;dsk&#34;&lt;/code&gt; (works for a limited number of queries)&lt;a href=&#34;#fn3&#34; class=&#34;footnote-ref&#34; id=&#34;fnref3&#34;&gt;&lt;sup&gt;3&lt;/sup&gt;&lt;/a&gt;.&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;n.1kg &amp;lt;- n.1kg %&amp;gt;% 
+  mutate(purrr::map(.$location, geocode, source = &amp;quot;dsk&amp;quot;)) %&amp;gt;% 
+  tidyr::unnest()
+
+## running into the inevitable QUERY LIMITS problems, lets use the approach from https://github.com/rladies/Map-RLadies-Growing
+n.1kg.withloc &amp;lt;- n.1kg %&amp;gt;% 
+  filter(!is.na(lon))
+
+while(nrow(n.1kg.withloc) != nrow(n.1kg))
+{
+  #   repeat this until there are no warnings() about QUERY LIMITS
+  temp &amp;lt;- n.1kg %&amp;gt;% 
+    select(-lon, -lat) %&amp;gt;% 
+    anti_join(n.1kg.withloc %&amp;gt;% select(-lon, -lat)) %&amp;gt;% 
+    mutate(longlat = purrr::map(.$location, geocode, source = &amp;quot;dsk&amp;quot;)) %&amp;gt;% 
+    tidyr::unnest() %&amp;gt;% 
+    filter(!is.na(lon))
+  
+  n.1kg.withloc &amp;lt;- n.1kg.withloc %&amp;gt;% 
+    bind_rows(temp) %&amp;gt;% 
+    distinct()
+}
+
+n.1kg &amp;lt;- n.1kg.withloc
+
+## glue POP and `Population Description` together
+n.1kg &amp;lt;-
+  n.1kg %&amp;gt;% mutate(pop.desc = paste0(POP, &amp;quot; : &amp;quot;, `Population Description`, &amp;quot; (&amp;quot;, SPOP, &amp;quot;)&amp;quot;))
+  
+## given that only a number of geolocation are possible with the google API, this 
+## should probably stored out
+## readr::write_csv(n.1kg, path = &amp;quot;1kg_sample_info_location.csv&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;create-leaflet&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Create leaflet&lt;/h2&gt;
+&lt;p&gt;Map locations a world map with leaflet&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;## if you have stroed the data in the previous chunk:
+## readr::read_csv(&amp;quot;1kg_sample_info_location.csv&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Define shiny icons:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;icons &amp;lt;- awesomeIcons(
+  icon = &amp;#39;user&amp;#39;, #people&amp;#39;,
+  iconColor = &amp;#39;black&amp;#39;,
+  library = &amp;#39;fa&amp;#39;, #ion
+  markerColor = as.character(forcats::fct_recode(as.factor(n.1kg$SPOP), 
+                                                 red = &amp;quot;EUR&amp;quot;, 
+                                                 blue = &amp;quot;AFR&amp;quot;, 
+                                                 green = &amp;quot;AMR&amp;quot;, 
+                                                 gray = &amp;quot;EAS&amp;quot;, 
+                                                 orange = &amp;quot;SAS&amp;quot;)) 
+  ## ok, thats not too pretty, but turns out, hex colors won&amp;#39;t work
+)
+
+## we need to create a vector that maps cols to SPOP from the markerColor argument above
+cols &amp;lt;- c(&amp;quot;#E50102&amp;quot;, &amp;quot;#00A9DD&amp;quot;, &amp;quot;#57BA1F&amp;quot;, &amp;quot;#575757&amp;quot;, &amp;quot;#FD8E00&amp;quot;)
+SPOP &amp;lt;- c(&amp;quot;EUR&amp;quot;,  &amp;quot;AFR&amp;quot;, &amp;quot;AMR&amp;quot;, &amp;quot;EAS&amp;quot;, &amp;quot;SAS&amp;quot;)
+
+## separate icon that will display the information
+## ------------------------------------------------
+icon.info &amp;lt;- awesomeIcons(
+  icon = &amp;#39;info&amp;#39;, #people&amp;#39;,
+  iconColor = &amp;#39;white&amp;#39;,
+  library = &amp;#39;fa&amp;#39;, #ion
+  markerColor = &amp;quot;white&amp;quot;
+)&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Create map:&lt;/p&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;m &amp;lt;- leaflet(data = n.1kg) %&amp;gt;%
+  addTiles() %&amp;gt;%  # Add default OpenStreetMap map tiles
+  addAwesomeMarkers(lat=~lat, lng=~lon, label = ~htmltools::htmlEscape(pop.desc), icon = icons) %&amp;gt;% 
+  addAwesomeMarkers(lat=-45, lng=-107, popup = glue::glue(&amp;quot;Source: https://github.com/sinarueeger/map-1000genomes&amp;quot;), icon = icon.info) %&amp;gt;% ## this bit has potential to be displayed as a href. 
+  #glue::glue(&amp;quot;Source: {url.bitly} + {url.spop} (manual tidying)&amp;quot;), icon = icon.info) %&amp;gt;% 
+  addLegend(&amp;quot;bottomright&amp;quot;, 
+            colors =cols,
+            labels= SPOP,
+            opacity = 1)
+
+m  # Print the map&lt;/code&gt;&lt;/pre&gt;
+&lt;div id=&#34;htmlwidget-1&#34; style=&#34;width:672px;height:480px;&#34; class=&#34;leaflet html-widget&#34;&gt;&lt;/div&gt;
+&lt;script type=&#34;application/json&#34; data-for=&#34;htmlwidget-1&#34;&gt;{&#34;x&#34;:{&#34;options&#34;:{&#34;crs&#34;:{&#34;crsClass&#34;:&#34;L.CRS.EPSG3857&#34;,&#34;code&#34;:null,&#34;proj4def&#34;:null,&#34;projectedBounds&#34;:null,&#34;options&#34;:{}}},&#34;calls&#34;:[{&#34;method&#34;:&#34;addTiles&#34;,&#34;args&#34;:[&#34;//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png&#34;,null,null,{&#34;minZoom&#34;:0,&#34;maxZoom&#34;:18,&#34;tileSize&#34;:256,&#34;subdomains&#34;:&#34;abc&#34;,&#34;errorTileUrl&#34;:&#34;&#34;,&#34;tms&#34;:false,&#34;noWrap&#34;:false,&#34;zoomOffset&#34;:0,&#34;zoomReverse&#34;:false,&#34;opacity&#34;:1,&#34;zIndex&#34;:1,&#34;detectRetina&#34;:false,&#34;attribution&#34;:&#34;&amp;copy; &lt;a href=\&#34;http://openstreetmap.org\&#34;&gt;OpenStreetMap&lt;\/a&gt; contributors, &lt;a href=\&#34;http://creativecommons.org/licenses/by-sa/2.0/\&#34;&gt;CC-BY-SA&lt;\/a&gt;&#34;}]},{&#34;method&#34;:&#34;addAwesomeMarkers&#34;,&#34;args&#34;:[[13.16667,34.5003,24,22.08829,40.11995,39.9075,35,4,10,60.16952,50.416667,29.845783,13.5,40,54.75844,35.6895,10.75,0.60751,7.13833,34.05223,-10,31.54972,18.24829,55.9483399,43.41667,7.38778],[-59.53333,-111.50098,90,101.0248,-111.67031,116.39723,105,-72,8,24.93545,-4.75,-96.919704,-15.5,-4,-2.69531,139.69171,106.66667,34.76966,-11.67056,-118.24368,-76,74.34361,-66.49989,-3.1932723,11,3.89639],{&#34;icon&#34;:&#34;user&#34;,&#34;markerColor&#34;:[&#34;blue&#34;,&#34;blue&#34;,&#34;orange&#34;,&#34;gray&#34;,&#34;red&#34;,&#34;gray&#34;,&#34;gray&#34;,&#34;green&#34;,&#34;blue&#34;,&#34;red&#34;,&#34;red&#34;,&#34;orange&#34;,&#34;blue&#34;,&#34;red&#34;,&#34;orange&#34;,&#34;gray&#34;,&#34;gray&#34;,&#34;blue&#34;,&#34;blue&#34;,&#34;green&#34;,&#34;green&#34;,&#34;orange&#34;,&#34;green&#34;,&#34;orange&#34;,&#34;red&#34;,&#34;blue&#34;],&#34;iconColor&#34;:&#34;black&#34;,&#34;spin&#34;:false,&#34;squareMarker&#34;:false,&#34;iconRotate&#34;:0,&#34;font&#34;:&#34;monospace&#34;,&#34;prefix&#34;:&#34;fa&#34;},null,null,{&#34;interactive&#34;:true,&#34;draggable&#34;:false,&#34;keyboard&#34;:true,&#34;title&#34;:&#34;&#34;,&#34;alt&#34;:&#34;&#34;,&#34;zIndexOffset&#34;:0,&#34;opacity&#34;:1,&#34;riseOnHover&#34;:false,&#34;riseOffset&#34;:250},null,null,null,null,[&#34;ACB : African Caribbeans in Barbados (AFR)&#34;,&#34;ASW : Americans of African Ancestry in SW USA (AFR)&#34;,&#34;BEB : Bengali from Bangladesh (SAS)&#34;,&#34;CDX : Chinese Dai in Xishuangbanna, China (EAS)&#34;,&#34;CEU : Utah Residents (CEPH) with Northern and Western European Ancestry (EUR)&#34;,&#34;CHB : Han Chinese in Beijing, China (EAS)&#34;,&#34;CHS : Southern Han Chinese (EAS)&#34;,&#34;CLM : Colombians from Medellin, Colombia (AMR)&#34;,&#34;ESN : Esan in Nigeria (AFR)&#34;,&#34;FIN : Finnish in Finland (EUR)&#34;,&#34;GBR : British in England and Scotland (EUR)&#34;,&#34;GIH : Gujarati Indian from Houston, Texas (SAS)&#34;,&#34;GWD : Gambian in Western Divisions in the Gambia (AFR)&#34;,&#34;IBS : Iberian Population in Spain (EUR)&#34;,&#34;ITU : Indian Telugu from the UK (SAS)&#34;,&#34;JPT : Japanese in Tokyo, Japan (EAS)&#34;,&#34;KHV : Kinh in Ho Chi Minh City, Vietnam (EAS)&#34;,&#34;LWK : Luhya in Webuye, Kenya (AFR)&#34;,&#34;MSL : Mende in Sierra Leone (AFR)&#34;,&#34;MXL : Mexican Ancestry from Los Angeles USA (AMR)&#34;,&#34;PEL : Peruvians from Lima, Peru (AMR)&#34;,&#34;PJL : Punjabi from Lahore, Pakistan (SAS)&#34;,&#34;PUR : Puerto Ricans from Puerto Rico (AMR)&#34;,&#34;STU : Sri Lankan Tamil from the UK (SAS)&#34;,&#34;TSI : Toscani in Italia (EUR)&#34;,&#34;YRI : Yoruba in Ibadan, Nigeria (AFR)&#34;],{&#34;interactive&#34;:false,&#34;permanent&#34;:false,&#34;direction&#34;:&#34;auto&#34;,&#34;opacity&#34;:1,&#34;offset&#34;:[0,0],&#34;textsize&#34;:&#34;10px&#34;,&#34;textOnly&#34;:false,&#34;className&#34;:&#34;&#34;,&#34;sticky&#34;:true},null]},{&#34;method&#34;:&#34;addAwesomeMarkers&#34;,&#34;args&#34;:[-45,-107,{&#34;icon&#34;:&#34;info&#34;,&#34;markerColor&#34;:&#34;white&#34;,&#34;iconColor&#34;:&#34;white&#34;,&#34;spin&#34;:false,&#34;squareMarker&#34;:false,&#34;iconRotate&#34;:0,&#34;font&#34;:&#34;monospace&#34;,&#34;prefix&#34;:&#34;fa&#34;},null,null,{&#34;interactive&#34;:true,&#34;draggable&#34;:false,&#34;keyboard&#34;:true,&#34;title&#34;:&#34;&#34;,&#34;alt&#34;:&#34;&#34;,&#34;zIndexOffset&#34;:0,&#34;opacity&#34;:1,&#34;riseOnHover&#34;:false,&#34;riseOffset&#34;:250},&#34;Source: https://github.com/sinarueeger/map-1000genomes&#34;,null,null,null,null,{&#34;interactive&#34;:false,&#34;permanent&#34;:false,&#34;direction&#34;:&#34;auto&#34;,&#34;opacity&#34;:1,&#34;offset&#34;:[0,0],&#34;textsize&#34;:&#34;10px&#34;,&#34;textOnly&#34;:false,&#34;className&#34;:&#34;&#34;,&#34;sticky&#34;:true},null]},{&#34;method&#34;:&#34;addLegend&#34;,&#34;args&#34;:[{&#34;colors&#34;:[&#34;#E50102&#34;,&#34;#00A9DD&#34;,&#34;#57BA1F&#34;,&#34;#575757&#34;,&#34;#FD8E00&#34;],&#34;labels&#34;:[&#34;EUR&#34;,&#34;AFR&#34;,&#34;AMR&#34;,&#34;EAS&#34;,&#34;SAS&#34;],&#34;na_color&#34;:null,&#34;na_label&#34;:&#34;NA&#34;,&#34;opacity&#34;:1,&#34;position&#34;:&#34;bottomright&#34;,&#34;type&#34;:&#34;unknown&#34;,&#34;title&#34;:null,&#34;extra&#34;:null,&#34;layerId&#34;:null,&#34;className&#34;:&#34;info legend&#34;,&#34;group&#34;:null}]}],&#34;limits&#34;:{&#34;lat&#34;:[-45,60.16952],&#34;lng&#34;:[-118.24368,139.69171]}},&#34;evals&#34;:[],&#34;jsHooks&#34;:[]}&lt;/script&gt;
+&lt;/div&gt;
+&lt;div id=&#34;save-the-map&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Save the map&lt;/h2&gt;
+&lt;pre class=&#34;r&#34;&gt;&lt;code&gt;## save to png
+## ------------
+mapview::mapshot(m, file = &amp;quot;map-1000genomes-populations.png&amp;quot;)
+
+## save to hmtl
+## -------------
+htmlwidgets::saveWidget(m, file=&amp;quot;map-1000genomes-populations.html&amp;quot;)&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+&lt;div id=&#34;reason-for-deviation-from-the-original&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Reason for deviation from the original&lt;/h2&gt;
+&lt;p&gt;I mapped the populations according to the current location but coloured them according to ancestry.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&#34;footnotes&#34;&gt;
+&lt;hr /&gt;
+&lt;ol&gt;
+&lt;li id=&#34;fn1&#34;&gt;&lt;p&gt;This is a png and cannot be altered.&lt;a href=&#34;#fnref1&#34; class=&#34;footnote-back&#34;&gt;↩&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li id=&#34;fn2&#34;&gt;&lt;p&gt;Seen here: &lt;a href=&#34;https://stackoverflow.com/questions/36175529/getting-over-query-limit-after-one-request-with-geocode&#34; class=&#34;uri&#34;&gt;https://stackoverflow.com/questions/36175529/getting-over-query-limit-after-one-request-with-geocode&lt;/a&gt;.&lt;a href=&#34;#fnref2&#34; class=&#34;footnote-back&#34;&gt;↩&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li id=&#34;fn3&#34;&gt;&lt;p&gt;See &lt;a href=&#34;https://stackoverflow.com/questions/36175529/getting-over-query-limit-after-one-request-with-geocode&#34; class=&#34;uri&#34;&gt;https://stackoverflow.com/questions/36175529/getting-over-query-limit-after-one-request-with-geocode&lt;/a&gt;.&lt;a href=&#34;#fnref3&#34; class=&#34;footnote-back&#34;&gt;↩&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Workflow &amp; best practices for projects</title>
+      <link>https://sinarueeger.github.io/talk/r-lunchs/</link>
+      <pubDate>Tue, 04 Dec 2018 12:00:00 +0100</pubDate>
+      
+      <guid>https://sinarueeger.github.io/talk/r-lunchs/</guid>
+      <description>&lt;div class=&#34;alert alert-note&#34;&gt;
+  &lt;div&gt;
+    Click on the &lt;strong&gt;Slides&lt;/strong&gt; button above to view the built-in slides feature.
+  &lt;/div&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Tidying workflows in R</title>
+      <link>https://sinarueeger.github.io/post/drake/</link>
+      <pubDate>Tue, 09 Oct 2018 00:00:00 +0000</pubDate>
+      
+      <guid>https://sinarueeger.github.io/post/drake/</guid>
+      <description>
+
+&lt;div id=&#34;TOC&#34;&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;#what-is-a-project-folder&#34;&gt;What is a “project folder”?&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#why-now&#34;&gt;Why now?&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#why-we-tidy-up-authority-and-incentive&#34;&gt;Why we tidy up: authority and incentive&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#challenges&#34;&gt;Challenges&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#what-i-want&#34;&gt;What I want&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#the-options&#34;&gt;The options&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#drake&#34;&gt;Drake&lt;/a&gt;&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;#getting-started&#34;&gt;Getting started&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#more&#34;&gt;More&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#examples&#34;&gt;Examples&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#resources&#34;&gt;Resources&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#but-wait-drake-does-not-care-about-messy-folders&#34;&gt;But wait: drake does not care about messy folders&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#what-is-next&#34;&gt;What is next?&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#when-is-the-right-time-to-tidy&#34;&gt;When is the right time to tidy&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;#is-it-really-worth-it&#34;&gt;Is it really worth it&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Recently, I started to seriously&lt;a href=&#34;#fn1&#34; class=&#34;footnote-ref&#34; id=&#34;fnref1&#34;&gt;&lt;sup&gt;1&lt;/sup&gt;&lt;/a&gt; think about the tidiness of data analysis project folders, and the implications of tidying up.&lt;/p&gt;
+&lt;p&gt;I was lucky enough to talk about what I have figured out so far at the &lt;a href=&#34;https://www.meetup.com/Geneve-R-User-Group/&#34;&gt;Genève R User Group&lt;/a&gt;. While I am not done yet with reflecting on this&lt;a href=&#34;#fn2&#34; class=&#34;footnote-ref&#34; id=&#34;fnref2&#34;&gt;&lt;sup&gt;2&lt;/sup&gt;&lt;/a&gt;, I wanted to write down my thoughts that lead to &lt;a href=&#34;https://sinarueeger.github.io/20181004-geneve-rug/slides#1&#34;&gt;my presentation&lt;/a&gt;&lt;a href=&#34;#fn3&#34; class=&#34;footnote-ref&#34; id=&#34;fnref3&#34;&gt;&lt;sup&gt;3&lt;/sup&gt;&lt;/a&gt;. So what follows is just “thinking out loud”.&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;Update: In February 2019, &lt;a href=&#34;https://github.com/aedobbyn&#34;&gt;Amanda Dobbyn&lt;/a&gt; gave a talk at R-Ladies NYC about drake. All material &lt;a href=&#34;https://dobb.ae/2019/02/12/drakes-plan/&#34;&gt;here&lt;/a&gt;.&lt;/em&gt;&lt;/p&gt;
+&lt;video width=&#34;70%&#34; controls&gt;
+&lt;source src=&#34;https://sinarueeger.github.io/post/2018-10-08-workflow-mgmt-in-r/trailer.mp4&#34;&gt;
+Trailer. Your browser does not support the video tag.
+&lt;/video&gt;
+&lt;figcaption&gt;
+&lt;small&gt;Presentation trailer made with &lt;a href=&#34;https://masalmon.eu/2018/10/07/trailer/&#34;&gt;Maëlle Salmon’s instructions&lt;/a&gt;.
+&lt;/small&gt;
+&lt;/figcaption&gt;
+&lt;div id=&#34;what-is-a-project-folder&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;What is a “project folder”?&lt;/h2&gt;
+&lt;p&gt;To me a project folder is anything that contains the (R-)scripts necessary to run a data analysis and create the corresponding report. It is like a framed piece of work that you can take and place somewhere else. And probably it will take the form of the Figure from the &lt;a href=&#34;http://r4ds.had.co.nz/explore-intro.html&#34;&gt;R4DS&lt;/a&gt; book below:&lt;/p&gt;
+&lt;figure&gt;
+&lt;img src=&#34;https://sinarueeger.github.io/post/2018-10-08-workflow-mgmt-in-r/workflow.png&#34; alt=&#34;Drawing of a table.&#34; align=&#34;middle&#34; style=&#34;width: 600px;&#34;/&gt;
+&lt;figcaption&gt;
+&lt;small&gt;Adapted from Figure in &lt;a href=&#34;http://r4ds.had.co.nz/explore-intro.html&#34;&gt;R4DS book&lt;/a&gt;.
+&lt;/small&gt;
+&lt;/figcaption&gt;
+&lt;/figure&gt;
+&lt;p&gt;Ideally you should be able to take that folder as it is, run it on another computer and get the same results. Unfortunately, this is not always the case - at least with my project folders.&lt;/p&gt;
+&lt;p&gt;I think that the tidiness of a project folder, how it is structured and how it tells the user to execute what and when, correlate strongly with the whole repeatability, replicability and reproducibility aspect.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;why-now&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Why now?&lt;/h2&gt;
+&lt;p&gt;The reason I started to dig deeper into workflow management possibilities in R, is, that I was changing jobs, and I had to clean up my old project folders from almost 5 years of analysing genetic data 😱. And so I faced &lt;del&gt;this gigantic mess&lt;/del&gt; a bit of a mess, spread over several servers and computers, some version controlled, others not, with implemented “best practices” from different waves of trying to improve. I tried to clean up as good as I could, but I told myself that this would not happen again. At my &lt;a href=&#34;https://fellay-lab.epfl.ch/&#34;&gt;new job&lt;/a&gt; I would use version control for everything and I would use something make-like (e.g. &lt;a href=&#34;https://github.com/richfitz/remake&#34;&gt;remake&lt;/a&gt;) to indicate the “recipe” of a project and be in control of what is recomputed and what is not&lt;a href=&#34;#fn4&#34; class=&#34;footnote-ref&#34; id=&#34;fnref4&#34;&gt;&lt;sup&gt;4&lt;/sup&gt;&lt;/a&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;why-we-tidy-up-authority-and-incentive&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Why we tidy up: authority and incentive&lt;/h2&gt;
+&lt;p&gt;I have a long-time interest in tidiness in general and from studying my own behaviour I came up with the theory that tidiness is only present when a) somebody tells you to do it, or b) you are rewarded for it.&lt;/p&gt;
+&lt;p&gt;Here are some examples:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;If you want to compile an R-package you have little to no freedom in how to name folders. You must have a given folder and file structure. Otherwise it won’t compile. This dictated and unified folder structure makes it easy for R users to understand what is where in an R-package. No matter who coded it.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;figure&gt;
+&lt;img src=&#34;https://sinarueeger.github.io/post/2018-10-08-workflow-mgmt-in-r/package-files.png&#34; alt=&#34;Drawing of a table.&#34; align=&#34;middle&#34; style=&#34;width: 300px;&#34;/&gt;
+&lt;figcaption&gt;
+&lt;small&gt;R package structure. Figure from &lt;a href=&#34;http://r-pkgs.had.co.nz/package.html.&#34;&gt;http://r-pkgs.had.co.nz/package.html&lt;/a&gt;.
+&lt;/small&gt;
+&lt;/figcaption&gt;
+&lt;/figure&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;If you work on several different projects at them same time, it is beneficial to have structure, so that you can quickly dive back into a project.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Following good practices also leaves you more time to do the fun stuff, like modelling and creating data visualisation.&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div id=&#34;challenges&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Challenges&lt;/h2&gt;
+&lt;p&gt;I started by wondering why maintaining a tidy and coherent folder structure was so difficult for me to maintain. So I came up with a list (which is certainly going to change over time):&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Having &lt;strong&gt;different places&lt;/strong&gt; for computation (Laptop, Server1, Server2, …).&lt;/li&gt;
+&lt;li&gt;Not using &lt;strong&gt;&lt;code&gt;git&lt;/code&gt;&lt;/strong&gt; consistently.&lt;/li&gt;
+&lt;li&gt;Unclear separation of the folders &lt;strong&gt;&lt;code&gt;data&lt;/code&gt;&lt;/strong&gt; (raw input data), &lt;code&gt;processed-data&lt;/code&gt; and &lt;code&gt;output-data&lt;/code&gt; (results).&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Data deliveries&lt;/strong&gt;: data hardly ever arrives in one tidy folder, but instead comes at different time points and so poses other challenges.&lt;/li&gt;
+&lt;li&gt;Having many different &lt;strong&gt;best practices&lt;/strong&gt; implemented: so each project would have its own set of folder names and file naming convention, leading to little &lt;strong&gt;overview of the analysis and its iteration steps&lt;/strong&gt; → cleaning, modelling, visualisation, reports.&lt;/li&gt;
+&lt;li&gt;Using similar code in many different R scripts → &lt;strong&gt;redundant&lt;/strong&gt; code.&lt;/li&gt;
+&lt;li&gt;Having no punishment for not cleaning up (and also not really seeing the benefit).&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;div id=&#34;what-i-want&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;What I want&lt;/h2&gt;
+&lt;p&gt;Then I asked myself what I want to achieve with implementing (and sticking to) something new.&lt;/p&gt;
+&lt;ol style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;Making it easy for colleagues at work to &lt;strong&gt;rerun&lt;/strong&gt; (and &lt;strong&gt;understand&lt;/strong&gt;) the project → &lt;em&gt;“repeatability”&lt;/em&gt;&lt;/li&gt;
+&lt;li&gt;Making it easy for others to &lt;strong&gt;rerun&lt;/strong&gt; and to &lt;strong&gt;understand&lt;/strong&gt; the project → &lt;a href=&#34;https://simplystatistics.org/2017/03/02/rr-glossy/&#34;&gt;&lt;em&gt;“reproducibility”&lt;/em&gt;&lt;/a&gt;&lt;a href=&#34;#fn5&#34; class=&#34;footnote-ref&#34; id=&#34;fnref5&#34;&gt;&lt;sup&gt;5&lt;/sup&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;Making it easy for others to rerun the code &lt;strong&gt;with different data&lt;/strong&gt; → &lt;a href=&#34;https://simplystatistics.org/2017/03/02/rr-glossy/&#34;&gt;&lt;em&gt;“replicability”&lt;/em&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Next I looked for solutions. First I would need to use coherent folder names. Second I would need to have a file that indicates the recipe of an analysis. Third, I would implement most free floating and redundant code into functions. Fourth, I would minimise unnecessary computation by caching results. Fifth, I would start using unit tests&lt;a href=&#34;#fn6&#34; class=&#34;footnote-ref&#34; id=&#34;fnref6&#34;&gt;&lt;sup&gt;6&lt;/sup&gt;&lt;/a&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;the-options&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;The options&lt;/h2&gt;
+&lt;p&gt;There are many different ready-to-use software packages out there. I was thinking of going back to using &lt;code&gt;make&lt;/code&gt;, that I used years ago. Then I came across &lt;a href=&#34;https://github.com/richfitz/remake&#34;&gt;{remake}&lt;/a&gt;, which seemed just what I needed. A colleague at work was using &lt;code&gt;stu&lt;/code&gt; and was recommending it. But then the Swiss Institute of Bioinformatics offered a course on &lt;em&gt;Make-like declarative workflows with R&lt;/em&gt; taught by &lt;a href=&#34;https://github.com/krlmlr&#34;&gt;Kirill Müller&lt;/a&gt;, which I could not attend. Luckily, thanks to the awesome &lt;a href=&#34;https://github.com/krlmlr/drake-sib-zurich&#34;&gt;online course material&lt;/a&gt;, I could learn it by myself.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;drake&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Drake&lt;/h2&gt;
+&lt;p&gt;The presentation &lt;em&gt;Make-like declarative workflows with R&lt;/em&gt; presented the R-package &lt;a href=&#34;https://github.com/ropensci/drake&#34;&gt;{drake}&lt;/a&gt; (drake = Data Frames in R for Make&lt;a href=&#34;#fn7&#34; class=&#34;footnote-ref&#34; id=&#34;fnref7&#34;&gt;&lt;sup&gt;7&lt;/sup&gt;&lt;/a&gt;).&lt;/p&gt;
+&lt;p&gt;{Drake} was created by &lt;a href=&#34;https://twitter.com/wmlandau&#34;&gt;Will Landau&lt;/a&gt; and reviewed by &lt;a href=&#34;https://ropensci.org/&#34;&gt;rOpenSci&lt;/a&gt;. On the github page it says that {drake} is a “general-purpose workflow manager for data-driven tasks”. Sounds perfect!&lt;/p&gt;
+&lt;p&gt;The way I understand it, is, that it is based on &lt;code&gt;make&lt;/code&gt; (and overlaps with the R-package {remake}). Therefore when making a change to an analysis and re-running it, it only re-compute the dependent parts. But compared to &lt;code&gt;make&lt;/code&gt;, {drake} is much more convenient to use. Plus it is scalable to parallel computing. And it is intuitive to use, meaning, colleagues can learn it quickly.&lt;/p&gt;
+&lt;div id=&#34;getting-started&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Getting started&lt;/h3&gt;
+&lt;p&gt;Best is, to run the mini example provided in the package, and then go from there. Drake has many other examples provided, you can check them by running &lt;code&gt;drake::drake_examples()&lt;/code&gt;.&lt;/p&gt;
+&lt;ol style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;&lt;code&gt;install.packages(&#34;drake&#34;)&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Run &lt;code&gt;drake::drake_example(&#34;main&#34;)&lt;/code&gt; → this will download a folder called &lt;code&gt;main&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Go to the terminal. You can look at all the files contained in &lt;code&gt;main&lt;/code&gt; by writing &lt;code&gt;tree main&lt;/code&gt; (this works on MacOS)&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre&gt;&lt;code&gt;main/
+├── COPYRIGHT.md
+├── LICENSE.md
+├── README.md
+├── clean.R
+├── make.R
+├── raw_data.xlsx
+└── report.Rmd&lt;/code&gt;&lt;/pre&gt;
+&lt;ol style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;Next, open &lt;code&gt;make.R&lt;/code&gt;. The key functions are &lt;code&gt;drake_plan()&lt;/code&gt; and &lt;code&gt;make()&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Add the following bit before and after &lt;code&gt;make(plan)&lt;/code&gt;.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;pre&gt;&lt;code&gt;config &amp;lt;- drake_config(plan) 
+vis_drake_graph(config) &lt;/code&gt;&lt;/pre&gt;
+&lt;ol style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;Run all code for a first time.&lt;/li&gt;
+&lt;li&gt;Change something (e.g. the plot function).&lt;/li&gt;
+&lt;li&gt;Rerun and watch the colors change in &lt;code&gt;vis_drake_graph(config)&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Use functions &lt;code&gt;readd()&lt;/code&gt; and &lt;code&gt;loadd()&lt;/code&gt; to work with the produced output.&lt;/li&gt;
+&lt;li&gt;checkout &lt;code&gt;.drake/&lt;/code&gt; folder. This is where all the cached work is stored.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;By running this example, you will see that &lt;code&gt;drake_plan()&lt;/code&gt; is used to create a recipe of the analysis and &lt;code&gt;make()&lt;/code&gt; is used to execute that recipe. &lt;code&gt;make()&lt;/code&gt; will create objects, such as &lt;code&gt;fit&lt;/code&gt; and &lt;code&gt;hist&lt;/code&gt; in the example and store them in the folder &lt;code&gt;.drake/&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;readd()&lt;/code&gt; is used to return an object from cache. This is handy when we only want to diplay an object. &lt;code&gt;loadd()&lt;/code&gt; on the other hand is used to load an object into our session (similarly to &lt;code&gt;load&lt;/code&gt;).&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;more&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;More&lt;/h3&gt;
+&lt;p&gt;To checkout further options I recommend
+- The &lt;a href=&#34;https://github.com/cstawitz/RLadies_Sea_drake&#34;&gt;slides&lt;/a&gt; from &lt;a href=&#34;https://github.com/cstawitz&#34;&gt;Christine Stawitz&lt;/a&gt; (presented at R-Ladies Seattle in June 2018).
+- The &lt;a href=&#34;https://dobb.ae/2019/02/12/drakes-plan/&#34;&gt;material&lt;/a&gt; by &lt;a href=&#34;https://github.com/aedobbyn&#34;&gt;Amanda Dobbyn&lt;/a&gt; (presented at R-Ladies NYC in February 2019). (&lt;em&gt;Update&lt;/em&gt;)&lt;/p&gt;
+&lt;p&gt;Both presentations provide a good overview of the options {drake} provides.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;examples&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Examples&lt;/h3&gt;
+&lt;p&gt;I also created &lt;a href=&#34;https://github.com/sinarueeger/workflow-example&#34;&gt;some tiny examples&lt;/a&gt; that use genetic data. It has four folders:&lt;/p&gt;
+&lt;ol style=&#34;list-style-type: decimal&#34;&gt;
+&lt;li&gt;&lt;code&gt;wild-west&lt;/code&gt;: this is how I was structuring folders till now (this example was used to introduce the analysis during the presentation).&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;wild-west-pro&lt;/code&gt;: same as 1. but with an &lt;code&gt;README.md&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;drake&lt;/code&gt;: implementing 1. into drake.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;drake-adv&lt;/code&gt;: implementing 1. into a more realistic, hierarchical folder structure.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;The examples use genetic data that was originally used in the &lt;a href=&#34;https://www.crowdai.org/challenges/opensnp-height-prediction&#34;&gt;crowdAI openSNP height prediction&lt;/a&gt; challenge. The full openSNP data set was prepared by my colleague &lt;a href=&#34;https://github.com/onaret&#34;&gt;Olivier Naret&lt;/a&gt; and can be downloaded &lt;a href=&#34;https://zenodo.org/record/1442755#.W8BGbVJ9jOQ&#34;&gt;here&lt;/a&gt;. The examples use a small subset of the full dataset that can be downloaded &lt;a href=&#34;https://github.com/sinarueeger/create-data-workflow-example&#34;&gt;here&lt;/a&gt;.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;resources&#34; class=&#34;section level3&#34;&gt;
+&lt;h3&gt;Resources&lt;/h3&gt;
+&lt;p&gt;Here are a bunch of resources that helped me understand {drake}:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/ropensci/drake&#34;&gt;Github Repo&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://github.com/krlmlr/drake-sib-zurich&#34;&gt;This tutorial&lt;/a&gt; and &lt;a href=&#34;https://github.com/krlmlr/drake-sib-zurich/blob/master/cheat-sheet.pdf&#34;&gt;cheatsheet&lt;/a&gt; by &lt;a href=&#34;https://twitter.com/krlmlr&#34;&gt;Kirill Müller&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;Overview of options: &lt;a href=&#34;https://github.com/cstawitz/RLadies_Sea_drake&#34;&gt;Make-like declarative workflows with R&lt;/a&gt; by &lt;a href=&#34;https://github.com/cstawitz&#34;&gt;Christine Stawitz&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;https://ropensci.github.io/drake/articles/best-practices.html&#34;&gt;Best practices&lt;/a&gt; for drake projects.&lt;/li&gt;
+&lt;li&gt;Lots of &lt;a href=&#34;https://github.com/ropensci/drake#tutorials&#34;&gt;tutorials&lt;/a&gt; and &lt;a href=&#34;https://github.com/ropensci/drake#examples&#34;&gt;examples&lt;/a&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&#34;but-wait-drake-does-not-care-about-messy-folders&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;But wait: drake does not care about messy folders&lt;/h2&gt;
+&lt;p&gt;True! I can have a &lt;code&gt;make.R&lt;/code&gt; file anywhere and it will still work.
+But I believe that the shift in logic that you have to get used to with {drake} makes you care more about folder structure.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;what-is-next&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;What is next?&lt;/h2&gt;
+&lt;p&gt;I am currently reading the PlosCompBio paper &lt;a href=&#34;https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1005510&#34;&gt;Good enough practices in scientific computing&lt;/a&gt; - great read, giving me lots of ideas!&lt;/p&gt;
+&lt;p&gt;I want to use {drake} in a more complex setting. There are also other R-packages that help with project workflows. And I should invest some time to come up with a test suite for data analysis projects.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;when-is-the-right-time-to-tidy&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;When is the right time to tidy&lt;/h2&gt;
+&lt;p&gt;At the Genève RUG meetup we were also discussing when we think is the right time to tidy up.&lt;/p&gt;
+&lt;p&gt;Project folders evolve over time. Especially in the beginning of a project, we are busy figuring things out, wrangling data, fitting models, making plots and telling people what we found out. This can take some time. But at one point we are ready to write a report.&lt;/p&gt;
+&lt;p&gt;It is probably at that stage (when we write a report) that we can “frame” that project into something that is “stable” and “portable”.&lt;/p&gt;
+&lt;p&gt;Although - I am not sure we have to wait that long. I think the benefits of {drake} (e.g. caching) already help us at an earlier stage.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div id=&#34;is-it-really-worth-it&#34; class=&#34;section level2&#34;&gt;
+&lt;h2&gt;Is it really worth it&lt;/h2&gt;
+&lt;p&gt;I think there is a trade-off between dedicating days to tidying up and not caring about structure at all. Same with tooling. For example, if we use a tool, say &lt;code&gt;make&lt;/code&gt; but no one else but us knows how to use it, it is going to be hard for colleagues to understand and use project folders that use &lt;code&gt;make&lt;/code&gt;. We have to keep that balance in mind.&lt;/p&gt;
+&lt;/div&gt;
+&lt;div class=&#34;footnotes&#34;&gt;
+&lt;hr /&gt;
+&lt;ol&gt;
+&lt;li id=&#34;fn1&#34;&gt;&lt;p&gt;Seriously, meaning, different from previous, half-hearted attempts.&lt;a href=&#34;#fnref1&#34; class=&#34;footnote-back&#34;&gt;↩&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li id=&#34;fn2&#34;&gt;&lt;p&gt;Just started reading &lt;a href=&#34;https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1005510&#34;&gt;Good enough practices in scientific computing&lt;/a&gt; - great paper!&lt;a href=&#34;#fnref2&#34; class=&#34;footnote-back&#34;&gt;↩&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li id=&#34;fn3&#34;&gt;&lt;p&gt;Thanks to Maëlle for pointing out that this is a good thing to do!&lt;a href=&#34;#fnref3&#34; class=&#34;footnote-back&#34;&gt;↩&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li id=&#34;fn4&#34;&gt;&lt;p&gt;And while at it, I would totally decrease my coffee consumption too and never procrastinate again 😉.&lt;a href=&#34;#fnref4&#34; class=&#34;footnote-back&#34;&gt;↩&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li id=&#34;fn5&#34;&gt;&lt;p&gt;The terminology is really confusing at times. I rely on &lt;a href=&#34;https://twitter.com/jtleek/status/759822823552606208&#34;&gt;this&lt;/a&gt; definition. &lt;a href=&#34;#fnref5&#34; class=&#34;footnote-back&#34;&gt;↩&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li id=&#34;fn6&#34;&gt;&lt;p&gt;Thanks to my colleague for the idea!&lt;a href=&#34;#fnref6&#34; class=&#34;footnote-back&#34;&gt;↩&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;li id=&#34;fn7&#34;&gt;&lt;p&gt;I am still wondering how “Data Frames in R for Make” adds up to “drake” 🤔.&lt;a href=&#34;#fnref7&#34; class=&#34;footnote-back&#34;&gt;↩&lt;/a&gt;&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+    <item>
+      <title>Tidying workflows &amp; R community</title>
+      <link>https://sinarueeger.github.io/talk/geneve-rug/</link>
+      <pubDate>Thu, 04 Oct 2018 19:00:00 +0200</pubDate>
+      
+      <guid>https://sinarueeger.github.io/talk/geneve-rug/</guid>
+      <description>&lt;div class=&#34;alert alert-note&#34;&gt;
+  &lt;div&gt;
+    Click on the &lt;strong&gt;Slides&lt;/strong&gt; button above to view the built-in slides feature.
+  &lt;/div&gt;
+&lt;/div&gt;
+</description>
+    </item>
+    
+  </channel>
+</rss>
