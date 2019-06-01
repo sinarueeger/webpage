@@ -19,7 +19,7 @@ date_format = "Jan 2006"
 #   Begin/end multi-line descriptions with 3 quotes `"""`.
 
 [[experience]]
-  title = "Postdoctoral researcher"
+  title = "Postdoctoral Researcher"
   company = "EPFL - Fellay Lab"
   company_url = "https://fellay-lab.epfl.ch/"
   location = "Lausanne"
@@ -31,7 +31,7 @@ date_format = "Jan 2006"
   
   
 [[experience]]
-  title = "PhD student"
+  title = "PhD Student"
   company = "Lausanne University Hospital - Statistical Genetics Group"
   company_url = "https://wp.unil.ch/sgg"
   location = "Lausanne"
@@ -59,7 +59,7 @@ date_format = "Jan 2006"
 
 
 [[experience]]
-  title = "Research assistant"
+  title = "Research Assistant"
   company = "ZHAW - Institute of Data Analysis and Process Design"
   company_url = "https://www.zhaw.ch/en/engineering/institutes-centres/idp/"
   location = "Winterthur"

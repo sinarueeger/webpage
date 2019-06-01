@@ -41,9 +41,9 @@ url_code = "https://github.com/sinarueeger/publicdefense"
   focal_point = "Smart"
 +++
 
-I finished my PhD under the main supervison of <a href="https://wp.unil.ch/sgg/">Zolt&#225;n Kutalik</a> in September 2018.
+I finished my PhD under the main supervision of <a href="https://wp.unil.ch/sgg/">Zolt&#225;n Kutalik</a> in September 2018.
 
-You can download [my thesis](https://drive.switch.ch/index.php/s/FpWZlbw4Rfq20le), or checkout the [slides](https://sinarueeger.github.io/publicdefense/slides#1) from my public defense. 
+You can download [my thesis](https://drive.switch.ch/index.php/s/FpWZlbw4Rfq20le) or check out the [slides](https://sinarueeger.github.io/publicdefense/slides#1) from my public defense. 
 
 
 ## Abstract

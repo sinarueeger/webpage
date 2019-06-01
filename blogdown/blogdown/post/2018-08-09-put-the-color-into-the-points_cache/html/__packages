@@ -13,3 +13,6 @@ httr
 jsonlite
 xml2
 magrittr
+glue
+data.table
+janitor
