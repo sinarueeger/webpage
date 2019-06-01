@@ -6,5 +6,4 @@ Executing `start_blogdown.R` will update the [sinarueeger.github.io-repo](https:
 
 There are some drafts in a private repo.
 
-## Old website
-Checkout branch `old-website`.
+To access the old website, check out the branch `old-website`.
