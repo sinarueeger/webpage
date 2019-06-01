@@ -1,0 +1,542 @@
+---
+title: 'LD Part 1'
+subtitle: 'Access precomputed LD'
+date: '2019-05-21'
+slug: get-ld-remotely
+code_download: true
+tags: 
+  - statistical genetics
+  - R
+  - data visualisation
+draft: false
+header:
+  caption: ''
+  image: ''
+output:
+  blogdown::html_page:
+    toc: true
+---
+
+```{r, setup, include = FALSE, warning=FALSE, message=FALSE}
+# library(showtext)
+suppressPackageStartupMessages(library(tidyverse))
+```
+
+R-packages used:
+```{r, setup2, include = TRUE, warning=FALSE, message=FALSE}
+library(httr)
+library(jsonlite)
+library(xml2)
+library(ggplot2)
+theme_set(theme_bw())
+library(tibble)
+library(tidyr)
+library(magrittr)
+library(glue)
+library(purrr)
+library(rsnps)
+library(data.table)
+library(janitor)
+library(stringr)
+library(rsnps)
+```
+
+
+The squared correlation between genetic markers is one way to estimate [linkage disequilibrium](https://ldlink.nci.nih.gov/?tab=help) (LD). LD has to be computed *all the time* - either for as an input for statistical methods or to summarise results. 
+
+However, accessing LD estimations quickly, for a specific population and in an automated way (e.g. with R) is suprisingly difficult. 
+
+In this blog post I am exploring how to do this efficiently.
+
+
+<!---------- ------------------------------->
+## Goal
+<!---------- ------------------------------->
+
+At the end of this blog post, we want to know the genetic correlation between two or more markers in a specific human population, so that we can populate the locuszoom plot from the [previous blog post](https://sinarueeger.github.io/2018/07/30/locuszoomplot/) with coloured dots. 
+
+For simplicity, I will use the terms correlation, squared correlation, r, r2 and LD interchangeably. 
+
+<!---------- ------------------------------->
+## Two approaches
+<!---------- ------------------------------->
+
+In principle, there are two ways of doing accessing LD: 
+
+1. Download (or access) the genetic data from which you want to estimate your correlations + calculate the correlations using some efficient approach. 
+2. Access precomputed LD estimations.  
+
+
+| Approach `r icon::fa_wrench()`                 	  | Advantages `r icon::fa_smile()`                                                 	| Downsides  `r icon::fa_frown()`                                                                                                    	| Useful when...                                                                  	|
+|-------------------------	  |-------------------------------------------------------------	|--------------------------------------------------------------------------------------------------------------	|--------------------------------------------------------------------------------	|
+| (1) **Local** computation of LD 	  | LD matrix can be quickly updated to new reference panels 	| Requires large computation and storage space (e.g. 1000 Genomes is [>100 few GB large](https://console.cloud.google.com/storage/browser/genomics-public-data/1000-genomes-phase-3/vcf/?_ga=2.227457240.-473641130.1558969048)). 	|  i) LD for a large set of SNPs is needed ii) LD from non-standard reference panel is needed. 	|
+| (2) **Access** precomputed LD   	  | not need for large computation and storage space.       	| limited to certain small sets of markers, limited to possibly outdated reference panels.                                        	| LD for a small set of SNPs is needed                              	|
+
+For now, I will focus on approach (2), and then explore approach (1) in a future blog post. 
+
+Spoiler: Using approach (2) does not get you far. It took me quite a while to gather all the solutions that are listed below, and yet there is not one perfect/ideal solution. 
+
+
+<!---------- ------------------------------->
+## Our toy data
+<!---------- ------------------------------->
+
+We will recycle the data from the [previous blog post](https://sinarueeger.github.io/2018/07/30/locuszoomplot/), where the focus was on extracting annotation using the package `biomaRt`. In this blog post, we will complete that locuszoom plot by adding the LD information. 
+
+```{r, load-data, echo=TRUE, results="hide", cache=TRUE, message = FALSE, warning = FALSE}
+
+## Data Source URL
+url <- "https://portals.broadinstitute.org/collaboration/giant/images/2/21/BMI_All_ancestry.fmt.gzip"
+
+## Import BMI summary statistics dat.bmi <- read_tsv(file = url) ##
+## taking too long, let's use fread instead.
+
+dat.bmi <- data.table::fread(url, verbose = FALSE)
+
+## Rename some columns
+dat.bmi <- dat.bmi %>% rename(SNP = SNPNAME, P = Pvalue)
+
+## Extract region
+dat.bmi.sel <- dat.bmi %>% slice(which.min(P))
+dat.bmi.sel
+
+## range region
+range <- 5e+05
+sel.chr <- dat.bmi.sel$CHR
+sel.pos <- dat.bmi.sel$POS
+
+data <- dat.bmi %>%
+  filter(CHR == sel.chr, between(POS, sel.pos -
+    range, sel.pos + range))
+
+head(data)
+
+(snp <- dat.bmi.sel$SNP)
+```
+
+
+What we are interested in is the LD between our top SNP `r snp` and all other `r nrow(data) - 1` SNPs nearby. 
+
+This dataset has positions on build GRCh37, while most databases are on build GRCh38 by now. 
+
+
+
+```{r, look-up-position}
+sm <- rsnps::ncbi_snp_summary(snp) %>% separate(chrpos, c("chr", "pos"))
+sel.pos == as.numeric(sm$pos)
+```
+
+Let's quickly repeat what our primary goal is:
+
+Extract the correlation between SNPs
+
+- without downloading any data,
+- fairly quick and
+- in R.
+
+
+<!---------- ------------------------------->
+## 1A. A solution that works: ldlink from NIH
+<!---------- ------------------------------->
+
+
+
+[ldlink](https://ldlink.nci.nih.gov/?tab=home) is a website provided by [NIH](https://dceg.cancer.gov/) to easily (and programmatically) request LD estimates in population groups. 
+
+LD is estimated from Phase 3 of the 1000 Genomes Project and super- and subpopulations can be selected. 
+
+There are different ways to access the LD estimations (e.g. `LDpair`, `LDmatrix`, `LDproxy`) and the same modules are also available through the [API](https://ldlink.nci.nih.gov/?tab=help#Programatic%20Access). 
+
+To access the API, you need to [register](https://ldlink.nci.nih.gov/?tab=apiaccess) for a token (takes a few seconds). 
+
+```{r}
+MYTOKEN <- "a_mix_of_numbers_and_characters"
+```
+
+```{r, echo = FALSE}
+MYTOKEN <- "975d104d9f13"
+```
+
+
+
+Let's look at two modules: 
+
+- [LDproxy: access LD between a SNP and its region](#ldproxy)
+- [LDmatrix: access LD matrix](#ldmatrix)
+
+
+
+
+### LDproxy
+To get the LD between a SNP and its region.
+
+
+First, access the API:
+
+
+
+```{r ldproxy, eval = TRUE, cache = TRUE}
+
+LDproxy_raw <- system(
+  glue::glue("curl -k -X GET 'https://ldlink.nci.nih.gov/LDlinkRest/ldproxy?var={snp}&pop=EUR&r2_d=r2&token={MYTOKEN}'"),
+  intern = TRUE
+)
+```
+
+Then, do a bit of data wrangling to get a tidy data frame:
+
+```{r ldproxy-tidying, cache = TRUE}
+
+LDproxy <- LDproxy_raw %>%
+  purrr::map(., function(x) stringr::str_split(x, "\t") %>%
+      unlist()) %>% ## remove all the tabs
+  do.call(rbind, .) %>% ## turn into a matrix
+  data.frame() %>% ## turn into a data frame
+  janitor::row_to_names(1) %>% ## make the first row the column names
+  rename(SNP = RS_Number) %>% ## rename RS_Number as SNP
+  mutate_at(vars(MAF:R2), function(x) as.numeric(as.character(x))) %>% ## turn MAF:R2 columns numeric
+  mutate(SNP = as.character(SNP)) ## turn SNP from a factor into a character
+head(LDproxy)
+```
+
+Next, join the original summary stats data with the `LDproxy` data frame. 
+
+```{r join-ldlink}
+data_ldproxy <- data %>%
+  right_join(LDproxy, by = c("SNP" = "SNP"))
+```
+
+Lastly, plot the summary statistics with the point colour indicating the R2.  
+
+```{r, plot-summarystats-ldlink, fig.height = 5, eval=TRUE, cache=TRUE, warning = FALSE}
+
+ggplot(data = data_ldproxy) +
+  geom_point(aes(POS, -log10(P), color = R2), shape = 16) +
+  labs(
+    title = "Locuszoom plot for BMI GWAS",
+    subtitle = paste(
+      "Summary statistics for chromosome", sel.chr, "from",
+      format((sel.pos - range), big.mark = "'"), "to",
+      format((sel.pos + range), big.mark = "'"), "bp"
+    ),
+    caption = paste("Data source:", url)
+  ) +
+  geom_point(
+    data = data_ldproxy %>% filter(SNP == snp),
+    aes(POS, -log10(P)), color = "black", shape = 16
+  ) +
+  scale_color_distiller("R2 (LDproxy)",
+    type = "div", palette = "Spectral",
+    limits = c(0, 1)
+  )
+```
+
+
+
+
+### LDmatrix
+
+`LDmatrix` module accesses the pairwise LD between a set of SNPs.
+
+Again, first access the API:
+
+
+
+```{r ldmatrix, cache=TRUE, eval = TRUE}
+snplist <- data %>%
+  filter(str_detect(SNP, "rs")) %>%
+  pull(SNP) %>%
+  paste(collapse = "%0A")
+
+LDmatrix_raw <- system(
+  glue::glue("curl -k -X GET 'https://ldlink.nci.nih.gov/LDlinkRest/ldmatrix?snps={snplist}&pop=CEU%2BTSI%2BFIN%2BGBR%2BIBS&r2_d=r2&token={MYTOKEN}'"),
+  intern = TRUE
+)
+```
+
+- If you want to access the dprime (d') values, write `r2_d=d`.
+- If you want to access certain sub populations, let's say CEU, TSI and FIN, concatenate them with `%B` in between: `CEU%2BTSI%2BFIN`.
+
+
+Then, do a little data tidying:
+
+```{r tidying, cache=TRUE}
+
+LDmatrix <- LDmatrix_raw %>%
+  purrr::map(., function(x) stringr::str_split(x, "\t") %>%
+      unlist()) %>%
+  do.call(rbind, .) %>% ## turn into a matrix
+  data.frame() %>% ## turn into a data.frame
+  janitor::row_to_names(1) ## make the first line the column names
+
+LDmatrix_long <- LDmatrix %>%
+  gather("SNP2", "R2", -RS_number) %>% ## from wide to long
+  rename(SNP = RS_number) %>% ## rename RS_number
+  mutate(R2 = as.numeric(R2)) %>% ## make R2 numeric
+  mutate_if(is.factor, as.character) ## make all factor columns characters
+
+head(LDmatrix_long)
+```
+
+Next, join the original summary stats data with the `LDmatrix_long` data frame. 
+
+```{r join-ldlink-matrix}
+data_ldmatrix <- data %>%
+  right_join(LDmatrix_long, by = c("SNP" = "SNP"))
+```
+
+Lastly, plot the summary statistics with the point colour indicating the R2.  
+
+```{r, plot-summarystats-ldlink-matrix, fig.height = 5, eval=TRUE, cache=TRUE, warning = FALSE}
+
+ggplot(data = data_ldmatrix %>% filter(SNP2 == snp)) +
+  geom_point(aes(POS, -log10(P), color = R2)) +
+  labs(
+    title = "Locuszoom plot for BMI GWAS",
+    subtitle = paste(
+      "Summary statistics for chromosome", sel.chr, "from",
+      format((sel.pos - range), big.mark = "'"), "to",
+      format((sel.pos + range), big.mark = "'"), "bp"
+    ),
+    caption = paste("Data source:", url)
+  ) +
+  geom_point(
+    data = data_ldmatrix %>% filter(SNP == snp & SNP2 == snp),
+    aes(POS, -log10(P)), color = "black", shape = 16
+  ) +
+  scale_color_distiller("R2 (LDmatrix)",
+    type = "div", palette = "Spectral",
+    limits = c(0, 1)
+  )
+```
+
+
+
+<!---------- ------------------------------->
+## 1B. A solution that almost works: ensembl.org
+<!---------- ------------------------------->
+
+
+
+The [REST API of Ensembl](https://rest.ensembl.org) can do a lot (see options [here](https://rest.ensembl.org/documentation/)). For example access precomputed LD. The webpage even provides R code to do so, which is from where I copied some snippets below. 
+
+To access the rest API at ensembl, we need the following three packages loaded.
+
+```{r, prep-packages-ensembl}
+library(httr)
+library(jsonlite)
+library(xml2)
+```
+
+
+
+### What reference panels/population can we choose from? 
+<!------------------------------>
+
+Currently, the largest and hence most popular public reference panel is [1000 Genomes reference panel](http://www.internationalgenome.org/) (1KG). The 26 populations of roughly 100 individuals each can be grouped into five super populations: African (AFR), American (AMR), European (EUR), South Asian (SAS), East Asian (EAS). 
+
+We can ask the ENSEMBL API from what populations reference panels are available. This will return us a data frame.
+
+```{r, populations}
+
+
+server <- "https://rest.ensembl.org"
+ext <- "/info/variation/populations/homo_sapiens?filter=LD"
+
+r <- GET(paste(server, ext, sep = ""), content_type("application/json"))
+
+stop_for_status(r)
+
+head(fromJSON(toJSON(content(r))))
+```
+`name` stands for the population identifier. `size` refers to the number of individuals in the reference panel. Note that these are all populations with around 100 individuals (the correlation estimation will have an error that scales with the sample size). There are also the five super population available (although not listed here), simply replace the last three characters in `name` by `EUR`, `AFR`, `AMR`, `EAS`, `SAS`.  
+
+<iframe seamless src="/post/2018-08-09-put-the-color-into-the-points/map-1000genomes-populations.html" width="100%" height="500"></iframe> <sup>(From <a href="../1kgmap.html">this</a> blog post.)</sup>
+
+We want the LD information, so that we can add this info to the locuszoom plot. But how do we know which population to pick? One way is to read up what kind of individuals were present. In our case - mostly Europeans (`EUR`). But we could also build some pooled LD matrix of different populations. 
+
+Now that we know which reference panel we want to use, we can use the different rest APIs. 
+
+- [Access LD between a SNP and its region](#access-ld-between-a-snp-and-its-region)
+- [Access LD matrix](#access-ld-matrix)
+- [Access LD between a SNP and many other SNPs](#access-ld-between-a-snp-and-many-other-snps)
+
+### Access LD between a SNP and its region
+<!------------------------------>
+
+This API is described [here](https://rest.ensembl.org/documentation/info/ld_id_get).
+
+The default window size is 500 kb. There are also thresholds for `r2` (e.g. if you want to filter all SNPs with an `r2 > 0.8`).
+
+The only input required is the SNP rsid, marked with `{snp}`. 
+
+```{r echo=TRUE}
+snp
+server <- "https://rest.ensembl.org"
+ext <- glue::glue("/ld/human/{snp}/1000GENOMES:phase_3:EUR?")
+## Window size in kb. The maximum allowed value for the window size is 500 kb. LD is computed for the given variant and all variants that are located within the specified window.
+
+r <- GET(paste(server, ext, sep = ""), content_type("application/json"))
+stop_for_status(r)
+LD.SNP.region <- as_tibble(fromJSON(toJSON(content(r)))) %>%
+  unnest() %>%
+  mutate(r2 = as.numeric(r2))
+head(LD.SNP.region)
+```
+
+As a result, `LD.snp.region` contains the `r2` of our top SNP with all SNPs that were +/- 500 kb away. 
+
+What if we want the correlation between all SNPs? 
+
+### Access LD matrix
+<!------------------------------>
+
+For this, we need the rest API [here](https://rest.ensembl.org/documentation/info/ld_region_get).
+
+We can calculate the LD matrix of a full region, max 1 Mb wide. For fast computation, we limit it to +/- 50 kb. 
+
+```{r, calc-ld-matrix, eval=TRUE, cache=TRUE, include=TRUE}
+## Query region. A maximum of 1Mb is allowed.
+
+ext <- glue::glue("/ld/human/region/{sel.chr}:{sel.pos - range/20}..{sel.pos + range/20}/1000GENOMES:phase_3:EUR?")
+
+r <- GET(paste(server, ext, sep = ""), content_type("application/json"))
+stop_for_status(r)
+LD.matrix.region <- as_tibble(fromJSON(toJSON(content(r)))) %>%
+  unnest() %>%
+  mutate(r2 = as.numeric(r2))
+
+head(LD.matrix.region)
+```
+
+
+```{r, plot-ld-matrix, eval=FALSE, cache=TRUE, include=FALSE, fig.height = 4, fig.width = 4}
+
+ggplot(data = LD.matrix.region) +
+  geom_tile(aes(x = variation1, y = variation2, fill = r2)) +
+  scale_fill_gradient(low = "white", high = "red")
+```
+
+### Access LD between a SNP and many other SNPs
+<!------------------------------>
+
+The [third and last option](https://rest.ensembl.org/documentation/info/ld_pairwise_get) is to pass on a set of SNP rs ids, and access the LD among these. Implemented in the ENSEMBL API is only the LD between two SNPs, so we will have to extend this to many SNPs. 
+
+```{r calc-ld-SNP-SNPS, eval=TRUE, cache=TRUE, include=TRUE}
+
+extract_ld <- function(SNP.id2 = NULL, SNP.id1 = NULL, POP = NULL) {
+  ext <- glue::glue("/ld/human/pairwise/{SNP.id1}/{SNP.id2}/") ## filter POP further down
+
+  server <- "https://rest.ensembl.org"
+
+  r <- GET(paste(server, ext, sep = ""), content_type("application/json"))
+  stop_for_status(r)
+
+  out <- as_tibble(fromJSON(toJSON(content(r)))) %>%
+    unnest() %>%
+    filter(stringr::str_detect(population_name, POP))
+
+  return(out)
+}
+
+
+## see futher down why intersect here
+other.snps <- intersect(LD.SNP.region$variation2, data$SNP)
+
+## cacluate LD for all other.snps SNPs
+LD.matrix.snps <- purrr::map_df(other.snps, extract_ld, snp, "EUR") %>%
+  mutate(r2 = as.numeric(r2)) %>%
+  bind_rows() %>%
+  unnest()
+LD.matrix.snps
+```
+
+Calculate the LD matrix (`LD.matrix.region`) or the LD between SNP pairs (`LD.matrix.snps`) takes _a lot_ of time!
+
+### Coloured locuszoom plot
+<!---------- ------------------------------->
+
+For the locuszoom plot we need only the correlation between the top SNP and all other SNPs. So we join the object `LD.SNP.region` to `data`. 
+
+```{r, join-ld}
+data_ensembl <- data %>%
+  full_join(LD.SNP.region, by = c("SNP" = "variation2"))
+```
+
+
+```{r, plot-summarystats-ld, fig.height = 5, eval=TRUE, cache=TRUE, include=TRUE}
+
+ggplot(data = data_ensembl) +
+  geom_point(aes(POS, -log10(P), color = r2), shape = 16) +
+  labs(
+    title = "Locuszoom plot for BMI GWAS",
+    subtitle = paste("Summary statistics for chromosome", sel.chr, "from", format((sel.pos - range), big.mark = "'"), "to", format((sel.pos + range), big.mark = "'"), "bp"),
+    caption = paste("Data source:", url)
+  ) +
+  geom_point(
+    data = data_ensembl %>% filter(SNP == "rs1421085"),
+    aes(POS, -log10(P)), color = "black", shape = 16
+  ) +
+  scale_color_distiller("R2 (ensembl)", type = "div", palette = "Spectral", limits = c(0, 1))
+```
+
+
+<!-- REST API: https://rviews.rstudio.com/2018/07/23/rest-apis-and-plumber/ ----->
+
+
+<!---------- ------------------------------->
+## 2. Solutions that work half-through
+<!---------- ------------------------------->
+
+
+
+### SNPsnap
+<!------------------------------>
+
+- SNPsnap: https://data.broadinstitute.org/mpg/snpsnap/database_download.html
+- uses a limited set of 1KG populations (EUR, EAS, WAFR).
+
+### API provided by sph.umich
+<!------------------------------>
+
+- [API](http://portaldev.sph.umich.edu/docs/api/v1/?shell#single-variant-statistics)
+- uses limited set of 1KG populations (ALL, EUR)
+- see [github issue](https://github.com/statgen/locuszoom-api/issues/21#issuecomment-414434704)
+
+
+<!---- ### Using locuszoom software ----->
+<!------------------------------>
+
+<!---- One option (or rather a hack) would be to use [locuszoom software](https://genome.sph.umich.edu/wiki/LocusZoom_Standalone) to extract their LD information. However, locuszoom comes with database and LD files, [yielding up to 23 G](https://github.com/statgen/locuszoom-standalone). Besides, its not maintained anymore, since a [new version](https://github.com/statgen/locuszoom) for [interactive usage](http://locuszoom.org/locuszoomjs.php) was developed. 
+
+------->
+<!---------- ------------------------------->
+## 3. A solution that does not work
+<!---------- ------------------------------->
+
+### `rsnps::ld_search`
+<!------------------------------>
+
+A perfect solution would have been the function `ld_search` from R package [`rsnps`](ropensci webpage). It has arguments to choose the reference panel, the population, the distance from the focal SNP. 
+
+The problem is that it only uses old reference panels (HapMap and 1KG-phase1). Meaning, many newer reference panel populations are left out. 
+
+But the main problem is, that the broad institute has taken down the [snap server](https://www.broadinstitute.org/snap/snap) that `ld_search` used to access (see [github issue](https://github.com/ropensci/rsnps/issues/60)); hence `ld_search` [is defunct](https://github.com/ropensci/rsnps/blob/master/R/LDSearch.R).
+
+
+
+
+<!---------- ------------------------------->
+## Conclusion
+<!---------- ------------------------------->
+
+The 
+[ldlink](https://ldlink.nci.nih.gov/?tab=home) API with the `LDproxy` module seems the most perfect solution for now. 
+
+This will probably change with changing technology and larger reference panels. 
+
+## Session Info
+
+```{r, sessioninfo, include = TRUE}
+sessionInfo()
+```
