@@ -66,4 +66,4 @@ subtitle = ""
  css_class = ""
 +++
 
-For complete list, see [Google Scholar](https://scholar.google.co.uk/citations?user=OD9gCh4AAAAJ&hl=en).
+For a complete list, see [Google Scholar](https://scholar.google.co.uk/citations?user=OD9gCh4AAAAJ&hl=en).
