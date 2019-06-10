@@ -19,7 +19,7 @@ blogdown::hugo_build()
 ## 3) commit changes to github >> do in terminal
 path <- getwd()
  
-comment <- "'testing why rss feed won't work'"
+comment <- "'removing test again'"
 
 ## b) commit changes of webpage folder
 ## add files system("git add ...")
