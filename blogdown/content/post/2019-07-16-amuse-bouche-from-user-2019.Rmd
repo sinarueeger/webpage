@@ -6,7 +6,7 @@ slug: amuse-bouches-from-user-2019
 tags: 
   - conference
   - R
-draft: true
+draft: false
 header:
   caption: ''
   image: ''
@@ -23,9 +23,9 @@ knitr::opts_chunk$set(cache = TRUE)
 
 ```
 
-The 3+ days at [useR!2019 in Toulouse](http://www.user2019.fr) were packed with great talks^[I cannot wait to see the recordings to catch up with the parallel sessions that I missed!]. 
+The 3+ days at [useR!2019 in Toulouse](http://www.user2019.fr) were packed with great talks^[I cannot wait to see the recordings to catch up with the parallel sessions that I missed!] and good food - hence the [amuse-bouches](https://en.wikipedia.org/wiki/Amuse-bouche) word play.
 
-Here is an attempt to list some free appetizers ([amuse-bouches](https://en.wikipedia.org/wiki/Amuse-bouche)) from the conference. Hopefully convincing enough to start using a new package or change a workflow. Not everything was brand-new, but it was helpful to have someone talking you through their inspiration and examples. 
+Here are some R code bits from the conference. Hopefully convincing enough to start using a new package or change a workflow. Not everything was brand-new, but it was helpful to have someone talking through their inspiration and examples. 
 
 Check out the speakers' materials - soon there will be recordings too. Some of the examples are also copied straight from the speakers' slide decks. 
 
@@ -58,7 +58,7 @@ iris %>%
   summarise(avg = mean(Petal.Length, na.rm = TRUE))
 ```
 
-You can use the "curly-curly" brackets if you want to turn this small bit of code into a function `group_mean()` with a `data`, `by` and `var` argument^[See [Slide 49+](https://speakerdeck.com/lionelhenry/reusing-tidyverse-code?slide=49).] (want to pass the variables on in an unquoted way):
+You can use the "curly-curly" brackets if you want to turn this small bit of code into a function `group_mean()` with a `data`, `by` and `var` argument^[See [Slide 49+](https://speakerdeck.com/lionelhenry/reusing-tidyverse-code?slide=49).] (and want to pass the variables on in an unquoted way):
 
 ```{r 2019-07-16-amuse-bouche-from-user-2019-3 }
 group_mean <- function(data, by, var) {
@@ -127,7 +127,7 @@ library(usethis)
 
 Once upon a time, there was the package `devtools`. Then `devtools` became too large, and now the `usethis` package is taking over some of the convenience functions for workflows. 
 
-`usethis` is all about avoiding to copy+pasting. For example, there is a function to edit the `.Rprofile` called `usethis::edit_r_profile()`. Whenever there is a slightly complicated task ahead (_restarting R_), the `usethis` package will talk you through the whole process. 
+`usethis` is all about avoiding to copy+pasting. For example, there is a function to edit the `.Rprofile` called `usethis::edit_r_profile()`. Whenever there is a slightly complicated task ahead (say _restarting R_), the `usethis` package will talk you through the whole process. 
 
 There are lots of `use_*` to add or modify something to/in a project/package and three functions to create a package, a project or a github fork: 
 
@@ -167,7 +167,7 @@ devtools::install()
 use_readme_rmd()
 ## knit + commit + push
 
-## 9. clean up
+## 9. clean up if this was only a demo
 ## install.packages("fs")
 ## fs::dir_delete("~/tmp/mypackage")
 ```
@@ -244,7 +244,7 @@ Speaker: [Hadley Wickham](https://twitter.com/hadleywickham) ([Demo](https://gis
 library(tidyr)
 ```
 
-What a history reshaping data in R already has! From `reshape` to `melt`+`cast`, over to `gather`+`spread` and now `pivot_long` and `pivot_wide`. Reshaping data stays a mind-bending task, but hopefully, these `pivot_*` functions will make life easier.
+What a history reshaping data in R already has! From `reshape` to `melt` + `cast`, over to `gather` + `spread` and now `pivot_long` + `pivot_wide`. Reshaping data stays a mind-bending task, but hopefully, these `pivot_*` functions will make life easier.
 
 ```{r 2019-07-16-amuse-bouche-from-user-2019-12}
 # devtools::install_github("chrk623/dataAnim")
@@ -408,6 +408,12 @@ Speaker: [Davis Vaughan](https://twitter.com/dvaughan32) ([Slides](https://githu
 ## may take some time
 ```
 
+`rray` can do two things that are otherwise annoying/counter-intuitive in R:
+
+- broadcasting (recycling dimensions)
+- subsetting (`bag[,1, drop = FALSE]`)
+
+
 ### Matrices with base-r
 
 Let's look at an example of matrix operations in base-r^[See also [slide 5](https://github.com/DavisVaughan/2019-07-09_useR-2019-rray/blob/master/useR-2019-rray.pdf).]. 
@@ -440,11 +446,7 @@ dim(mat_1[,1, drop = FALSE]) ## but with drop = FALSE we can keep it a matrix
 
 ### Matrices with rray
 
-`rray` can do two things that are otherwise annoying/counter-intuitive in R:
-
-- broadcasting (recycling dimensions)
-- subsetting (`bag[,1, drop = FALSE]`)
-
+Let's do now the same task with `rray`.
 
 ```{r 2019-07-16-amuse-bouche-from-user-2019-20 , echo=TRUE, results='hide'}
 library(rray)
@@ -480,7 +482,7 @@ rray_bind(mat_1_rray, mat_2_rray, .axis = 2)
 <!---------------- -------------------->
 ## Last but not least
 
-The `rstatsmeme` package is a little gem discovered thanks to [Frie](https://twitter.com/ameisen_strasse):
+The `rstatsmeme` package is a little gem discovered thanks to [Frie Preu](https://twitter.com/ameisen_strasse):
 
 ```{r 2019-07-16-amuse-bouche-from-user-2019-21, message=FALSE, warning=FALSE, echo=TRUE, results='hide'}
 # devtools::install_github("favstats/rstatsmemes")
