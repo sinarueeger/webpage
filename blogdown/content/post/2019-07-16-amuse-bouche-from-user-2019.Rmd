@@ -1,0 +1,490 @@
+---
+title: Amuse-bouches from useR!2019
+subtitle: Short examples from the R conference in Toulouse
+date: '2019-07-18'
+slug: amuse-bouches-from-user-2019
+tags: 
+  - conference
+  - R
+draft: true
+header:
+  caption: ''
+  image: ''
+output:
+  blogdown::html_page:
+    toc: false
+---
+
+
+```{r 2019-07-16-amuse-bouche-from-user-2019-1, message=FALSE, warning=FALSE, include=FALSE}
+# library(showtext)
+suppressPackageStartupMessages(library(tidyverse))
+knitr::opts_chunk$set(cache = TRUE)
+
+```
+
+The 3+ days at [useR!2019 in Toulouse](http://www.user2019.fr) were packed with great talks^[I cannot wait to see the recordings to catch up with the parallel sessions that I missed!]. 
+
+Here is an attempt to list some free appetizers ([amuse-bouches](https://en.wikipedia.org/wiki/Amuse-bouche)) from the conference. Hopefully convincing enough to start using a new package or change a workflow. Not everything was brand-new, but it was helpful to have someone talking you through their inspiration and examples. 
+
+Check out the speakers' materials - soon there will be recordings too. Some of the examples are also copied straight from the speakers' slide decks. 
+
+1. [Tidy eval](#tidy-eval)
+2. [usethis](#usethis)
+3. [pak](#pak)
+4. [Reshaping data](#reshaping-data)
+5. [vroom](#vroom)
+6. [data.table](#datatable)
+7. [rray](#rray)
+
+<!------------------ ------------------->
+## 1. tidy eval
+<!------------------ ------------------->
+
+Speaker: [Lionel Henry](https://twitter.com/_lionelhenry) ([Slides](https://speakerdeck.com/lionelhenry/reusing-tidyverse-code))
+
+I never warmed up to the bang-bangs and enquo's. Hence the new and more straight forward "curly-curly"'s for functional programming `{{ arg }}` in the tidyverse feel like a game-changer. 
+
+For those more familiar with the previous framework: `{{ arg }}` is a shortcut for `!!enquo(arg)`.
+
+### dplyr example
+
+Let's say you have a dataset, here `iris`, and you want to compute the average `Petal.Length` for each `Species`:
+
+```{r 2019-07-16-amuse-bouche-from-user-2019-2 }
+library(dplyr)
+iris %>% 
+  group_by(Species) %>%
+  summarise(avg = mean(Petal.Length, na.rm = TRUE))
+```
+
+You can use the "curly-curly" brackets if you want to turn this small bit of code into a function `group_mean()` with a `data`, `by` and `var` argument^[See [Slide 49+](https://speakerdeck.com/lionelhenry/reusing-tidyverse-code?slide=49).] (want to pass the variables on in an unquoted way):
+
+```{r 2019-07-16-amuse-bouche-from-user-2019-3 }
+group_mean <- function(data, by, var) {
+  
+  data %>%
+    group_by({{ by }}) %>%
+    summarise(avg = mean({{ var }}, na.rm = TRUE))
+}
+```
+
+We can then apply `group_mean()` to any dataset that has a grouping and a continuous variable, for example, the mammals sleep dataset in `ggplot2`:
+
+```{r 2019-07-16-amuse-bouche-from-user-2019-4, echo=TRUE, results='hide'}
+library(ggplot2)
+group_mean(data = msleep, by = vore, var = sleep_total)
+
+```
+
+
+### ggplot2 example
+
+Another common tidy eval application is `ggplot2`. In the example below, we want a customised plot: a scatterplot with a `geom_smooth` on top of it. 
+
+```{r 2019-07-16-amuse-bouche-from-user-2019-5, message=FALSE, warning=FALSE}
+library(ggplot2)
+theme_set(theme_bw())
+ggplot(data = iris, 
+       aes(x = Sepal.Length, y = Petal.Length, group = Species, color = Species)
+       ) +
+  geom_point() +
+  geom_smooth(method = "lm") + 
+  ggtitle("Pack this plot into a function.")
+```
+
+Again, we can wrap the "curly-curly" brackets around the arguments and apply them to a different dataset. 
+
+```{r 2019-07-16-amuse-bouche-from-user-2019-6, message=FALSE, warning=FALSE, echo=TRUE, results='hide'}
+plot_point_smooth <- function(data, x, y, gr = NULL, method = "lm") {
+  
+  ggplot(data = data, 
+         aes({{ x }}, {{ y }}, group = {{ gr }}, color = {{ gr }})
+         ) +
+    geom_point() +
+    geom_smooth(method = method)
+  
+}
+```
+
+```{r 2019-07-16-amuse-bouche-from-user-2019-6b, message=FALSE, warning=FALSE, echo=TRUE,fig.show = 'hide', results='hide'}
+plot_point_smooth(msleep, x = sleep_total, y = sleep_rem, gr = NULL) + 
+  ggtitle("Tidy eval with the msleep dataset")
+```
+
+
+<!------------------ ------------------->
+## 2. usethis
+<!------------------ ------------------->
+
+Speaker: [Jenny Bryan](https://twitter.com/JennyBryan) ([Slides + Material + Demo](https://github.com/jennybc/2019-07_useR-toulouse-usethis))
+
+
+```{r 2019-07-16-amuse-bouche-from-user-2019-7, message=FALSE, warning=FALSE}
+# install.packages("usethis")
+library(usethis)
+```
+
+Once upon a time, there was the package `devtools`. Then `devtools` became too large, and now the `usethis` package is taking over some of the convenience functions for workflows. 
+
+`usethis` is all about avoiding to copy+pasting. For example, there is a function to edit the `.Rprofile` called `usethis::edit_r_profile()`. Whenever there is a slightly complicated task ahead (_restarting R_), the `usethis` package will talk you through the whole process. 
+
+There are lots of `use_*` to add or modify something to/in a project/package and three functions to create a package, a project or a github fork: 
+
+1. `create_package()`
+1. `create_project()`
+1. `create_from_github()`
+
+
+### Create a package
+
+If you want to create a package, do the following (see also [screencast](https://www.youtube.com/watch?v=3vsPMyTfT8I&feature=youtu.be)): 
+
+```{r 2019-07-16-amuse-bouche-from-user-2019-8, eval=FALSE, include=TRUE, echo=TRUE, results='hide'}
+## 1. create the package skeleton
+create_package("~/tmp/mypackage")
+
+## 2. use git
+use_git()
+
+## 3. add a license
+use_mit_license()
+
+## 4. run check
+# install.packages("devtools")
+devtools::check()
+
+## 5. commit all files with git
+
+## 6. set up git + github
+use_github()
+## will update the DESCRIPTION file
+
+## 7. install the package
+devtools::install()
+
+## 8. add a rmarkdown readme file
+use_readme_rmd()
+## knit + commit + push
+
+## 9. clean up
+## install.packages("fs")
+## fs::dir_delete("~/tmp/mypackage")
+```
+
+
+<!------------------ ------------------->
+## 3. pak
+<!------------------ ------------------->
+
+Speaker: [Gábor Csárdi](https://twitter.com/GaborCsardi) ([Slides](https://github.com/gaborcsardi/pak-talk))
+
+```{r 2019-07-16-amuse-bouche-from-user-2019-9 }
+# install.packages("pak") ## or
+# devtools::install_github("r-lib/pak")
+```
+
+It seems like `pak` will make package installation - conventional and for projects - more intuitive. Before installing anything, `pak` will give you a heads up on what will be installed or if there are any conflicts. 
+
+`pak` has two main functions: `pak::pkg_*` and `pak:::proj_*`
+
+
+### Conventional package installation
+
+Play around with `usethis`^[See [demo 1](https://github.com/gaborcsardi/pak-talk/blob/master/pkg.Rmd)] and see what happens:
+
+```{r 2019-07-16-amuse-bouche-from-user-2019-10, eval = FALSE, echo=TRUE, results='hide'}
+pak::pkg_install("usethis")
+pak::pkg_remove("usethis")
+pak::pkg_install("r-lib/usethis")
+pak::pkg_status("usethis")
+```
+
+
+
+### Package installation for projects
+
+First, create a project with `usethis`, then install R packages directly into the project. 
+
+```{r 2019-07-16-amuse-bouche-from-user-2019-11, eval=FALSE, include=TRUE, echo=TRUE, results='hide'}
+usethis::create_project("~/tmp/test")
+
+## check the directory
+dir()
+
+## initialise a dedicated R packages folder
+pak:::proj_create()
+
+## check the directory again
+dir()
+
+## check the DESCRIPTION file
+readLines("DESCRIPTION")
+
+## install usethis
+pak:::proj_install("usethis")
+
+## this installs dependencies into a private project library
+readLines("DESCRIPTION")
+
+## remove the project folder again
+fs::dir_delete("~/tmp/test")
+```
+
+
+
+<!------------------ ------------------->
+## 4. Reshaping data
+<!------------------ ------------------->
+
+Speaker: [Hadley Wickham](https://twitter.com/hadleywickham) ([Demo](https://gist.github.com/hadley/eb5c97bfbf257d133a7337b33d9f02d1))
+
+```{r 2019-07-16-amuse-bouche-from-user-2019-12b , echo=TRUE, results='hide'}
+# install.packages("tidyverse/tidyr")
+library(tidyr)
+```
+
+What a history reshaping data in R already has! From `reshape` to `melt`+`cast`, over to `gather`+`spread` and now `pivot_long` and `pivot_wide`. Reshaping data stays a mind-bending task, but hopefully, these `pivot_*` functions will make life easier.
+
+```{r 2019-07-16-amuse-bouche-from-user-2019-12}
+# devtools::install_github("chrk623/dataAnim")
+# Master's Thesis project by Charco Hui
+library(dataAnim)
+
+## Our two toy datasets
+datoy_wide
+datoy_long
+```
+
+Let's reshape the datasets^[See [demo](https://gist.github.com/hadley/eb5c97bfbf257d133a7337b33d9f02d1)]:
+
+```{r 2019-07-16-amuse-bouche-from-user-2019-12c, echo=TRUE, results='hide'}
+
+## lets make it longer
+datoy_wide %>%
+  pivot_longer(-Name, names_to = "Subject", values_to = "Score")
+
+## lets make it wider
+datoy_long %>%
+  dplyr::mutate(Time = 1:nrow(datoy_long)) %>%
+  pivot_wider(names_from = "Subject", values_from = c("Score", "Time"))
+
+```
+
+
+<!---------------- -------------------->
+## 5. vroom
+<!---------------- -------------------->
+
+Speaker: [Jim Hester](https://twitter.com/jimhester_) ([Slides](https://speakerdeck.com/jimhester/vroom
+) + [Screencast](screen cast: bit.ly/vroom-yt))
+
+```{r 2019-07-16-amuse-bouche-from-user-2019-13, echo=TRUE, results='hide', message=FALSE, warning=FALSE}
+## install.packages("vroom")
+library(vroom)
+```
+
+Importing large datasets into R can be a painful task. Especially if you only need a subset of the columns. And apparently, our thoughts drift off after 10 sec^[I can totally confirm that.] starring at the screen where it is _still_ loading the dataset.
+
+`data.table::fread()` is always here to help. But now comes `vroom`!
+
+### Get some large'ish data
+
+First, we need some large dataset. To not burden our laptops too much^[If you can, choose the [UKBB + GIANT meta analysis results](https://portals.broadinstitute.org/collaboration/giant/index.php/GIANT_consortium_data_files#2018_GIANT_and_UK_BioBank_Meta-analysis), which are pretty large.], we will go for some exome based [GWAS](https://en.wikipedia.org/wiki/Genome-wide_association_study) results.
+
+```{r 2019-07-16-amuse-bouche-from-user-2019-14}
+
+## Source: https://portals.broadinstitute.org/collaboration/giant/index.php/GIANT_consortium_data_files
+
+path_to_file_1 <- "Height_AA_add_SV.txt.gz"
+path_to_file_2 <- "BMI_African_American.fmt.gzip" 
+
+
+## Height
+download.file(
+  "https://portals.broadinstitute.org/collaboration/giant/images/8/80/Height_AA_add_SV.txt.gz",
+  path_to_file_1)
+
+## BMI
+download.file(
+  "https://portals.broadinstitute.org/collaboration/giant/images/3/33/BMI_African_American.fmt.gzip",
+  path_to_file_2)
+
+
+## File size
+## install.packages("fs")
+fs::file_size(path_to_file_1)
+fs::file_size(path_to_file_2)
+```
+
+The two datasets have a mix of characters, numbers and decimals^[Apparently, characters are the most challenging ones for speed.].
+
+### vroom vs DT
+
+Here is how `vroom` works and a basic comparison to `data.table::fread` (I let you do the proper [benchmarking](http://adv-r.had.co.nz/Profiling.html) yourself).
+
+```{r 2019-07-16-amuse-bouche-from-user-2019-15, message=FALSE, warning=FALSE, echo=TRUE, results='hide'}
+library(dplyr)
+
+## With vroom
+giant_vroom <- vroom::vroom(path_to_file_1)
+giant_vroom_subset <- giant_vroom %>% select(CHR, POS) %>% filter(CHR == 1)
+
+## The equivalent with data.table
+giant_DT <- data.table::fread(path_to_file_1)
+giant_DT_subset <- giant_DT %>% select(CHR, POS) %>% filter(CHR == 1)
+
+```
+    
+### col_select for the win
+
+```{r 2019-07-16-amuse-bouche-from-user-2019-16, message=FALSE, warning=FALSE, echo=TRUE, results='hide'}
+## Selecting columns
+giant_vroom_select <- vroom::vroom(path_to_file_1, 
+                                   col_select = list(SNPNAME, ends_with("_MAF")))
+head(giant_vroom_select)
+
+## Preventing columns from being imported
+giant_vroom_remove <- vroom::vroom(path_to_file_1, 
+                                   col_select = -ExAC_AFR_MAF)
+head(giant_vroom_remove)
+
+## Renaming on the fly
+giant_vroom_rename <- vroom::vroom(path_to_file_1, 
+                                   col_select = list(p = Pvalue, everything()))
+head(giant_vroom_rename)
+```
+
+### Combining multiple datasets
+
+```{r 2019-07-16-amuse-bouche-from-user-2019-17, echo=TRUE, results='hide', message=FALSE, warning=FALSE}
+data_combined <- vroom::vroom( 
+                    c(path_to_file_1, path_to_file_2), 
+                    id = "path")
+table(data_combined$path)
+```
+
+
+
+<!------------------ ------------------->
+## 6. data.table
+<!------------------ ------------------->
+
+Speaker: [Arun Srinivasan](https://twitter.com/arun_sriniv) ([Slides](https://t.co/TrvDVS07QD))
+
+`data.table` has a pretty cool feature^[See [slides 26](https://t.co/TrvDVS07QD)]:
+
+```{r 2019-07-16-amuse-bouche-from-user-2019-18 , echo=TRUE, results='hide'}
+# install.packages("data.table")
+library(data.table)
+
+## Create a giant data.table
+p <- 2e6
+dat <- data.table(x = sample(1e5, p, TRUE), y = runif(p))
+
+## Let's select a few rows
+system.time(
+  tmp <- dat[x %in% 2000:3000 ]
+)
+
+## do the same operation again
+system.time(
+  tmp <- dat[x %in% 2000:3000 ]
+)
+
+```
+
+
+
+
+<!---------------- -------------------->
+## 7. rray
+<!---------------- -------------------->
+
+Speaker: [Davis Vaughan](https://twitter.com/dvaughan32) ([Slides](https://github.com/DavisVaughan/2019-07-09_useR-2019-rray/blob/master/useR-2019-rray.pdf))
+
+```{}
+# devtools::install_github("r-lib/rray")
+## may take some time
+```
+
+### Matrices with base-r
+
+Let's look at an example of matrix operations in base-r^[See also [slide 5](https://github.com/DavisVaughan/2019-07-09_useR-2019-rray/blob/master/useR-2019-rray.pdf).]. 
+
+
+First, we want to add two matrices with similar dimensions:
+
+```{r 2019-07-16-amuse-bouche-from-user-2019-19a, error=TRUE}
+
+mat_1 <- matrix(c(15, 10, 8, 6, 12, 9), byrow = FALSE, nrow = 2) 
+mat_2 <- matrix(c(5, 2, 3), nrow = 1)
+
+## broadcasting won't work ❌
+mat_1 + mat_2
+
+```
+
+Next, we want to select one matrix column:
+
+```{r 2019-07-16-amuse-bouche-from-user-2019-19b, error=TRUE}
+dim(mat_1[,2:3]) ## selecting two columns is fine
+
+## subsetting won't preserve the matrix class ❌
+dim(mat_1[,1]) ## why not 2x1?
+
+length(mat_1[,1]) ## ah, it turned into a vector!
+
+dim(mat_1[,1, drop = FALSE]) ## but with drop = FALSE we can keep it a matrix
+```
+
+### Matrices with rray
+
+`rray` can do two things that are otherwise annoying/counter-intuitive in R:
+
+- broadcasting (recycling dimensions)
+- subsetting (`bag[,1, drop = FALSE]`)
+
+
+```{r 2019-07-16-amuse-bouche-from-user-2019-20 , echo=TRUE, results='hide'}
+library(rray)
+
+(mat_1_rray <- rray(c(15, 10, 8, 6, 12, 9), dim = c(2, 3)))
+(mat_2_rray <- rray(c(5, 2, 3), dim = c(1, 3)))
+
+## Broadcasting works ✓
+mat_1_rray + mat_2_rray
+
+## Subsetting works ✓
+dim(mat_1_rray[,2:3])
+dim(mat_1_rray[,1])
+
+## smart functions
+mat_1_rray / rray_sum(mat_1_rray, axes = 1)
+rray_bind(mat_1_rray, mat_2_rray, .axis = 1)
+rray_bind(mat_1_rray, mat_2_rray, .axis = 2)
+
+```
+
+
+
+
+
+## More info
+
+- Program + Slides: https://user2019.r-project.org/talk_schedule/
+- Collection of slides during the conference by [Praer (Suthira Owlarn)](https://twitter.com/S_Owla): https://github.com/sowla/useR2019-materials
+- Recordings by the [R Consortium on Youtube](https://www.youtube.com/channel/UC_R5smHVXRYGhZYDJsnXTwg) (keynotes available, rest soon to be published)
+
+<!---------------- -------------------->
+<!---------------- -------------------->
+## Last but not least
+
+The `rstatsmeme` package is a little gem discovered thanks to [Frie](https://twitter.com/ameisen_strasse):
+
+```{r 2019-07-16-amuse-bouche-from-user-2019-21, message=FALSE, warning=FALSE, echo=TRUE, results='hide'}
+# devtools::install_github("favstats/rstatsmemes")
+library(rstatsmemes)
+show_me_an_R_meme()
+```
+
