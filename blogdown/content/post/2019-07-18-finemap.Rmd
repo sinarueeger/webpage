@@ -288,6 +288,7 @@ readr::write_delim(incl_variants,
 
 ```{r}
 
+
 ## generate LD data -----------------------
 ## ----------------------------------------
 
@@ -429,7 +430,11 @@ snp_plot <- snp %>%
 plot_finemap <- locuszoom_wrapper(data = snp_plot, y = log10bf, K = 1, horiz_line = log10(100), labs_bottom_logic = FALSE, labs_top_logic = TRUE)
 plot_ss <- locuszoom_wrapper(data = snp_plot, y = mlog10p, K = 1, horiz_line = -log10(5*10^(-8) ), labs_bottom_logic = TRUE, labs_top_logic = FALSE)
 
-plot_grid(plot_finemap, plot_ss, nrow = 2) %>% 
-  ggplot2::ggsave(., filename = "replication_benner_etal_2016_figure_7_replicated.pdf", width = 7, height = 10, units = "in")
+plot_finemap
+plot_ss
+
+library(cowplot)
+plot_grid(plot_finemap, plot_ss, nrow = 2)
+
 ```
 
