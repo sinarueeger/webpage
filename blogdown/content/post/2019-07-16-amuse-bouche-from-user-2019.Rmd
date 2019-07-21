@@ -284,7 +284,7 @@ Speaker: [Jim Hester](https://twitter.com/jimhester_) ([Slides](https://speakerd
 library(vroom)
 ```
 
-Importing large datasets into R can be a painful task. Especially if you only need a subset of the columns. And apparently, our thoughts drift off after 10 sec^[I can totally confirm that.] starring at the screen where it is _still_ loading the dataset.
+Importing large datasets into R can be a painful task. Especially if you only need a subset of the columns. And apparently, our thoughts drift off after 10 sec^[I can totally confirm that.] staring at the screen where it is _still_ loading the dataset.
 
 `data.table::fread()` is always here to help. But now comes `vroom`!
 
