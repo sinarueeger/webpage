@@ -7,6 +7,8 @@ tags:
   - conference
   - R
 draft: false
+url_source: https://github.com/sinarueeger/webpage/blob/master/blogdown/content/post/2019-07-16-amuse-bouche-from-user-2019.Rmd
+url_code: https://github.com/sinarueeger/webpage/blob/master/blogdown/content/post/2019-07-16-amuse-bouche-from-user-2019.R
 header:
   caption: ''
   image: ''
@@ -15,12 +17,16 @@ output:
     toc: false
 ---
 
+```{r 2019-07-16-amuse-bouche-from-user-2019-0, eval=FALSE, message=FALSE, warning=FALSE, include=FALSE}
+knitr::purl(input = "content/post/2019-07-16-amuse-bouche-from-user-2019.Rmd",
+            output = "content/post/2019-07-16-amuse-bouche-from-user-2019.R")
+
+```
 
 ```{r 2019-07-16-amuse-bouche-from-user-2019-1, message=FALSE, warning=FALSE, include=FALSE}
 # library(showtext)
 #suppressPackageStartupMessages(library(tidyverse))
 knitr::opts_chunk$set(cache = TRUE)
-
 ```
 
 
