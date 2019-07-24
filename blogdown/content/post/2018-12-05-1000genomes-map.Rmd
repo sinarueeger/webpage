@@ -8,6 +8,8 @@ tags:
   - maps
 slug: 1kgmap
 draft: false
+url_source: https://github.com/sinarueeger/webpage/blob/master/blogdown/content/post/2018-12-05-1000genomes-map.Rmd
+url_code: https://github.com/sinarueeger/webpage/blob/master/blogdown/content/post/2018-12-05-1000genomes-map.R
 header:
   caption: ''
   image: ''
@@ -15,6 +17,12 @@ output:
   blogdown::html_page:
     toc: true
 ---
+
+```{r eval=FALSE, message=FALSE, warning=FALSE, include=FALSE}
+knitr::purl(input = "content/post/2018-12-05-1000genomes-map.Rmd",
+            output = "content/post/2018-12-05-1000genomes-map.R")
+
+```
 
 
 This post provides the R-Code to map the 26 populations of the [1000 Genomes project](http://www.internationalgenome.org/).
