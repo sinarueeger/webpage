@@ -23,6 +23,7 @@ knitr::opts_chunk$set(cache = TRUE)
 
 ```
 
+
 The 3+ days at [useR!2019 in Toulouse](http://www.user2019.fr) were packed with great talks^[I cannot wait to see the recordings to catch up with the parallel sessions that I missed!] and good food - hence the [amuse-bouches](https://en.wikipedia.org/wiki/Amuse-bouche) word play.
 
 Here are some R code bits from the conference. Hopefully convincing enough to start using a new package or change a workflow. Not everything was brand-new, but it was helpful to have someone talking through their inspiration and examples. 

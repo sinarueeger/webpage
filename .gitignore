@@ -9,3 +9,7 @@
 *.rdx
 data/
 bin/
+*gz
+*gzip
+*cache*
+drafts/
