@@ -23,6 +23,8 @@ googleAnalytics = ""
 # Enable comments by entering your Disqus shortname
 disqusShortname = "sinarueeger-github-io"
 
+## this is not enabled yet
+## see https://github.com/sinarueeger/webpage/pull/26#issuecomment-513576560
 githubsource = "https://github.com/sinarueeger/webpage/blob/master/blogdown/content"
    
 ############################
