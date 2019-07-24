@@ -1,0 +1,23 @@
+<div class="post-meta">
+
+<!--this adds github edit button to all posts-->
+{{ if $.File.Path }}
+
+{{ $Rmd := (print $.File.BaseFileName ".Rmd") }}
+
+{{ if (where (readDir (print "content/" $.File.Dir)) "Name" $Rmd) }}
+  {{ $.Scratch.Set "FilePath" (print $.File.Dir $Rmd) }}
+{{ else }}
+  {{ $.Scratch.Set "FilePath" $.File.Path }}
+{{ end }}
+
+{{ with $.Site.Params.githubsource }}  
+  <div>
+    <i class="fa fa-github fa-fw"></i>
+    <a href="{{ . }}{{ $.Scratch.Get "FilePath" }}" target="_blank">View source</a>&nbsp{{ else }}@{{ . }}
+  </div>
+  {{ end }}
+{{ end }}
+<!--end github edit code-->
+
+</div> 
