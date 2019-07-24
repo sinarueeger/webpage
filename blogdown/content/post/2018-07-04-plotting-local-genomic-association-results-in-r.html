@@ -7,6 +7,8 @@ tags:
   - R
   - data visualisation
 slug: locuszoomplot
+url_source: https://github.com/sinarueeger/webpage/blob/master/blogdown/content/post/2018-07-04-plotting-local-genomic-association-results-in-r.Rmd
+url_code: https://github.com/sinarueeger/webpage/blob/master/blogdown/content/post/2018-07-04-plotting-local-genomic-association-results-in-r.R
 draft: false
 header:
   caption: ''
@@ -339,7 +341,7 @@ dat.bmi &lt;- dat.bmi %&gt;% rename(SNP = SNPNAME, P = Pvalue)</code></pre>
 ##  n obs: 246328 
 ##  n variables: 10 
 ## 
-## ── Variable type:character ──────────────────────────────────────────────────────────────────────────────────────
+## ── Variable type:character ──────────────────────────────────────────────────────────────────────────────────
 ##  variable missing complete      n min max empty n_unique
 ##       ALT       0   246328 246328   1   1     0        4
 ##       CHR       0   246328 246328   1   2     0       23
@@ -348,13 +350,13 @@ dat.bmi &lt;- dat.bmi %&gt;% rename(SNP = SNPNAME, P = Pvalue)</code></pre>
 ##       REF       0   246328 246328   1   1     0        4
 ##       SNP       0   246328 246328   1  11     0   243206
 ## 
-## ── Variable type:integer ────────────────────────────────────────────────────────────────────────────────────────
+## ── Variable type:integer ────────────────────────────────────────────────────────────────────────────────────
 ##  variable missing complete      n    mean      sd    p0     p25     p50
 ##       POS       0   246328 246328 7.6e+07 5.7e+07 11885 3.2e+07 6.1e+07
 ##      p75    p100     hist
 ##  1.1e+08 2.5e+08 ▇▇▅▅▃▂▁▁
 ## 
-## ── Variable type:numeric ────────────────────────────────────────────────────────────────────────────────────────
+## ── Variable type:numeric ────────────────────────────────────────────────────────────────────────────────────
 ##  variable missing complete      n      mean     sd        p0    p25
 ##      beta     977   245351 246328   0.00051   0.13 -3.2      -0.032
 ##         P     977   245351 246328   0.48      0.3   8.6e-269  0.21 

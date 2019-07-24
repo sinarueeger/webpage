@@ -7,6 +7,8 @@ tags:
   - R
   - data visualisation
 slug: locuszoomplot
+url_source: https://github.com/sinarueeger/webpage/blob/master/blogdown/content/post/2018-07-04-plotting-local-genomic-association-results-in-r.Rmd
+url_code: https://github.com/sinarueeger/webpage/blob/master/blogdown/content/post/2018-07-04-plotting-local-genomic-association-results-in-r.R
 draft: false
 header:
   caption: ''
@@ -17,6 +19,12 @@ output:
 ---
 
 
+
+```{r eval=FALSE, message=FALSE, warning=FALSE, include=FALSE}
+knitr::purl(input = "content/post/2018-07-04-plotting-local-genomic-association-results-in-r.Rmd",
+            output = "content/post/2018-07-04-plotting-local-genomic-association-results-in-r.R")
+
+```
 
 ```{r, setup, include = FALSE, warning=FALSE, message=FALSE}
 library(showtext)
