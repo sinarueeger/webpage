@@ -1,4 +1,4 @@
-## ----2019-07-16-amuse-bouche-from-user-2019-0, eval=FALSE, message=FALSE, warning=FALSE, include=FALSE----
+## ----eval=FALSE, message=FALSE, warning=FALSE, include=FALSE-------------
 ## knitr::purl(input = "content/post/2019-07-30-finemapping.Rmd",
 ##             output = "content/post/2019-07-30-finemapping.R")
 ## 
@@ -25,14 +25,22 @@ system_glued <- function(x)
 }
 
 ## checks
-if (!fs::file_exists(PLINK2)) message("Download PLINK2 from here: http://www.cog-genomics.org/plink/2.0/ and store the binary as bin/plink2 (v2.00 used).")
-if (!fs::file_exists(FINEMAP)) message("Download FINEMAP from here: http://www.christianbenner.com/# and store the binary as bin/finemap (v1.3.1 used).")
-if (!fs::file_exists(LDSTORE)) message("Download LDSTORE from here: http://www.christianbenner.com/# and store the binary as bin/ldstore (v1.1 used).")
+if (!fs::file_exists(PLINK2)) 
+  message("Download PLINK2 from here: http://www.cog-genomics.org/plink/2.0/ 
+          and store the binary as bin/plink2 (v2.00 used).")
+
+if (!fs::file_exists(FINEMAP)) 
+  message("Download FINEMAP from here: http://www.christianbenner.com/ 
+          and store the binary as bin/finemap (v1.3.1 used).")
+
+if (!fs::file_exists(LDSTORE)) 
+  message("Download LDSTORE from here: http://www.christianbenner.com/ 
+          and store the binary as bin/ldstore (v1.1 used).")
 
 
 
 
-## ------------------------------------------------------------------------
+## ----message=FALSE, warning=FALSE----------------------------------------
 ## accessed through ::
 ## fs          
 ## vroom    
@@ -64,7 +72,7 @@ fs::dir_create("~/tmp/finemap-example/bin/")
 
 
 
-## ------------------------------------------------------------------------
+## ----message=FALSE-------------------------------------------------------
 ## Chromosome and position (build 37, base-pairs)
 url_summary_stats <- "mccarthy.well.ox.ac.uk/publications/2015/ENGAGE_1KG/HDL_Meta_ENGAGE_1000G.txt.gz"
 path_summary_stats <- glue::glue("{DIR_DATA}/hdl_summarystats.txt.gz")
@@ -216,9 +224,6 @@ if (!fs::file_exists(glue::glue("{FILE_1KG}.bcor_1"))) {
   system_glued(
     "{LDSTORE} --bplink {FILE_1KG} --bcor {FILE_1KG}.bcor --n-threads 1" 
   )
-  # --accuracy low --ld-thold 0 --ld-n-samples-avail-prop 0
-  ##  --incl-range {BP_FROM}-{BP_TO}
-  
   
 }
 
@@ -313,7 +318,7 @@ locuszoom_wrapper <- function(data, y, K = NA, horiz_line = NA, labs_bottom_logi
 }
 
 
-## ------------------------------------------------------------------------
+## ----message=FALSE, warning=FALSE----------------------------------------
 
 ## results -------------------------------
 snp <- data.table::fread(glue::glue("{FILE}.snp"))
@@ -344,8 +349,9 @@ snp_plot <- snp %>%
 plot_finemap <- locuszoom_wrapper(data = snp_plot, y = log10bf, K = 1, horiz_line = log10(100), labs_bottom_logic = FALSE, labs_top_logic = TRUE)
 plot_ss <- locuszoom_wrapper(data = snp_plot, y = mlog10p, K = 1, horiz_line = -log10(5*10^(-8) ), labs_bottom_logic = TRUE, labs_top_logic = FALSE)
 
-plot_finemap
-plot_ss
+
+
+## ----fig.height=10, fig.width=7------------------------------------------
 
 library(cowplot)
 plot_grid(plot_finemap, plot_ss, nrow = 2)
