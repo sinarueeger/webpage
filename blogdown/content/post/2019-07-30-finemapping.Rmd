@@ -9,8 +9,8 @@ tags:
   - R
   - reproducibility
 draft: true
-url_source: https://github.com/sinarueeger/webpage/blob/master/blogdown/content/post/2019-07-16-amuse-bouche-from-user-2019.Rmd
-url_code: https://github.com/sinarueeger/webpage/blob/master/blogdown/content/post/2019-07-16-amuse-bouche-from-user-2019.R
+url_source: https://github.com/sinarueeger/webpage/blob/master/blogdown/content/post/2019-07-30-finemapping.Rmd
+url_code: https://github.com/sinarueeger/webpage/blob/master/blogdown/content/post/2019-07-30-finemapping.R
 header:
   caption: ''
   image: ''
