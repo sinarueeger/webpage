@@ -50,7 +50,7 @@ Check out the speakers' materials - soon there will be recordings too. Some of t
 
 Speaker: [Lionel Henry](https://twitter.com/_lionelhenry) ([Slides](https://speakerdeck.com/lionelhenry/reusing-tidyverse-code))
 
-I never warmed up to the bang-bangs and enquo's. Hence the new and more straight forward "curly-curly"'s for functional programming `{{ arg }}` in the tidyverse feel like a game-changer. 
+I never warmed up to the bang-bangs and enquo's. Hence the new and more straight forward `{{ }}` (read: curly curly) for functional programming `{{ arg }}` in the tidyverse feel like a game-changer. 
 
 For those more familiar with the previous framework: `{{ arg }}` is a shortcut for `!!enquo(arg)`.
 
