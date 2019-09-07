@@ -24,7 +24,7 @@ slides = ""
 url_pdf = "https://sinarueeger.github.io/robust-data-analysis-with-r/"
 url_slides = "https://sinarueeger.github.io/robust-data-analysis-with-r/slides-robust-da.html#1"
 url_video = ""
-url_project = "https://github.com/sinarueeger/robust-data-analysis-with-r"
+url_code = "https://github.com/sinarueeger/robust-data-analysis-with-r"
 
 # Custom links (optional).
 #   Uncomment line below to enable. For multiple links, use the form `[{...}, {...}, {...}]`.
@@ -43,7 +43,7 @@ url_project = "https://github.com/sinarueeger/robust-data-analysis-with-r"
 
 This is the course material to the workshop _Robust data analysis: an introduction to R_ held at the [_Open Science in Practice_](http://osip2019.epfl.ch/) Summer School 2019 at [EPFL](https://www.epfl.ch/en/), Switzerland, and taught with the help of [Allie Burns](https://twitter.com/imallieburns).  
 
-You find the slides [here](https://sinarueeger.github.io/robust-data-analysis-with-r/slides-robust-da.html#1) and the workshop handbook [here](https://sinarueeger.github.io/robust-data-analysis-with-r/).
+Here are [the slides](https://sinarueeger.github.io/robust-data-analysis-with-r/slides-robust-da.html#1) and [the workshop handbook](https://sinarueeger.github.io/robust-data-analysis-with-r/).
 
 I drew inspiration for the workshop from the following material:
 
