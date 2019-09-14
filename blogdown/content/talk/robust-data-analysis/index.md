@@ -3,7 +3,7 @@ title = "Robust data analysis - an introduction to R"
 
 # Talk start and end times.
 #   End time can optionally be hidden by prefixing the line with `#`.
-date = 2018-09-05T14:00:00
+date = 2019-09-05T14:00:00
 #date_end = 2030-06-01T15:00:00
 all_day = false
 
