@@ -19,14 +19,25 @@ date_format = "Jan 2006"
 #   Begin/end multi-line descriptions with 3 quotes `"""`.
 
 [[experience]]
+  title = "Data Analyst / Bioinformatician"
+  company = "FinnGen"
+  company_url = "https://www.finngen.fi/en"
+  location = "Helsinki"
+  date_start = "2019-09-01"
+  date_end = ""
+  description = """
+
+  """
+  
+[[experience]]
   title = "Postdoctoral Researcher"
   company = "EPFL - Fellay Lab"
   company_url = "https://fellay-lab.epfl.ch/"
   location = "Lausanne"
   date_start = "2018-09-01"
-  date_end = ""
+  date_end = "2018-08-31"
   description = """
-  * Joint analysis of human and pathogen genomes for different infections.
+  * Joint analysis of human and pathogen genomes for various infections.
   """
   
   

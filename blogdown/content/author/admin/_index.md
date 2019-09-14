@@ -9,11 +9,11 @@ authors = ["admin"]
 superuser = true
 
 # Role/position
-role = "Postdoctoral Researcher in Genomics"
+role = "Data Analyst / Bioinformatician"
 
 # Organizations/Affiliations
 #   Separate multiple entries with a comma, using the form: `[ {name="Org1", url=""}, {name="Org2", url=""} ]`.
-organizations = [ { name = "EPFL", url = "https://fellay-lab.epfl.ch/" } ]
+organizations = [ { name = "Institute for Molecular Medicine Finland (FIMM)", url = "https://www.fimm.fi/" } ]
 
 # Short bio (displayed in user profile at end of posts)
 bio = "  "
@@ -98,11 +98,12 @@ user_groups = []
 +++
 
 
-I am a postdoctoral researcher in the Fellay Lab at EPFL, where I analyse human genomic data in the context of infectious diseases.
+I am part of the [FinnGen](https://www.finngen.fi/en/Workinggroups) analysis team, where I analyse large-scale genome and phenotype data. <!-------- where I ... ------->
 
 My interests include statistical modelling, statistical genetics, programming with R, reproducible analysis workflows, and topics intersecting health, medicine and technology.
 
-I received my PhD in Life Sciences in 2018 from the University of Lausanne, where I worked on the imputation of GWAS summary statistics supervised by Zoltán Kutalik.
+I received my PhD in Life Sciences in 2018 from the University of Lausanne, where I worked on the imputation of GWAS summary statistics supervised by [Zoltán Kutalik](https://wp.unil.ch/sgg/). 
+<!------- This was followed by a Postdoc in the [Fellay Lab](https://www.epfl.ch/labs/fellay-lab/) at EPFL, where I analysed human genomic data in the context of infectious diseases. -------->
 
 What I enjoy the most about applied statistics is the interdisciplinary aspect of collaborations that allows me to glimpse into different domains. 
 

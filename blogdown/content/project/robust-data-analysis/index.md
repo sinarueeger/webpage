@@ -48,6 +48,6 @@ Here are [the slides](https://sinarueeger.github.io/robust-data-analysis-with-r/
 I drew inspiration for the workshop from the following material:
 
 - [_Let them have cake first_](https://twitter.com/minebocek/status/1072222447473168389?lang=en) by [Mine CetinkayaRundel](https://twitter.com/minebocek).
-- [_Ten quick tips for teaching programming_](https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1006023) by [Neil Brown](https://twitter.com/neilccbrown) + [Greg Wilson](https://twitter.com/gvwilson). 
+- [_Ten quick tips for teaching programming_](https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1006023) by [Neil Brown](https://twitter.com/neilccbrown) and [Greg Wilson](https://twitter.com/gvwilson). 
 - The [beautiful illustrations](https://github.com/allisonhorst/stats-illustrations/raw/master/openscapes/starwars-rey-rstats.png) by [Allison Horst](https://twitter.com/allison_horst).
 - [Keynote at #useR2019 + mindset](https://youtu.be/Z8PqwFPqn6Y?t=2770) by [Julia Stewart Lowndes](https://twitter.com/juliesquid). 
