@@ -98,7 +98,7 @@ user_groups = []
 +++
 
 
-I am part of the [FinnGen](https://www.finngen.fi/en/Workinggroups) analysis team, where I analyse large-scale genome and phenotype data. <!-------- where I ... ------->
+I am part of the [FinnGen](https://www.finngen.fi/en/Workinggroups) analysis team, where I analyse large-scale genome and phenotype data.
 
 My interests include statistical modelling, statistical genetics, programming with R, reproducible analysis workflows, and topics intersecting health, medicine and technology.
 
