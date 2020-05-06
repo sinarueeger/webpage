@@ -98,15 +98,15 @@ user_groups = []
 +++
 
 
-I am part of the [FinnGen](https://www.finngen.fi/en/Workinggroups) analysis team, where I analyse large-scale genome and phenotype data.
+As a member of the [FinnGen](https://www.finngen.fi/en/Workinggroups) analysis team, I analyse large-scale genomic and phenotypic data.
 
-My interests include statistical modelling, statistical genetics, programming with R, reproducible analysis workflows, and topics intersecting health, medicine and technology.
+My interests include statistical modelling, statistical genetics, programming using R, reproducible analysis workflows, and topics touching on health, medicine and technology.
 
-I received my PhD in Life Sciences in 2018 from the University of Lausanne, where I worked on the imputation of GWAS summary statistics supervised by [Zoltán Kutalik](https://wp.unil.ch/sgg/). 
+During my PhD in Life Sciences at University of Lausanne, I worked on the imputation of GWAS summary statistics supervised by [Zoltán Kutalik](https://wp.unil.ch/sgg/). 
 <!------- This was followed by a Postdoc in the [Fellay Lab](https://www.epfl.ch/labs/fellay-lab/) at EPFL, where I analysed human genomic data in the context of infectious diseases. -------->
 
-What I enjoy the most about applied statistics is the interdisciplinary aspect of collaborations that allows me to glimpse into different domains. 
+For me the most enjoyable aspects of applied statistics are interdisciplinary collaborations that allow a glimpse into different domains. 
 
-In my spare time, I enjoy exploring nature on a bike and contributing to open-source projects.
+In my spare time, I enjoy exploring nature by bike and contributing to open-source projects.
 
 <img src="http://ghchart.rshah.org/0375B4/sinarueeger" alt="sinarueeger's Github chart" />
