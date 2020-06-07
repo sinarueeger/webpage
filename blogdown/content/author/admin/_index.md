@@ -93,7 +93,7 @@ user_groups = []
 [[social]]
    icon = "cv"
    icon_pack = "ai"
-   link = "files/resume.pdf"
+   link = "files/sinarueeger_cv.pdf"
 
 +++
 
