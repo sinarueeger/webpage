@@ -43,6 +43,11 @@ user_groups = []
 
 # List qualifications (such as academic degrees)
 [[education.courses]]
+  course = "Tidyverse Instructor Certification"
+  institution = "RStudio"
+  year = 2020
+  
+[[education.courses]]
   course = "PhD in Life Sciences"
   institution = "University of Lausanne"
   year = 2018
