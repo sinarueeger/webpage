@@ -9,11 +9,11 @@ authors = ["admin"]
 superuser = true
 
 # Role/position
-role = "Data Analyst / Bioinformatician"
+role = "(Genomic) Data Scientist"
 
 # Organizations/Affiliations
 #   Separate multiple entries with a comma, using the form: `[ {name="Org1", url=""}, {name="Org2", url=""} ]`.
-organizations = [ { name = "Institute for Molecular Medicine Finland (FIMM)", url = "https://www.fimm.fi/" } ]
+organizations = [ { name = "data42 at Novartis" } ]
 
 # Short bio (displayed in user profile at end of posts)
 bio = "  "
@@ -98,14 +98,14 @@ user_groups = []
 [[social]]
    icon = "cv"
    icon_pack = "ai"
-   link = "files/sinarueeger_cv.pdf"
+   link = "files/cv-rueeger.pdf"
 
 +++
 
 
-As a member of the [FinnGen](https://www.finngen.fi/en/Workinggroups) analysis team, I analyse large-scale genomic and phenotypic data.
+<!-------As a member of the [FinnGen](https://www.finngen.fi/en/Workinggroups) analysis team, I analyse large-scale genomic and phenotypic data.------>
 
-My interests include statistical modelling, statistical genetics, programming using R, reproducible analysis workflows, and topics touching on health, medicine and technology.
+My interests include statistical modelling, statistical genetics, programming using R and Python, reproducible analysis workflows, and topics touching on health, medicine and technology.
 
 During my PhD in Life Sciences at University of Lausanne, I worked on the imputation of GWAS summary statistics supervised by [Zoltán Kutalik](https://wp.unil.ch/sgg/). 
 <!------- This was followed by a Postdoc in the [Fellay Lab](https://www.epfl.ch/labs/fellay-lab/) at EPFL, where I analysed human genomic data in the context of infectious diseases. -------->
