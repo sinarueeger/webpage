@@ -1,5 +1,5 @@
 ---
-title: CBT inspired Data Analysis - Part 2
+title: Data Analysis Worrying - Part 2
 author: Sina Rüeger
 date: '2021-05-02'
 slug: cbt-data-analysis-tech
