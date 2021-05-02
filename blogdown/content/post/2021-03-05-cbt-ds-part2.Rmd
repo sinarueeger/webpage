@@ -2,7 +2,7 @@
 title: CBT inspired Data Analysis - Part 2
 author: Sina Rüeger
 date: '2021-05-03'
-slug: cbt-data-analysis-2
+slug: cbt-data-analysis-part2
 categories: []
 tags:
   - quality checks
