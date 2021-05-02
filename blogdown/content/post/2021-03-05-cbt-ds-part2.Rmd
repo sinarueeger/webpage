@@ -8,9 +8,10 @@ tags:
   - quality checks
   - R
   - wellbeing
+  - data-analysis
 image:
   caption: ''
-focal_point: ''
+  focal_point: ''
 draft: true
 ---
   
