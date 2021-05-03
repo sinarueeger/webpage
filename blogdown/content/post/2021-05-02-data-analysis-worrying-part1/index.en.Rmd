@@ -1,27 +1,10 @@
 ---
-title: Data Analysis Worrying - Part 1
+title: Data Analysis Worrying (Part 1)
 author: Sina Rüeger
 date: '2021-05-02'
 slug: cbt-data-analysis-part1
 categories: []
 tags:
-  - quality checks
-  - wellbeing
-  - data analysis
-image:
-  caption: ''
-  focal_point: ''
-draft: false
----
-
----
-title: Data Analysis Worrying - Part 2
-author: Sina Rüeger
-date: '2021-05-03'
-slug: cbt-data-analysis-tech
-categories: []
-tags:
-  - quality checks
   - R
   - wellbeing
   - data-analysis
