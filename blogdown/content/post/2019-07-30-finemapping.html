@@ -1,0 +1,421 @@
+---
+title: FINEMAP howto
+subtitle: or - replicating Figure 7
+date: '2019-07-19'
+slug: finemapping-howto
+tags: 
+  - finemap
+  - statistical genetics
+  - R
+  - reproducibility
+draft: true
+url_source: https://github.com/sinarueeger/webpage/blob/master/blogdown/content/post/2019-07-30-finemapping.Rmd
+url_code: https://github.com/sinarueeger/webpage/blob/master/blogdown/content/post/2019-07-30-finemapping.R
+header:
+  caption: ''
+  image: ''
+output:
+  blogdown::html_page:
+    toc: false
+---
+
+
+
+<div id="aim" class="section level2">
+<h2>Aim</h2>
+<p>The aim is, to better understand FINEMAP and reproduce Figure 7 in <a href="https://www.ncbi.nlm.nih.gov/pubmed/26773131">Benner et al. 2016</a> that is about fine-mapping of 15q21/LIPC region associated with high-density lipo- protein cholesterol.</p>
+<figure>
+<img src="https://oup.silverchair-cdn.com/oup/backfile/Content_public/Journal/bioinformatics/32/10/10.1093_bioinformatics_btw018/3/m_btw018f7p.png?Expires=1564177046&Signature=UuAiVRT7GY4-rFEWfHdI1rTsNymi-kbe2K3RY5Lc3WDZ0jVIKxcjXZgishye-7p7JMqPssEevY-OJfvECp8gL290ELi83Pc2wwKgCb9IHrDV-7b1Tv7Y~zxiS7srPUnyAE6pJBH-yYniVtatzZvpWrJz05JHaEA5diErgoYT9NyndXTgShKra5ex3pXDv1P6ZB0vCUelUxLGsLlMU4vCWLf7I8Z-TA0jXApWOJa3BkZxdAcKU91C0jp1a4ZHIud-NSI71ez31GW2dREaPIsHU5DRDJLb1FfO~qVc5qS-nVlB~GosSf8rK5s9rnX1UOx2r3vr1b7q9kpFqIxV9ASswg__&Key-Pair-Id=APKAIE5G5CRDK6RD3PGA" alt="Drawing of a table." align="middle" style="width: 300px;"/>
+<figcaption>
+<small>Fine-mapping of 15q21/ LIPC region associated with high-density lipoprotein cholesterol. Independent association signals in conditional analysis are highlighted by yellow dot. Dashed lines correspond respectively to a single-SNP Bayes factor of 100 and P -value of 5×10−8 . Squared correlations are shown with respect to rs2043085 (copied from <a href="https://academic.oup.com/bioinformatics/article/32/10/1493/1743040#35635555">manuscript</a>)</small>
+</figcaption>
+</figure>
+<p>You can find the full script in on github: <a href="https://github.com/sinarueeger/howto_finemap/">sinarueeger/howto_finemap/</a></p>
+</div>
+<div id="data-overview" class="section level2">
+<h2>Data overview</h2>
+<p>Data used:</p>
+<ul>
+<li>Summary statistics: <a href="https://www.ncbi.nlm.nih.gov/pubmed/25961943">Surakka et al. 2015</a> HDL-GWAS (<a href="mccarthy.well.ox.ac.uk/publications/2015/ENGAGE_1KG/HDL_Meta_ENGAGE_1000G.txt.gz">download</a>).</li>
+<li>1000 Genomes reference panel (EUR population, Chr 15) (<a href="ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/release/20130502/ALL.chr15.phase3_shapeit2_mvncall_integrated_v5a.20130502.genotypes.vcf.gz">download</a>)</li>
+<li>Chromosome and position (build 37, base-pairs)</li>
+</ul>
+</div>
+<div id="tools" class="section level2">
+<h2>Tools</h2>
+<ul>
+<li>FINEMAP (<a href="www.christianbenner.com">download</a>): <a href="https://academic.oup.com/bioinformatics/article/32/10/1493/1743040">Benner et al. 2016</a></li>
+<li>LDstore (<a href="www.christianbenner.com">download</a>): <a href="http://www.sciencedirect.com/science/article/pii/S0002929717303348">Benner et al. 2017</a></li>
+<li>plink2 (<a href="http://www.cog-genomics.org/plink/2.0/">download</a>): <a href="https://academic.oup.com/gigascience/article/4/1/s13742-015-0047-8/2707533">Chang et al. 2015</a></li>
+</ul>
+<pre class="r"><code>## path to tools
+## download from here:
+## www.christianbenner.com
+LDSTORE &lt;- &quot;~/tmp/finemap-example/bin/ldstore&quot;
+FINEMAP &lt;- &quot;~/tmp/finemap-example/bin/finemap&quot;
+PLINK2 &lt;- &quot;~/tmp/finemap-example/bin/plink2&quot;
+
+system_glued &lt;- function(x)
+{
+  system(glue::glue(x))
+}
+
+## checks
+if (!fs::file_exists(PLINK2)) 
+  message(&quot;Download PLINK2 from here: http://www.cog-genomics.org/plink/2.0/ 
+          and store the binary as bin/plink2 (v2.00 used).&quot;)
+
+if (!fs::file_exists(FINEMAP)) 
+  message(&quot;Download FINEMAP from here: http://www.christianbenner.com/ 
+          and store the binary as bin/finemap (v1.3.1 used).&quot;)
+
+if (!fs::file_exists(LDSTORE)) 
+  message(&quot;Download LDSTORE from here: http://www.christianbenner.com/ 
+          and store the binary as bin/ldstore (v1.1 used).&quot;)</code></pre>
+</div>
+<div id="r-libaries" class="section level2">
+<h2>R libaries</h2>
+<p>Here are the libraries needed to run the code below. Install them if you don’t have them yet.</p>
+<pre class="r"><code>## accessed through ::
+## fs          
+## vroom    
+## readr      
+## data.table 
+## GWAS.utils     
+## install via devtools::install_github(&quot;sinarueeger/GWAS.utils&quot;)
+## here
+## glue
+## ggrepel
+## stringr
+## requirements::req_file(&quot;R/howto_finemap.R&quot;) ## devtools::install_github(&quot;hadley/requirements&quot;)
+
+library(ggplot2)
+library(dplyr)
+theme_set(theme_bw())
+library(ggGWAS)        # for quick plotting
+library(cowplot)
+library(magrittr)</code></pre>
+</div>
+<div id="preparation" class="section level2">
+<h2>Preparation</h2>
+<p>Before running FINEMAP, we need to first do a bit of preparation:</p>
+<ul>
+<li>Create directories</li>
+<li>Download GWAS summary statistics</li>
+<li>Download 1000 Genomes Project reference panel</li>
+</ul>
+<div id="create-directories" class="section level3">
+<h3>Create directories</h3>
+<p>First - define the directories where we want everything stored.</p>
+<pre class="r"><code>## create a data folder
+fs::dir_create(&quot;~/tmp/finemap-example/data/&quot;)
+DIR_DATA &lt;- &quot;/Users/admin/tmp/finemap-example/data&quot;
+
+## create a bin folder
+fs::dir_create(&quot;~/tmp/finemap-example/bin/&quot;)</code></pre>
+</div>
+<div id="get-public-gwas-data" class="section level3">
+<h3>Get public GWAS data</h3>
+<p>Second - we need to access and download the public GWAS summary statistics published in Surakka et al. 2015.</p>
+<pre class="r"><code>## Chromosome and position (build 37, base-pairs)
+url_summary_stats &lt;- &quot;mccarthy.well.ox.ac.uk/publications/2015/ENGAGE_1KG/HDL_Meta_ENGAGE_1000G.txt.gz&quot;
+path_summary_stats &lt;- glue::glue(&quot;{DIR_DATA}/hdl_summarystats.txt.gz&quot;)
+
+if (!fs::file_exists(path_summary_stats)) download.file(url_summary_stats, path_summary_stats)
+
+dat_raw &lt;- vroom::vroom(path_summary_stats,
+                        col_select = list(p = `p-value`, n = n_samples, everything()))
+
+## sanitychecks (some p values are 0, the ones with a high abs Z stats)
+
+## calc p value again
+dat_raw$p_sina &lt;- GWAS.utils::z2p(abs(dat_raw$beta/dat_raw$se))
+qplot(-log10(p), -log10(p_sina), data = dat_raw %&gt;% sample_n(1000)) +
+  geom_abline(intercept = 0, slope = 1)</code></pre>
+<p><img src="/post/2019-07-30-finemapping_files/figure-html/unnamed-chunk-5-1.png" width="672" /></p>
+<pre class="r"><code>## check how many p values are 0
+dat_raw %&gt;% filter(p_sina == 0)</code></pre>
+<pre><code>## # A tibble: 0 x 9
+## # … with 9 variables: p &lt;dbl&gt;, n &lt;dbl&gt;, chr &lt;chr&gt;, pos &lt;dbl&gt;,
+## #   reference_allele &lt;chr&gt;, other_allele &lt;chr&gt;, beta &lt;dbl&gt;, se &lt;dbl&gt;,
+## #   p_sina &lt;dbl&gt;</code></pre>
+<pre class="r"><code>dat_raw %&gt;% filter(p == 0)</code></pre>
+<pre><code>## # A tibble: 7 x 9
+##       p     n chr      pos reference_allele other_allele   beta      se
+##   &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;  &lt;dbl&gt; &lt;chr&gt;            &lt;chr&gt;         &lt;dbl&gt;   &lt;dbl&gt;
+## 1     0 60677 chr16 5.70e7 C                T            -0.246 0.00658
+## 2     0 60676 chr16 5.70e7 T                C            -0.246 0.00656
+## 3     0 60679 chr16 5.70e7 C                T            -0.246 0.00650
+## 4     0 60681 chr16 5.70e7 C                T            -0.244 0.00643
+## 5     0 60684 chr16 5.70e7 G                A            -0.242 0.00644
+## 6     0 60685 chr16 5.70e7 A                G            -0.247 0.00661
+## 7     0 60683 chr16 5.70e7 C                T            -0.243 0.00639
+## # … with 1 more variable: p_sina &lt;dbl&gt;</code></pre>
+<pre class="r"><code>## lets display this with a qqplot, just a check
+ggplot(data = dat_raw) +
+  stat_gwas_qq_hex(aes(y = p_sina)) +
+  geom_abline(intercept = 0, slope = 1)</code></pre>
+<p><img src="/post/2019-07-30-finemapping_files/figure-html/unnamed-chunk-5-2.png" width="672" /></p>
+<pre class="r"><code>## define a region 
+
+## we are only interested in the region around
+CHR &lt;- 15
+BP_SNP &lt;- 58680954 ## centered around https://www.ncbi.nlm.nih.gov/snp/rs2043085
+WINDOW &lt;- 1e6
+BP_FROM &lt;- BP_SNP - WINDOW/2
+BP_TO &lt;- BP_SNP + WINDOW/2
+
+dat &lt;- dat_raw %&gt;%
+  filter(between(pos, BP_FROM, BP_TO) &amp; chr == glue::glue(&quot;chr{CHR}&quot;))
+
+## lets make a locus plot
+ggplot(data = dat) +
+  geom_point(aes(pos, -log10(p_sina)))</code></pre>
+<p><img src="/post/2019-07-30-finemapping_files/figure-html/unnamed-chunk-5-3.png" width="672" /></p>
+</div>
+<div id="reference-data" class="section level3">
+<h3>Reference data</h3>
+<p>Third, we need to access and download the ordinary 1000 Genomes Project reference panel.</p>
+<pre class="r"><code>## sample info
+## get chr 15
+## on GRCh37
+# samples
+# ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/release/20130502/integrated_call_samples_v2.20130502.ALL.ped
+# ftp.1000genomes.ebi.ac.uk/vol1/ftp/technical/working/20130606_sample_info/20130606_sample_info.xlsx
+url_reference_panel &lt;- &quot;ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/release/20130502/ALL.chr15.phase3_shapeit2_mvncall_integrated_v5a.20130502.genotypes.vcf.gz&quot;
+path_reference_panel &lt;- glue::glue(&quot;{DIR_DATA}/1000genomes_chr15.vcf.gz&quot;)
+
+if (!fs::file_exists(path_reference_panel)) {
+  download.file(url_reference_panel, path_reference_panel)
+  download.file(&quot;ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/release/20130502/ALL.chr15.phase3_shapeit2_mvncall_integrated_v5a.20130502.genotypes.vcf.gz.tbi&quot;,
+                glue::glue(&quot;{DIR_DATA}/1000genomes_chr15.vcf.gz.tbi&quot;))
+  download.file(&quot;ftp://ftp.1000genomes.ebi.ac.uk/vol1/ftp/release/20130502/integrated_call_samples_v2.20130502.ALL.ped&quot;,
+                glue::glue(&quot;{DIR_DATA}/samples_info.ped&quot;))
+  
+}
+
+
+## select individuals
+## surakka et al mentions that the study was European
+## --keep accepts a space/tab-delimited text file with family IDs in the first column and within-family IDs in the second column, and removes all unlisted samples from the current analysis. --remove does the same for all listed samples.
+keep &lt;- data.table::fread( glue::glue(&quot;{DIR_DATA}/samples_info.ped&quot;)) %&gt;%
+  filter(Population %in% c(&quot;GBR&quot;, &quot;FIN&quot;, &quot;TSI&quot;, &quot;CEU&quot;, &quot;IBS&quot;)) %&gt;%
+  select(`Family ID`, `Individual ID`) %&gt;%
+  mutate(`Family ID` = 0)
+
+readr::write_delim(keep, path = glue::glue(&quot;{DIR_DATA}/keep.txt&quot;), delim = &quot; &quot;, col_names = FALSE)
+
+## vcf to plink
+FILE_1KG &lt;- glue::glue(&quot;{DIR_DATA}/1000genomes_chr15&quot;)
+system_glued(&quot;{PLINK2} --vcf {FILE_1KG}.vcf.gz  --make-bed --out {FILE_1KG} --keep {DIR_DATA}/keep.txt --maf 0.001 --max-alleles 2 --mind 0.01 --geno 0.01 --hwe 1e-6 --from-bp {BP_FROM} --to-bp {BP_TO} --chr {CHR}&quot;)
+## using a min maf because with maf = 0 FINEMAP won&#39;t work
+
+## maf
+system_glued(&quot;{PLINK2} --bfile {FILE_1KG} --freq --out {FILE_1KG}&quot;)</code></pre>
+</div>
+</div>
+<div id="input-data" class="section level2">
+<h2>Input data</h2>
+<p>Now we are ready to prepare the inputs needed for FINEMAP. This is essentially three files:</p>
+<ol style="list-style-type: decimal">
+<li><code>master</code>: containing the filenames of input and output files, plus some details.</li>
+<li><code>data.z</code>: containing summary statistics.</li>
+<li><code>data.ld</code>: info about correlation between SNPs stored in <code>data.z</code>.</li>
+</ol>
+<p>On the <a href="www.christianbenner.com">FINEMAP website</a> you find excellent descriptions how these file have to look like.</p>
+<div id="create-master-file" class="section level3">
+<h3>Create master file</h3>
+<p>The <code>master</code> file has to look like this:</p>
+<pre><code>z;ld;snp;config;cred;log;n_samples
+dataset1.z;dataset1.ld;dataset1.snp;dataset1.config;dataset1.cred;dataset1.log;5363
+dataset2.z;dataset2.ld;dataset2.snp;dataset2.config;dataset2.cred;dataset2.log;5363
+</code></pre>
+<pre class="r"><code>FILE &lt;- glue::glue(&quot;{DIR_DATA}/data-hdl&quot;)
+sample_size &lt;- median(dat_raw$n) ## look that up in the paper
+master &lt;- data.frame(z = glue::glue(&quot;{FILE}.z&quot;),
+                     ld = glue::glue(&quot;{FILE}.ld&quot;),
+                     snp = glue::glue(&quot;{FILE}.snp&quot;),
+                     config = glue::glue(&quot;{FILE}.config&quot;),
+                     cred = glue::glue(&quot;{FILE}.cred&quot;),
+                     log = glue::glue(&quot;{FILE}.log&quot;),
+                     n_samples = sample_size
+)
+
+readr::write_delim(master, path = glue::glue(&quot;{DIR_DATA}/master&quot;), delim = &quot;;&quot;)</code></pre>
+</div>
+<div id="data.z-file" class="section level3">
+<h3>data.z file</h3>
+<p>The <code>data.z</code> file has to look like this:</p>
+<pre><code>rsid chromosome position allele1 allele2 maf beta se
+rs1         10 1 T C 0.35 0.0050 0.0208
+rs2         10 1 A G 0.04 0.0368 0.0761
+rs3         10 1 G A 0.18 0.0228 0.0199</code></pre>
+<pre class="r"><code>## check if they are in the bim file
+snps_1kg &lt;- data.table::fread(glue::glue(&quot;{FILE_1KG}.bim&quot;), header = FALSE) %&gt;%
+  rename(chr = V1, rsid = V2, pos = V4, allele2 = V5, allele1 = V6)
+# V5 (corresponding to clear bits in .bed; usually minor) &gt; other allele
+# V6 (corresponding to set bits in .bed; usually major) &gt; reference allele
+
+## maf from 1KG
+maf_1kg &lt;-  data.table::fread(glue::glue(&quot;{FILE_1KG}.afreq&quot;)) %&gt;%
+  rename(rsid = ID) %&gt;%
+  mutate(maf = GWAS.utils::eaf2maf(ALT_FREQS))
+
+## then join + rearrange with 1KG data
+data_z &lt;- dat %&gt;%
+  rename(chromosome = chr, allele1 = reference_allele, allele2 = other_allele) %&gt;%
+  inner_join(snps_1kg %&gt;% select(pos, rsid, allele1, allele2)) %&gt;%
+  rename(position = pos) %&gt;%
+  mutate(chromosome = CHR) %&gt;% ## overwrite chromosome
+  left_join(maf_1kg) %&gt;%  ## join with MAF (cause there is no MAF in the summary stats file)
+  select(rsid, chromosome, position, allele1, allele2, maf, beta, se)</code></pre>
+<pre><code>## Joining, by = c(&quot;pos&quot;, &quot;allele1&quot;, &quot;allele2&quot;)</code></pre>
+<pre><code>## Joining, by = &quot;rsid&quot;</code></pre>
+<pre class="r"><code>## TODO: get proper MAF
+
+readr::write_delim(
+  data_z,
+  path = glue::glue(&quot;{FILE}.z&quot;),
+  delim = &quot; &quot;
+)
+
+## --incl-variants      Extract LD information for variants given in the specified text file.
+## The specified file has 5 columns with a header: RSID, position, chromosome, A_allele and B_allele        Requires --matrix or --table
+incl_variants &lt;- data_z %&gt;%
+  select(rsid, position, chromosome, allele1, allele2) %&gt;%
+  rename(RSID = rsid, A_allele = allele1, B_allele = allele2)
+
+readr::write_delim(incl_variants,
+                   path = glue::glue(&quot;{FILE}-incl-variants&quot;),
+                   delim = &quot; &quot;)</code></pre>
+</div>
+<div id="ld-computation" class="section level3">
+<h3>LD computation</h3>
+<p>The LD file will be computed automagically with LDstore.</p>
+<p>All you need to do, is convert the 1000 Genomes file into a <code>bcor</code> format:</p>
+<pre class="r"><code>if (!fs::file_exists(glue::glue(&quot;{FILE_1KG}.bcor_1&quot;))) {
+  ## sub bcor file
+  system_glued(
+    &quot;{LDSTORE} --bplink {FILE_1KG} --bcor {FILE_1KG}.bcor --n-threads 1&quot; 
+  )
+  
+}</code></pre>
+<p>And then use that <code>bcor</code> file as input to create the LD matrix for a fixed set of variants.</p>
+<pre class="r"><code>## create LD matrix
+system_glued(
+  &quot;{LDSTORE} --bcor {FILE_1KG}.bcor_1 --matrix {FILE}.ld --incl-variants {FILE}-incl-variants&quot;
+)
+
+
+if (FALSE)
+{
+  ## create LD matrix
+  system_glued(
+    &quot;{LDSTORE} --bcor {FILE_1KG}.bcor_1 --meta out --matrix {FILE}.ld --incl-variants {FILE}-incl-variants&quot;
+  )
+  out &lt;- readr::read_delim(&quot;out&quot;, &quot; &quot;)
+  head(out %&gt;% filter(RSID %in% data_z$rsid))
+  data_z %&gt;% anti_join(out, c(&quot;rsid&quot; = &quot;RSID&quot;))
+}</code></pre>
+</div>
+</div>
+<div id="run-finemap" class="section level2">
+<h2>Run FINEMAP</h2>
+<p>Finally, we have all the elements we need to run FINEMAP:</p>
+<pre class="r"><code>system_glued(
+  &quot;{FINEMAP} --sss --in-files {DIR_DATA}/master --dataset 1&quot;
+)</code></pre>
+</div>
+<div id="results" class="section level2">
+<h2>Results</h2>
+<p>First, we need to create a locuszoom like function.</p>
+<pre class="r"><code>locuszoom_wrapper &lt;- function(data, y, K = NA, horiz_line = NA, labs_bottom_logic = TRUE, labs_top_logic = TRUE) {
+  
+  
+  
+  ## sort out annotation
+  if (labs_bottom_logic &amp; labs_top_logic) {
+    anno &lt;- labs(
+      title = glue::glue(&quot;Locuszoom plot for HDL GWAS&quot;),
+      subtitle = glue::glue(&quot;Summary statistics for chromosome {CHR}, {BP_FROM}-{BP_TO}&quot;),
+      caption = glue::glue(
+        &quot;Data source\nSummary statistics: Surakka et al. 2015: {url_summary_stats}\n1000 Genomes Reference Panel: {url_reference_panel}&quot;
+      )
+    )
+  }
+  
+  
+  if (labs_bottom_logic &amp; !labs_top_logic) {
+    anno &lt;- labs(
+      caption = glue::glue(
+        &quot;Data source\nSummary statistics: Surakka et al. 2015: {url_summary_stats}\n1000 Genomes Reference Panel: {url_reference_panel}&quot;
+      )
+    )
+  }
+  if (labs_top_logic &amp; !labs_bottom_logic) {
+    anno &lt;- labs(
+      title = glue::glue(&quot;Locuszoom plot for HDL GWAS&quot;),
+      subtitle = glue::glue(&quot;Summary statistics for chromosome {CHR}, {BP_FROM}-{BP_TO}&quot;),
+      caption = &quot;&quot;
+    )
+  }
+  
+  
+  ## actual plotting
+  
+  ggplot(data = data) +
+    ## add log10bf
+    geom_point(aes(position, {{ y }}, color = abs(LD))) +
+    scale_color_distiller(&quot;LD&quot;, type = &quot;div&quot;, palette = &quot;Spectral&quot;, limits = c(0, 1)) +
+    
+    ## mark the lead variants
+    geom_point(aes(position, {{ y }}), shape = 3, size = 3, data = data %&gt;% filter(lead_snp)) +
+    
+    ## mark the causal variants
+    geom_point(aes(position, {{ y }}), shape = 1, size = 3, data = data %&gt;% filter(causal_snps)) +
+    
+    ## color the causal variants
+    ggrepel::geom_text_repel(aes(position, {{ y }}, label = rsid), data = data %&gt;% filter(causal_snps)) +
+    
+    ## Dashed lines correspond respectively to a single-SNP Bayes factor of 100
+    geom_hline(yintercept = horiz_line, linetype = 3) + 
+    
+    ## titles
+    anno
+  
+  
+}</code></pre>
+<p>Then, we read in the results and replicate Figure 7.</p>
+<pre class="r"><code>## results -------------------------------
+snp &lt;- data.table::fread(glue::glue(&quot;{FILE}.snp&quot;))
+config &lt;- data.table::fread(glue::glue(&quot;{FILE}.config&quot;))
+ld_matrix &lt;- data.table::fread(glue::glue(&quot;{FILE}.ld&quot;)) ## same order as data_z
+
+
+## replicate Figure 7 ---------------------
+top_hits_benner_finemap &lt;- c(&quot;rs7350789&quot;, &quot;rs1800588&quot;, &quot;rs113298164&quot;)
+top_hits_benner_cond &lt;- c(&quot;rs7350789&quot;, &quot;rs1800588&quot;, &quot;rs2043085&quot;)
+
+library(dplyr)
+causal_snps &lt;-
+  config %&gt;% slice(1) %&gt;% pull(config) %&gt;% stringr::str_split(&quot;,&quot;) %&gt;% unlist()
+lead_snp &lt;- &quot;rs2043085&quot;
+ld_top_snp &lt;-
+  data.frame(rsid = data_z$rsid, LD = as.data.frame(ld_matrix)[, which(data_z$rsid %in% lead_snp)])
+
+## adding ld to snp
+snp_plot &lt;- snp %&gt;%
+  left_join(ld_top_snp) %&gt;%
+  mutate(causal_snps = case_when(rsid %in% causal_snps ~ TRUE,
+                                 TRUE ~ FALSE),
+         lead_snp = case_when(rsid %in% lead_snp ~ TRUE,
+                              TRUE ~ FALSE)) %&gt;%
+  mutate(mlog10p = -log10(GWAS.utils::z2p(z)))
+
+plot_finemap &lt;- locuszoom_wrapper(data = snp_plot, y = log10bf, K = 1, horiz_line = log10(100), labs_bottom_logic = FALSE, labs_top_logic = TRUE)
+plot_ss &lt;- locuszoom_wrapper(data = snp_plot, y = mlog10p, K = 1, horiz_line = -log10(5*10^(-8) ), labs_bottom_logic = TRUE, labs_top_logic = FALSE)</code></pre>
+<pre class="r"><code>library(cowplot)
+plot_grid(plot_finemap, plot_ss, nrow = 2)</code></pre>
+<p><img src="/post/2019-07-30-finemapping_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+<p>There are some discrepancies to the original figure. That could be the reference panel, or the “imputed” MAFs. Or some finetuning of the method.</p>
+</div>

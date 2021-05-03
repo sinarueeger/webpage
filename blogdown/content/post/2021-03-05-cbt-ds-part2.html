@@ -1,0 +1,89 @@
+---
+title: CBT inspired Data Analysis - Part 2
+author: Sina Rüeger
+date: '2021-05-02'
+slug: cbt-data-analysis-tech
+categories: []
+tags:
+  - quality checks
+  - R
+  - wellbeing
+  - data-analysis
+image:
+  caption: ''
+  focal_point: ''
+draft: true
+---
+
+
+
+<p><span style="background-color: #F2AD00"><em>This blogpost is about solutions to tackle constant “data analysis worrying”.</em></span></p>
+<p><a href="https://sinarueeger.github.io/post/cbt-data-analysis-part1/"><strong>Part 1</strong></a> discussed a mental coping approach, while <strong>Part 2</strong> will show more technical solutions and prevention techniques. Let’s dive right in!</p>
+<div id="work-organisation" class="section level2">
+<h2>1. Work organisation</h2>
+<p>Write code such that mistakes can be corrected and analysis rerun easily.</p>
+<p>The reasoning: <em>this allows you to be at ease and not afraid of mistakes. Mistakes will happen to the greatest data analysts, but if you have a code/computing environment set up where you can quickly make a change to a code snippet written 2 months ago, and rerun the analysis, then you won’t fear mistakes. It’s one thing less to worry about. </em></p>
+<ul>
+<li>Use version control for code (and backup resulting data regularly and in a systematic way).</li>
+<li><p>Use an R-package to help with the analysis project organisation: <a href="https://github.com/ropensci/targets">targets</a>, <a href="http://projecttemplate.net/getting_started.html">ProjectTemplate</a>, <a href="https://jdblischak.github.io/workflowr/">workflowr</a> and probably lots more.</p></li>
+<li><p>Apply <a href="https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1005510">best practices in scientific computing</a> (contains valueable tips, among them data management, project organisation, software).</p></li>
+</ul>
+</div>
+<div id="breaks" class="section level2">
+<h2>2. Breaks</h2>
+<p>Take breaks often, especially when debugging - a draining activity - or during deep work. This will help to keep the focus up - even though it seems like you are taking the focus away by leaving your desk briefly.</p>
+<p>The important bit is, that you rest during the break. Pet your cat, drink a coffee, watch the cars pass.</p>
+<p>The comic below by <a href="https://wizardzines.com/comics/take-breaks/">Julia Evans</a> shows the value of taking breaks in the context of debugging, but seems legit during a normal work day too.</p>
+<div class="figure">
+<img src="https://wizardzines.com/comics/take-breaks/take-breaks.png" alt="Debugging tips by Julia Evans." width="500" />
+<p class="caption"><sup>Debugging tips by <a href="https://wizardzines.com/comics/take-breaks/">Julia Evans</a>.</sup></p>
+</div>
+<div id="breathing" class="section level3">
+<h3>Breathing</h3>
+<p>During the break, or when stressed, apply <a href="https://www.youtube.com/watch?v=n6RbW2LtdFs">box breathing</a>. When stressed, our breathing becomes shallow. I don’t know the science behind it, but any type of deep and regular breathing helps to calm down and refocus.</p>
+</div>
+<div id="pomodoro-technique" class="section level3">
+<h3>Pomodoro Technique</h3>
+<p>When to take breaks? The official <a href="https://en.wikipedia.org/wiki/Pomodoro_Technique">pomodoro technique</a> is: work 25 min, have a 5 min break.</p>
+<p>There are tons of apps around for exactly this purpose, but I found my <strong>oven timer</strong> most effective (I <em>really</em> have to leave my desk to turn off the timer).</p>
+</div>
+</div>
+<div id="r-packages-for-high-confidence-in-data" class="section level2">
+<h2>3. R packages for high confidence in data</h2>
+<div id="use-modern-tooling" class="section level3">
+<h3>Use modern tooling</h3>
+<p>When reading in and out tables, don’t rely on <code>read.table</code>. Instead, use a more modern tooling, such as <code>data.table::fread</code> or <code>readr::read_table</code> that have not only faster, but are better in recognizing column data types.</p>
+</div>
+<div id="automatic-data-sanity-checking" class="section level3">
+<h3>Automatic data sanity checking</h3>
+<p>Use R-package <code>janitor</code> to apply automatic data checks.</p>
+<p>Use R-package <code>skimr</code> to summarize your data quickly.</p>
+<!----------
+## 4. Familiarize yourself with methods
+
+When applying a statistical method, the most important bit will be the valdiation part - is your model behaving the way it should. That can be the residual plot for logistic regression, ... for random Forest, ... for .
+
+By exposing yourself to the methods you use, you will .. 
+----->
+</div>
+</div>
+<div id="debugging" class="section level2">
+<h2>5. Debugging</h2>
+<p>If you happen to run into bug follow these tips by <a href="https://wizardzines.com/comics/attitude-matters/">Julia Evans</a>. Above all - take a <a href="#breaks">break</a>!</p>
+<div class="figure">
+<img src="https://wizardzines.com/comics/attitude-matters/attitude-matters.png" alt="Debugging &amp; Attitude by Julia Evans." width="500" />
+<p class="caption"><sup>Debugging &amp; Attitude by <a href="https://wizardzines.com/comics/attitude-matters/">Julia Evans</a>.</sup></p>
+</div>
+<div id="quick-changes-vs.systematical-approach" class="section level3">
+<h3>Quick changes vs. systematical approach</h3>
+<p>Quick bug fixes do exist, but if it takes more than a few minutes, you may better be off to take a break and approach the bug more systematically later on.</p>
+<p>I find walks in forests the best to think about bugs.</p>
+</div>
+<div id="the-power-of-debugging" class="section level3">
+<h3>The power of debugging</h3>
+<p>Finally, debugging is not all bad. On the contrary, debugging might be an opportunity to refactor some code, rethink a method, learn something new (see <a href="https://wizardzines.com/comics/love-your-bugs/">love your bugs by Julia Evans</a>) or simply becoming better at staying composed during debugging.</p>
+</div>
+</div>
+<div id="summary" class="section level2">
+<h2>Summary</h2>
+</div>

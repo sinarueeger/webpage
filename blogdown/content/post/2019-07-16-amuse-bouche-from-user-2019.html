@@ -1,0 +1,419 @@
+---
+title: Amuse-bouches from useR!2019
+subtitle: Short examples from the R conference in Toulouse
+date: '2019-07-18'
+slug: amuse-bouches-from-user-2019
+tags: 
+  - conference
+  - R
+draft: false
+url_source: https://github.com/sinarueeger/webpage/blob/master/blogdown/content/post/2019-07-16-amuse-bouche-from-user-2019.Rmd
+url_code: https://github.com/sinarueeger/webpage/blob/master/blogdown/content/post/2019-07-16-amuse-bouche-from-user-2019.R
+header:
+  caption: ''
+  image: ''
+output:
+  blogdown::html_page:
+    toc: false
+---
+
+
+
+<p>The 3+ days at <a href="http://www.user2019.fr">useR!2019 in Toulouse</a> were packed with great talks<a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a> and good food - hence the <a href="https://en.wikipedia.org/wiki/Amuse-bouche">amuse-bouches</a> word play.</p>
+<p>Here are some R code bits from the conference. Hopefully convincing enough to start using a new package or change a workflow. Not everything was brand-new, but it was helpful to have someone talking through their inspiration and examples.</p>
+<p>Check out the speakers’ materials - soon there will be recordings too. Some of the examples are also copied straight from the speakers’ slide decks.</p>
+<ol style="list-style-type: decimal">
+<li><a href="#tidy-eval">Tidy eval</a></li>
+<li><a href="#usethis">usethis</a></li>
+<li><a href="#pak">pak</a></li>
+<li><a href="#reshaping-data">Reshaping data</a></li>
+<li><a href="#vroom">vroom</a></li>
+<li><a href="#datatable">data.table</a></li>
+<li><a href="#rray">rray</a></li>
+</ol>
+<!------------------ ------------------->
+<div id="tidy-eval" class="section level2">
+<h2>1. tidy eval</h2>
+<!------------------ ------------------->
+<p>Speaker: <a href="https://twitter.com/_lionelhenry">Lionel Henry</a> (<a href="https://speakerdeck.com/lionelhenry/reusing-tidyverse-code">Slides</a>)</p>
+<p>I never warmed up to the bang-bangs and enquo’s. Hence the new and more straight forward <code>{{ }}</code> (read: curly curly) for functional programming <code>{{ arg }}</code> in the tidyverse feel like a game-changer.</p>
+<p>For those more familiar with the previous framework: <code>{{ arg }}</code> is a shortcut for <code>!!enquo(arg)</code>.</p>
+<div id="dplyr-example" class="section level3">
+<h3>dplyr example</h3>
+<p>Let’s say you have a dataset, here <code>iris</code>, and you want to compute the average <code>Petal.Length</code> for each <code>Species</code>:</p>
+<pre class="r"><code>library(dplyr)</code></pre>
+<pre><code>## 
+## Attaching package: &#39;dplyr&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:stats&#39;:
+## 
+##     filter, lag</code></pre>
+<pre><code>## The following objects are masked from &#39;package:base&#39;:
+## 
+##     intersect, setdiff, setequal, union</code></pre>
+<pre class="r"><code>iris %&gt;% 
+  group_by(Species) %&gt;%
+  summarise(avg = mean(Petal.Length, na.rm = TRUE))</code></pre>
+<pre><code>## # A tibble: 3 x 2
+##   Species      avg
+##   &lt;fct&gt;      &lt;dbl&gt;
+## 1 setosa      1.46
+## 2 versicolor  4.26
+## 3 virginica   5.55</code></pre>
+<p>You can use the “curly-curly” brackets if you want to turn this small bit of code into a function <code>group_mean()</code> with a <code>data</code>, <code>by</code> and <code>var</code> argument<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a> (and want to pass the variables on in an unquoted way):</p>
+<pre class="r"><code>group_mean &lt;- function(data, by, var) {
+  
+  data %&gt;%
+    group_by({{ by }}) %&gt;%
+    summarise(avg = mean({{ var }}, na.rm = TRUE))
+}</code></pre>
+<p>We can then apply <code>group_mean()</code> to any dataset that has a grouping and a continuous variable, for example, the mammals sleep dataset in <code>ggplot2</code>:</p>
+<pre class="r"><code>library(ggplot2)
+group_mean(data = msleep, by = vore, var = sleep_total)</code></pre>
+</div>
+<div id="ggplot2-example" class="section level3">
+<h3>ggplot2 example</h3>
+<p>Another common tidy eval application is <code>ggplot2</code>. In the example below, we want a customised plot: a scatterplot with a <code>geom_smooth</code> on top of it.</p>
+<pre class="r"><code>library(ggplot2)
+theme_set(theme_bw())
+ggplot(data = iris, 
+       aes(x = Sepal.Length, y = Petal.Length, group = Species, color = Species)
+       ) +
+  geom_point() +
+  geom_smooth(method = &quot;lm&quot;) + 
+  ggtitle(&quot;Pack this plot into a function.&quot;)</code></pre>
+<p><img src="/post/2019-07-16-amuse-bouche-from-user-2019_files/figure-html/2019-07-16-amuse-bouche-from-user-2019-5-1.png" width="672" /></p>
+<p>Again, we can wrap the “curly-curly” brackets around the arguments and apply them to a different dataset.</p>
+<pre class="r"><code>plot_point_smooth &lt;- function(data, x, y, gr = NULL, method = &quot;lm&quot;) {
+  
+  ggplot(data = data, 
+         aes({{ x }}, {{ y }}, group = {{ gr }}, color = {{ gr }})
+         ) +
+    geom_point() +
+    geom_smooth(method = method)
+  
+}</code></pre>
+<pre class="r"><code>plot_point_smooth(msleep, x = sleep_total, y = sleep_rem, gr = NULL) + 
+  ggtitle(&quot;Tidy eval with the msleep dataset&quot;)</code></pre>
+<!------------------ ------------------->
+</div>
+</div>
+<div id="usethis" class="section level2">
+<h2>2. usethis</h2>
+<!------------------ ------------------->
+<p>Speaker: <a href="https://twitter.com/JennyBryan">Jenny Bryan</a> (<a href="https://github.com/jennybc/2019-07_useR-toulouse-usethis">Slides + Material + Demo</a>)</p>
+<pre class="r"><code># install.packages(&quot;usethis&quot;)
+library(usethis)</code></pre>
+<p>Once upon a time, there was the package <code>devtools</code>. Then <code>devtools</code> became too large, and now the <code>usethis</code> package is taking over some of the convenience functions for workflows.</p>
+<p><code>usethis</code> is all about avoiding to copy+pasting. For example, there is a function to edit the <code>.Rprofile</code> called <code>usethis::edit_r_profile()</code>. Whenever there is a slightly complicated task ahead (say <em>restarting R</em>), the <code>usethis</code> package will talk you through the whole process.</p>
+<p>There are lots of <code>use_*</code> to add or modify something to/in a project/package and three functions to create a package, a project or a github fork:</p>
+<ol style="list-style-type: decimal">
+<li><code>create_package()</code></li>
+<li><code>create_project()</code></li>
+<li><code>create_from_github()</code></li>
+</ol>
+<div id="create-a-package" class="section level3">
+<h3>Create a package</h3>
+<p>If you want to create a package, do the following (see also <a href="https://www.youtube.com/watch?v=3vsPMyTfT8I&amp;feature=youtu.be">screencast</a>):</p>
+<pre class="r"><code>## 1. create the package skeleton
+create_package(&quot;~/tmp/mypackage&quot;)
+
+## 2. use git
+use_git()
+
+## 3. add a license
+use_mit_license()
+
+## 4. run check
+# install.packages(&quot;devtools&quot;)
+devtools::check()
+
+## 5. commit all files with git
+
+## 6. set up git + github
+use_github()
+## will update the DESCRIPTION file
+
+## 7. install the package
+devtools::install()
+
+## 8. add a rmarkdown readme file
+use_readme_rmd()
+## knit + commit + push
+
+## 9. clean up if this was only a demo
+## install.packages(&quot;fs&quot;)
+## fs::dir_delete(&quot;~/tmp/mypackage&quot;)</code></pre>
+<!------------------ ------------------->
+</div>
+</div>
+<div id="pak" class="section level2">
+<h2>3. pak</h2>
+<!------------------ ------------------->
+<p>Speaker: <a href="https://twitter.com/GaborCsardi">Gábor Csárdi</a> (<a href="https://github.com/gaborcsardi/pak-talk">Slides</a>)</p>
+<pre class="r"><code># install.packages(&quot;pak&quot;) ## or
+# devtools::install_github(&quot;r-lib/pak&quot;)</code></pre>
+<p>It seems like <code>pak</code> will make package installation - conventional and for projects - more intuitive. Before installing anything, <code>pak</code> will give you a heads up on what will be installed or if there are any conflicts.</p>
+<p><code>pak</code> has two main functions: <code>pak::pkg_*</code> and <code>pak:::proj_*</code></p>
+<div id="conventional-package-installation" class="section level3">
+<h3>Conventional package installation</h3>
+<p>Play around with <code>usethis</code><a href="#fn3" class="footnote-ref" id="fnref3"><sup>3</sup></a> and see what happens:</p>
+<pre class="r"><code>pak::pkg_install(&quot;usethis&quot;)
+pak::pkg_remove(&quot;usethis&quot;)
+pak::pkg_install(&quot;r-lib/usethis&quot;)
+pak::pkg_status(&quot;usethis&quot;)</code></pre>
+</div>
+<div id="package-installation-for-projects" class="section level3">
+<h3>Package installation for projects</h3>
+<p>First, create a project with <code>usethis</code>, then install R packages directly into the project.</p>
+<pre class="r"><code>usethis::create_project(&quot;~/tmp/test&quot;)
+
+## check the directory
+dir()
+
+## initialise a dedicated R packages folder
+pak:::proj_create()
+
+## check the directory again
+dir()
+
+## check the DESCRIPTION file
+readLines(&quot;DESCRIPTION&quot;)
+
+## install usethis
+pak:::proj_install(&quot;usethis&quot;)
+
+## this installs dependencies into a private project library
+readLines(&quot;DESCRIPTION&quot;)
+
+## remove the project folder again
+fs::dir_delete(&quot;~/tmp/test&quot;)</code></pre>
+<!------------------ ------------------->
+</div>
+</div>
+<div id="reshaping-data" class="section level2">
+<h2>4. Reshaping data</h2>
+<!------------------ ------------------->
+<p>Speaker: <a href="https://twitter.com/hadleywickham">Hadley Wickham</a> (<a href="https://gist.github.com/hadley/eb5c97bfbf257d133a7337b33d9f02d1">Demo</a>)</p>
+<pre class="r"><code># install.packages(&quot;tidyverse/tidyr&quot;)
+library(tidyr)</code></pre>
+<p>What a history reshaping data in R already has! From <code>reshape</code> to <code>melt</code> + <code>cast</code>, over to <code>gather</code> + <code>spread</code> and now <code>pivot_long</code> + <code>pivot_wide</code>. Reshaping data stays a mind-bending task, but hopefully, these <code>pivot_*</code> functions will make life easier.</p>
+<pre class="r"><code># devtools::install_github(&quot;chrk623/dataAnim&quot;)
+# Master&#39;s Thesis project by Charco Hui
+library(dataAnim)
+
+## Our two toy datasets
+datoy_wide</code></pre>
+<pre><code>##    Name English Maths
+## 1   Ben    19.0  58.5
+## 2   Sam     6.7  51.8
+## 3 Sarah    14.9  45.1</code></pre>
+<pre class="r"><code>datoy_long</code></pre>
+<pre><code>##   Name Subject Score
+## 1  Ben   Maths  10.0
+## 2  Ben English  63.7
+## 3  Sam   Maths  52.9
+## 4  Sam English  75.6
+## 5 Alex   Maths  88.8
+## 6 Alex English  92.2</code></pre>
+<p>Let’s reshape the datasets<a href="#fn4" class="footnote-ref" id="fnref4"><sup>4</sup></a>:</p>
+<pre class="r"><code>## lets make it longer
+datoy_wide %&gt;%
+  pivot_longer(-Name, names_to = &quot;Subject&quot;, values_to = &quot;Score&quot;)
+
+## lets make it wider
+datoy_long %&gt;%
+  dplyr::mutate(Time = 1:nrow(datoy_long)) %&gt;%
+  pivot_wider(names_from = &quot;Subject&quot;, values_from = c(&quot;Score&quot;, &quot;Time&quot;))</code></pre>
+<!---------------- -------------------->
+</div>
+<div id="vroom" class="section level2">
+<h2>5. vroom</h2>
+<!---------------- -------------------->
+<p>Speaker: <a href="https://twitter.com/jimhester_">Jim Hester</a> (<a href="https://speakerdeck.com/jimhester/vroom">Slides</a> + <a href="screen%20cast:%20bit.ly/vroom-yt">Screencast</a>)</p>
+<pre class="r"><code>## install.packages(&quot;vroom&quot;)
+library(vroom)</code></pre>
+<p>Importing large datasets into R can be a painful task. Especially if you only need a subset of the columns. And apparently, our thoughts drift off after 10 sec<a href="#fn5" class="footnote-ref" id="fnref5"><sup>5</sup></a> staring at the screen where it is <em>still</em> loading the dataset.</p>
+<p><code>data.table::fread()</code> is always here to help. But now comes <code>vroom</code>!</p>
+<div id="get-some-largeish-data" class="section level3">
+<h3>Get some large’ish data</h3>
+<p>First, we need some large dataset. To not burden our laptops too much<a href="#fn6" class="footnote-ref" id="fnref6"><sup>6</sup></a>, we will go for some exome based <a href="https://en.wikipedia.org/wiki/Genome-wide_association_study">GWAS</a> results.</p>
+<pre class="r"><code>## Source: https://portals.broadinstitute.org/collaboration/giant/index.php/GIANT_consortium_data_files
+
+path_to_file_1 &lt;- &quot;Height_AA_add_SV.txt.gz&quot;
+path_to_file_2 &lt;- &quot;BMI_African_American.fmt.gzip&quot; 
+
+
+## Height
+download.file(
+  &quot;https://portals.broadinstitute.org/collaboration/giant/images/8/80/Height_AA_add_SV.txt.gz&quot;,
+  path_to_file_1)
+
+## BMI
+download.file(
+  &quot;https://portals.broadinstitute.org/collaboration/giant/images/3/33/BMI_African_American.fmt.gzip&quot;,
+  path_to_file_2)
+
+
+## File size
+## install.packages(&quot;fs&quot;)
+fs::file_size(path_to_file_1)</code></pre>
+<pre><code>## 4.39M</code></pre>
+<pre class="r"><code>fs::file_size(path_to_file_2)</code></pre>
+<pre><code>## 13.3M</code></pre>
+<p>The two datasets have a mix of characters, numbers and decimals<a href="#fn7" class="footnote-ref" id="fnref7"><sup>7</sup></a>.</p>
+</div>
+<div id="vroom-vs-dt" class="section level3">
+<h3>vroom vs DT</h3>
+<p>Here is how <code>vroom</code> works and a basic comparison to <code>data.table::fread</code> (I let you do the proper <a href="http://adv-r.had.co.nz/Profiling.html">benchmarking</a> yourself).</p>
+<pre class="r"><code>library(dplyr)
+
+## With vroom
+giant_vroom &lt;- vroom::vroom(path_to_file_1)
+giant_vroom_subset &lt;- giant_vroom %&gt;% select(CHR, POS) %&gt;% filter(CHR == 1)
+
+## The equivalent with data.table
+giant_DT &lt;- data.table::fread(path_to_file_1)
+giant_DT_subset &lt;- giant_DT %&gt;% select(CHR, POS) %&gt;% filter(CHR == 1)</code></pre>
+</div>
+<div id="col_select-for-the-win" class="section level3">
+<h3>col_select for the win</h3>
+<pre class="r"><code>## Selecting columns
+giant_vroom_select &lt;- vroom::vroom(path_to_file_1, 
+                                   col_select = list(SNPNAME, ends_with(&quot;_MAF&quot;)))
+head(giant_vroom_select)
+
+## Preventing columns from being imported
+giant_vroom_remove &lt;- vroom::vroom(path_to_file_1, 
+                                   col_select = -ExAC_AFR_MAF)
+head(giant_vroom_remove)
+
+## Renaming on the fly
+giant_vroom_rename &lt;- vroom::vroom(path_to_file_1, 
+                                   col_select = list(p = Pvalue, everything()))
+head(giant_vroom_rename)</code></pre>
+</div>
+<div id="combining-multiple-datasets" class="section level3">
+<h3>Combining multiple datasets</h3>
+<pre class="r"><code>data_combined &lt;- vroom::vroom( 
+                    c(path_to_file_1, path_to_file_2), 
+                    id = &quot;path&quot;)
+table(data_combined$path)</code></pre>
+<!------------------ ------------------->
+</div>
+</div>
+<div id="data.table" class="section level2">
+<h2>6. data.table</h2>
+<!------------------ ------------------->
+<p>Speaker: <a href="https://twitter.com/arun_sriniv">Arun Srinivasan</a> (<a href="https://t.co/TrvDVS07QD">Slides</a>)</p>
+<p><code>data.table</code> has a pretty cool feature<a href="#fn8" class="footnote-ref" id="fnref8"><sup>8</sup></a>:</p>
+<pre class="r"><code># install.packages(&quot;data.table&quot;)
+library(data.table)</code></pre>
+<pre><code>## Warning: package &#39;data.table&#39; was built under R version 3.5.2</code></pre>
+<pre><code>## 
+## Attaching package: &#39;data.table&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:dataAnim&#39;:
+## 
+##     :=</code></pre>
+<pre><code>## The following objects are masked from &#39;package:dplyr&#39;:
+## 
+##     between, first, last</code></pre>
+<pre class="r"><code>## Create a giant data.table
+p &lt;- 2e6
+dat &lt;- data.table(x = sample(1e5, p, TRUE), y = runif(p))
+
+## Let&#39;s select a few rows
+system.time(
+  tmp &lt;- dat[x %in% 2000:3000 ]
+)
+
+## do the same operation again
+system.time(
+  tmp &lt;- dat[x %in% 2000:3000 ]
+)</code></pre>
+<!---------------- -------------------->
+</div>
+<div id="rray" class="section level2">
+<h2>7. rray</h2>
+<!---------------- -------------------->
+<p>Speaker: <a href="https://twitter.com/dvaughan32">Davis Vaughan</a> (<a href="https://github.com/DavisVaughan/2019-07-09_useR-2019-rray/blob/master/useR-2019-rray.pdf">Slides</a>)</p>
+<pre><code># devtools::install_github(&quot;r-lib/rray&quot;)
+## may take some time</code></pre>
+<p><code>rray</code> can do two things that are otherwise annoying/counter-intuitive in R:</p>
+<ul>
+<li>broadcasting (recycling dimensions)</li>
+<li>subsetting (<code>bag[,1, drop = FALSE]</code>)</li>
+</ul>
+<div id="matrices-with-base-r" class="section level3">
+<h3>Matrices with base-r</h3>
+<p>Let’s look at an example of matrix operations in base-r<a href="#fn9" class="footnote-ref" id="fnref9"><sup>9</sup></a>.</p>
+<p>First, we want to add two matrices with similar dimensions:</p>
+<pre class="r"><code>mat_1 &lt;- matrix(c(15, 10, 8, 6, 12, 9), byrow = FALSE, nrow = 2) 
+mat_2 &lt;- matrix(c(5, 2, 3), nrow = 1)
+
+## broadcasting won&#39;t work ❌
+mat_1 + mat_2</code></pre>
+<pre><code>## Error in mat_1 + mat_2: non-conformable arrays</code></pre>
+<p>Next, we want to select one matrix column:</p>
+<pre class="r"><code>dim(mat_1[,2:3]) ## selecting two columns is fine</code></pre>
+<pre><code>## [1] 2 2</code></pre>
+<pre class="r"><code>## subsetting won&#39;t preserve the matrix class ❌
+dim(mat_1[,1]) ## why not 2x1?</code></pre>
+<pre><code>## NULL</code></pre>
+<pre class="r"><code>length(mat_1[,1]) ## ah, it turned into a vector!</code></pre>
+<pre><code>## [1] 2</code></pre>
+<pre class="r"><code>dim(mat_1[,1, drop = FALSE]) ## but with drop = FALSE we can keep it a matrix</code></pre>
+<pre><code>## [1] 2 1</code></pre>
+</div>
+<div id="matrices-with-rray" class="section level3">
+<h3>Matrices with rray</h3>
+<p>Let’s do now the same task with <code>rray</code>.</p>
+<pre class="r"><code>library(rray)
+
+(mat_1_rray &lt;- rray(c(15, 10, 8, 6, 12, 9), dim = c(2, 3)))
+(mat_2_rray &lt;- rray(c(5, 2, 3), dim = c(1, 3)))
+
+## Broadcasting works ✓
+mat_1_rray + mat_2_rray
+
+## Subsetting works ✓
+dim(mat_1_rray[,2:3])
+dim(mat_1_rray[,1])
+
+## smart functions
+mat_1_rray / rray_sum(mat_1_rray, axes = 1)
+rray_bind(mat_1_rray, mat_2_rray, .axis = 1)
+rray_bind(mat_1_rray, mat_2_rray, .axis = 2)</code></pre>
+</div>
+</div>
+<div id="more-info" class="section level2">
+<h2>More info</h2>
+<ul>
+<li>Program + Slides: <a href="https://user2019.r-project.org/talk_schedule/" class="uri">https://user2019.r-project.org/talk_schedule/</a></li>
+<li>Collection of slides during the conference by <a href="https://twitter.com/S_Owla">Praer (Suthira Owlarn)</a>: <a href="https://github.com/sowla/useR2019-materials" class="uri">https://github.com/sowla/useR2019-materials</a></li>
+<li>Recordings by the <a href="https://www.youtube.com/channel/UC_R5smHVXRYGhZYDJsnXTwg">R Consortium on Youtube</a> (keynotes available, rest soon to be published)</li>
+</ul>
+<!---------------- -------------------->
+<!---------------- -------------------->
+</div>
+<div id="last-but-not-least" class="section level2">
+<h2>Last but not least</h2>
+<p>The <code>rstatsmeme</code> package is a little gem discovered thanks to <a href="https://twitter.com/ameisen_strasse">Frie Preu</a>:</p>
+<pre class="r"><code># devtools::install_github(&quot;favstats/rstatsmemes&quot;)
+library(rstatsmemes)
+show_me_an_R_meme()</code></pre>
+<p><img src="/post/2019-07-16-amuse-bouche-from-user-2019_files/figure-html/2019-07-16-amuse-bouche-from-user-2019-21-1.png" width="672" /></p>
+</div>
+<div class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p>I cannot wait to see the recordings to catch up with the parallel sessions that I missed!<a href="#fnref1" class="footnote-back">↩</a></p></li>
+<li id="fn2"><p>See <a href="https://speakerdeck.com/lionelhenry/reusing-tidyverse-code?slide=49">Slide 49+</a>.<a href="#fnref2" class="footnote-back">↩</a></p></li>
+<li id="fn3"><p>See <a href="https://github.com/gaborcsardi/pak-talk/blob/master/pkg.Rmd">demo 1</a><a href="#fnref3" class="footnote-back">↩</a></p></li>
+<li id="fn4"><p>See <a href="https://gist.github.com/hadley/eb5c97bfbf257d133a7337b33d9f02d1">demo</a><a href="#fnref4" class="footnote-back">↩</a></p></li>
+<li id="fn5"><p>I can totally confirm that.<a href="#fnref5" class="footnote-back">↩</a></p></li>
+<li id="fn6"><p>If you can, choose the <a href="https://portals.broadinstitute.org/collaboration/giant/index.php/GIANT_consortium_data_files#2018_GIANT_and_UK_BioBank_Meta-analysis">UKBB + GIANT meta analysis results</a>, which are pretty large.<a href="#fnref6" class="footnote-back">↩</a></p></li>
+<li id="fn7"><p>Apparently, characters are the most challenging ones for speed.<a href="#fnref7" class="footnote-back">↩</a></p></li>
+<li id="fn8"><p>See <a href="https://t.co/TrvDVS07QD">slides 26</a><a href="#fnref8" class="footnote-back">↩</a></p></li>
+<li id="fn9"><p>See also <a href="https://github.com/DavisVaughan/2019-07-09_useR-2019-rray/blob/master/useR-2019-rray.pdf">slide 5</a>.<a href="#fnref9" class="footnote-back">↩</a></p></li>
+</ol>
+</div>

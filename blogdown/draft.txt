@@ -1,0 +1,201 @@
+TARGET crowdai > vcf to plink
+## https://zenodo.org/record/1442755#.XVbWwVBS_OQ
+
+REF 1kg
+## https://www.cog-genomics.org/plink/1.9/resources
+
+download.file("ftp://parrot.genomics.cn/gigadb/pub/10.5524/100001_101000/100116/1kg_phase1_chr1.tar.gz", "~/tmp/1kg_phase1_chr1.tar.gz") 
+
+## not only on chr 1
+## hg19? 
+## snp matching dodgy
+
+## ftp.1000genomes.ebi.ac.uk/vol1/ftp/technical/working/20130606_sample_info/20130606_sample_info.xlsx
+
+
+
+## aim: create a PC visualisation of 1000 genomes and map the HBV individuals into it
+## this is a good sanitycheck if the asians selected indeed map into the asian populations of 1KG
+
+## https://www.cog-genomics.org/plink/1.9/resources
+
+
+## ////////////////////////////
+## PREPARATION 
+## ////////////////////////////
+
+## REF = 1kg
+## TAR = hbv exome data
+
+
+# setup script ------------------------------------------------------------
+source(here::here("src", "setup.R"))
+n_cores <- 12
+
+FILE_REF_RAW <- "/home/naret/work/data/1KG/GRCh37/bimbedfam/chr1"
+FILE_REF <- glue::glue("{DIR_SCRATCH}/mapping-1kg/1KG_reference_chr1") 
+
+FILE_TARGET <- glue::glue("{DIR_SCRATCH}/mapping-1kg/hbv_gilead_bcftools_QC_PCA_TRANS") 
+
+
+
+
+
+
+## ////////////////////////////
+## dataprep for TARGET 
+## ////////////////////////////
+
+
+## apply callrate snps
+## maf
+## hwe
+## rename missing snps: set SNP == . to chr:pos
+##  --set-missing-var-ids @:#:\\$1:\\$2
+system(
+  glue::glue(
+    "{PLINK1} --bfile {FILE_HOST_IN} --geno {callrate_snps_thresh} --maf {maf_thresh} --hwe {hwe_thresh} --make-bed --out {FILE_HOST_tmp0} --autosome" 
+  )
+)
+
+
+## apply callrate individuals
+## maf, hwe
+system(
+  glue::glue(
+    "{PLINK1} --bfile {FILE_HOST_tmp0} --mind {callrate_ids_thresh} --geno {callrate_snps_thresh} --maf {maf_thresh} --hwe {hwe_thresh} --make-bed --out {FILE_HOST_tmp1}"
+  )
+)
+
+
+## KING -------------------------------------------
+system(
+  glue::glue(
+    "{KING} -b {FILE_HOST_tmp1}.bed --unrelated" # --reml-bendV
+  )
+)
+#KING1     igm160324,igm160612
+#KING2     igm160325,igm160613
+#KING3     igm160030,igm160031
+#KING4     igm160870,igm160883
+
+#system(glue::glue("mv kingunrelated.txt {DIR_PROCESSED}/kingunrelated.txt"))
+fs::file_move("kingunrelated.txt", glue::glue("{DIR_PROCESSED}/kingunrelated.txt"))
+fs::file_delete("kingallsegs.txt")
+fs::file_delete("kingunrelated_toberemoved.txt")
+
+## apply king
+system(
+  glue::glue(
+    "{PLINK1} --bfile {FILE_HOST_tmp1} --make-bed --out {FILE_TARGET} --keep {DIR_PROCESSED}/kingunrelated.txt" 
+  )
+)
+
+## ////////////////////////////
+## Harmonise markers REF and TARGET 
+## ////////////////////////////
+## TODO: not a perfect solution, as based on rsnumbers
+
+tmp <- read_delim(glue::glue("{FILE_TARGET}.bim"),
+             delim = "\t",
+             col_names = FALSE)
+
+target_snps <- data.frame(tmp$X2)
+write_delim(target_snps, glue::glue("{DIR_PROCESSED}/target_snps.txt"),
+             delim = " ",
+             col_names = FALSE)
+
+
+system(
+  glue::glue(
+    "{PLINK1} --bfile {FILE_REF_RAW} --extract {DIR_PROCESSED}/target_snps.txt --make-bed --out {FILE_REF}" 
+  )
+)
+
+
+## ////////////////////////////
+## PCA mapping
+## ////////////////////////////
+
+# To make a GRM ---------------------------------------------------------------
+# gcta64 --bfile REF --maf 0.01 --autosome --make-grm --out REF
+
+system(
+  glue::glue(
+    "{GCTA} --bfile {FILE_REF} --autosome --make-grm --out {FILE_REF} --thread-num {n_cores}"
+  )
+)
+
+
+# PCA analysis----------------------------------------------------------------
+# gcta64 --grm REF --pca 20 --out REF_pca20
+
+system(
+  glue::glue(
+    "{GCTA} --grm {FILE_REF} --pca 20 --out {FILE_REF}_pca20"
+  )
+)
+
+
+## Compute PC loadings for REF -------------------------------------------------
+
+# To use the PCs generated above to produce PC loadings of each SNP
+# gcta64 --bfile REF --pc-loading REF_pca20 --out REF_snp_loading
+
+system(
+  glue::glue(
+    "{GCTA} --bfile {FILE_REF} --pc-loading {FILE_REF}_pca20 --out {FILE_REF}_snp_loading"
+  )
+)
+
+
+## PCs for TARGET population ---------------------------------------------------
+
+# To compute the PCs of the target sample using the PC loading generated above
+# Note that the analysis can be performed with one chromosome at a time 
+# gcta64 --bfile TAR --project-loading REF_snp_loading 20 --out TAR_pca20
+
+system(
+  glue::glue(
+    "{GCTA} --bfile {FILE_TARGET} --project-loading {FILE_REF}_snp_loading 20 --out {FILE_TARGET}_pca20"
+  )
+)
+
+
+## ////////////////////////////
+## plot 
+## ////////////////////////////
+
+idlist_pop_REF <- data.table::fread("/home/naret/work/data/1KG/other_data/integrated_call_samples_v3.20130502.ALL.panel") %>% select(sample, pop, super_pop)
+idlist_pop_TARGET <- readr::read_delim(glue::glue("{DIR_SCRATCH}/idlist_pop.txt"), delim = " ", col_names = FALSE) 
+
+pc_REF <- data.table::fread(glue::glue("{FILE_REF}_pca20.eigenvec")) %>% select(-V1)
+names(pc_REF) <- c("ID", paste0("PC", 1:20))
+pc_TARGET <- data.table::fread(glue::glue("{FILE_TARGET}_pca20.proj.eigenvec"))%>% select(-V1)
+names(pc_TARGET) <- c("ID", paste0("PC", 1:21))
+
+## merge labels to pc_ref ----------------------
+pc_REF <- pc_REF %>% left_join(idlist_pop_REF, by = c("ID" = "sample" )) %>% 
+  rename(`1KG`= super_pop)
+
+## merge labels of asian cluster ---------------
+pc_TARGET <- pc_TARGET %>% mutate(hbv = ID %in% idlist_pop_TARGET$X1)
+pc_TARGET$hbv <- forcats::fct_recode(as.factor(pc_TARGET$hbv), asian = 'TRUE', rest = 'FALSE' )
+
+## plot ----------------------------------------
+ggplot() + 
+  geom_point(data = pc_REF, aes(PC1, PC2, color = `1KG`)) + 
+  geom_point(data = pc_TARGET, aes(PC1, PC2, shape = hbv),  alpha = I(0.8)) + 
+  scale_shape_manual(values = c(1, 16))
+
+
+ggplot() + 
+  geom_point(data = pc_REF, aes(PC1, PC3, color = `1KG`)) + 
+  geom_point(data = pc_TARGET, aes(PC1, PC3, shape = hbv), alpha = I(0.8)) + 
+  scale_shape_manual(values = c(1, 16))
+
+
+ggplot() + 
+  geom_point(data = pc_REF, aes(PC1, PC4, color = `1KG`)) + 
+  geom_point(data = pc_TARGET, aes(PC1, PC4, shape = hbv), alpha = I(0.8)) + 
+  scale_shape_manual(values = c(1, 16))

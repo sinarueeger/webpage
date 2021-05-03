@@ -1,0 +1,143 @@
+---
+title: The headache with data repositories
+author: sina rüeger
+date: '2021-02-28'
+slug: the-headache-with-data-repositories
+categories: []
+tags:
+  - reproducibility
+  - R
+  - rOpenSci
+  - data
+image:
+  caption: ''
+  focal_point: ''
+draft: false
+---
+
+
+
+<p>I attended the last <a href="https://ropensci.org/">rOpenSci</a> call on <span style="background-color: #9ecae1">data repositories</span><a href="#fn1" class="footnote-ref" id="fnref1"><sup>1</sup></a> (<a href="https://ropensci.org/commcalls/dec2020-datarepos/">recording</a>) and below are my two cents on why storing on, and using data from the web may still be such a headache.</p>
+<p>The hour-long community call was - as always - inspiring and presented itself in a relaxed setting; with a set of experts voicing their experiences and challenges around data repositories from different angles, and a Q&amp;A session towards the end. It was, however, over way too quickly and when I left the Zoom call I still had these loose ends in my head.</p>
+<p>I am by no means a data repository expert, but I have faced challenges in both using data repositories and storing data in repositories while working as a genomic data scientist.</p>
+<div id="the-big-picture" class="section level2">
+<h2>The big picture</h2>
+<p><img src="/post/2021-02-28-the-headache-with-data-repositories_files/figure-html/tweet-from-judell-1.png" width="672" /></p>
+<div id="purpose" class="section level3">
+<h3>Purpose</h3>
+<p>The advantages of open science have been discussed elsewhere<a href="#fn2" class="footnote-ref" id="fnref2"><sup>2</sup></a>.</p>
+<p>Three reasons why researchers need (to share) data come to my mind:</p>
+<ul>
+<li><strong>Scientific findings</strong>; to do research we need data. But even if we have collected and analysed our own data, we often need external data to replicate our results.</li>
+<li><strong>Reproducibility</strong>; we may want to rerun results shown in a paper (i.e. check reproducibility of published results).</li>
+<li><strong>Standards</strong>; repositories may also guarantee certain data storage standards. If we don’t have governed data repositories, everyone will develop their own standards.</li>
+</ul>
+</div>
+<div id="options" class="section level3">
+<h3>Options</h3>
+<p>The scientific community has already access to a wide range of data repositories out there: <a href="https://datadryad.org/stash">Dryad</a>, <a href="https://zenodo.org/">Zenodo</a> and <a href="https://figshare.com/">figshare</a>. They are fairly easy to use, integrate well with other tools and have free plans.</p>
+</div>
+<div id="the-enigma" class="section level3">
+<h3>The enigma</h3>
+<p>The question is then:</p>
+<p><span style="background-color: #9ecae1">There are these great (and free!) data repository solutions out there AND we clearly need them - how come they are not used more often? </span></p>
+</div>
+<div id="the-experts" class="section level3">
+<h3>The experts</h3>
+<p>The experts on the call were the following<a href="#fn3" class="footnote-ref" id="fnref3"><sup>3</sup></a>:</p>
+<ul>
+<li>Daniella Lowenberg, representing Dryad</li>
+<li>Matt Jones, representing dataONE</li>
+<li>Kara Woo, representing Sage Bionetworks and guiding through the call</li>
+<li>Carl Boettiger, a researcher</li>
+<li>Karthik Ram, a researcher</li>
+</ul>
+</div>
+<div id="culture-change-storage-as-an-afterthought" class="section level3">
+<h3>Culture change &amp; storage as an afterthought</h3>
+<p>I work in academic research, and two comments resonated most with the problems I am facing, hence I will focus on those:</p>
+<ol style="list-style-type: decimal">
+<li>Karthik Ram made the point that although there is infrastructure to host code, data, and computing, a) they lag behind in <strong>user experience</strong> and b) users lack <strong>incentives</strong> to share their data.</li>
+<li>Carl Boettiger mentioned that <strong>analysis and storage</strong> are still <strong>too far apart</strong>, with public data storage being a mere afterthought.</li>
+</ol>
+<p>Let’s discuss these two points in turn.</p>
+</div>
+</div>
+<div id="whats-needed-for-culture-change" class="section level2">
+<h2>What’s needed for culture change?</h2>
+<p>To illustrate where data repositories lack compared to code and computing, Karthik Ram showed the <a href="https://www.cos.io/blog/strategy-for-culture-change">pyramid for culture change</a> introduced by Brian Nosek (shown as an annotated screenshot below).</p>
+<p><img src="/post/2021-02-28-the-headache-with-data-repositories_files/pyramid.jpeg" /></p>
+<p>On the left hand side (<span style="color:red">A</span>) are the culture change mechanism (along with their incentives <span style="color:red">B</span>):</p>
+<ul>
+<li>Infrastructure</li>
+<li>UI/UX</li>
+<li>Communities</li>
+<li>Incentives</li>
+<li>Policy</li>
+</ul>
+<p>On the right-hand side are the <span style="color:red">three pillars</span> of (computational) research: <strong>data</strong>, <strong>code</strong> and the <strong>computing environment</strong>.</p>
+<p><span style="background-color: #4daf4a">Green</span> highlighting demonstrates where the mechanism has been accomplished.</p>
+<p>All <span style="color:red">three pillars</span> have the necessary infrastructure, which is the basis of the pyramid of culture change.</p>
+<p><strong>Code</strong> is almost fully accomplished, with only policy left out (very few journals require code to be supplied).</p>
+<p><strong>Computing environment</strong> can be shared, at times easily, e.g. through docker containers, but it lacks a community, incentives and policy enforcements.</p>
+<p>Now <strong>data</strong> HAS actual policies. Often journals require data alongside the publication, <span style="background-color:lightgray">but for a proper culture change, we would need UI/UX, communities and incentives<a href="#fn4" class="footnote-ref" id="fnref4"><sup>4</sup></a> to be present.</p>
+<div id="git-as-a-model" class="section level3">
+<h3>git as a model</h3>
+<p>Karthik Ram mentioned also that git wasn’t always as widely used in research, but now it is. Probably mostly thanks to infrastructures such as GitHub.</p>
+<p>So hopefully data repositories will eventually become as popular as the use of git!</p>
+</div>
+</div>
+<div id="data-repositories-as-an-afterthought" class="section level2">
+<h2>Data repositories as an afterthought</h2>
+<p>The second comment that got me thinking was by Carl Boettiger: <span style="background-color:lightgray">the discrepancy between the daily workflow and publishing the work.</span></p>
+<p>Published data often comes at the end of a lengthy research project, when this is actually quite counter-intuitive (why being at the end when it’s the foundation of a project?).</p>
+<p><img src="/post/2021-02-28-the-headache-with-data-repositories_files/daily.jpeg" /></p>
+<p>What’s meant by this? First we collect the data, analyse it using scripts, we get results (which are again data), maybe we write a paper (all displayed on the LHS). After all of that we then think about getting the data (input + results + code) onto a data repository (RHS) - because we remember that this is what we should do.</p>
+<p>From Karthik Ram we have learned that some mechanisms for an easy use of data repositories are missing, but that we do have infrastructure to do it and policies that demand it (hence the last-minute panic).</p>
+<p>Carl Boettiger also made the point that both - the daily workflow and published data - want similar things<a href="#fn5" class="footnote-ref" id="fnref5"><sup>5</sup></a>, but that the tools to achieve them are different. In daily workflows we use R, git and data buckets; while published data are dealt with REST APIs and other tools.</p>
+<div id="computing-environments-that-can-access-code-and-data-at-the-same-time" class="section level3">
+<h3>Computing environments that can access code and data at the same time</h3>
+<p><span style="background-color: #9ecae1">Might the best solution not be to store data + code + computing environment all together somewhere publicly</span> from the very beginning of an analysis?<a href="#fn6" class="footnote-ref" id="fnref6"><sup>6</sup></a></p>
+<p>This has been proposed by <a href="https://mybinder.org/">binder</a>, and wrapped into the R package <a href="https://github.com/karthik/holepunch">holepunch</a> by Karthik Ram.</p>
+<p>A similar solution is to use a cloud computing service combined with a pipelining tool (e.g. <a href="https://cromwell.readthedocs.io/en/stable/">cromwell</a> or <a href="https://www.nextflow.io/">nextflow</a>). I started to use this setting over a year ago and find it so far the best approach - if the budget allows (cloud computing environments come at a price).
+I do wonder though, if universities will continue to invest in computing clusters or shift to cloud computing with managed access.</p>
+</div>
+</div>
+<div id="the-tricky-bits-about-data-privacy" class="section level2">
+<h2>The tricky bits about data &amp; privacy</h2>
+<p>Let’s now put this all into context with real work and real data:
+I work mostly with human genomic and health (records) data, with sample sizes ranging from a couple of hundred to hundreds of thousands.</p>
+<p>Embarrassingly, it was only in 2018 when I first heard about Zenodo. The reason is, I believe, that free sharing of human data is rather complicated (and in fact prohibited in many situations), as privacy laws apply (Kara Woo mentioned this too). Additionally, as an analyst I am not involved with data collection and therefore other entities decide on whether to store the data in a repository (e.g. the use of <a href="https://www.ncbi.nlm.nih.gov/gap/">dbGAP</a> + <a href="https://www.ebi.ac.uk">EBI</a>) or keep it elsewhere.</p>
+<p>To illustrate the extreme measures taken in terms of privacy; the <a href="https://www.genomicsengland.co.uk/about-gecip/for-gecip-members/data-and-data-access/">100,000 Genomes Project</a> from Genomics England has a data center, where remote desktop computers are provided (it used to be a physical data center). And only a selected group of people can access the data.</p>
+<p>What can often be shared though is summarized data, called summary statistics. For genome-wide association studies (GWAS) there is an organisation called <a href="https://www.ebi.ac.uk/gwas/">GWAS catalog</a>, which provides a domain specific data repository for summary statistics only. They do a good job in making it easy to upload summary statistics; they standardize it, they educate people - and yet it may take a while till summary statistics show up there and lots of published summary statistic data are on university servers, google drives or websites (using different data storage standards - which causes lots of extra work for people that want to use the data).</p>
+</div>
+<div id="some-ideas" class="section level2">
+<h2>Some ideas</h2>
+<div id="think-carefully-ahead-of-time-about-incentives-for-analysts" class="section level3">
+<h3>1. Think carefully ahead of time about incentives for analysts</h3>
+<p>What’s worse? Going through the process of depositing the data in a repository (which means harmonizing the data, adding a data dictionary, sorting out permission, etc.) or dealing with the cumbersome process of finding data again after years of not working on it?</p>
+</div>
+<div id="depositing-the-data-online-when-starting-to-analyse-it" class="section level3">
+<h3>2. Depositing the data online when starting to analyse it</h3>
+<p>This results in an additional incentive: ensures backup of original base data (if you protect it from write access).</p>
+</div>
+<div id="learning-from-studying-other-peoples-work" class="section level3">
+<h3>3. Learning from studying other peoples work</h3>
+<p>Initiatives such as <a href="https://reprohack.github.io/reprohack-hq/">reprohack</a> make participants aware of necessary standards and subsequently enables them to lead by example.</p>
+</div>
+<div id="use-a-hash-in-file-names-for-identifiability-of-files" class="section level3">
+<h3>4. Use a hash in file names for identifiability of files</h3>
+<p>Proposed by Carl Boettiger. This would resolve a notorious problem in my setup. For example, using a standard filename, say <code>dat.txt</code>, may result in overwriting the file with different data, but the same filename. This won’t happen with hashes. As a downside they may be a bit clunky to use.</p>
+</div>
+</div>
+<div class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p>Yes, it did take me two months to write this up…<a href="#fnref1" class="footnote-back">↩</a></p></li>
+<li id="fn2"><p>E.g. <a href="https://okfn.org/opendata/why-open-data/" class="uri">https://okfn.org/opendata/why-open-data/</a> or <a href="https://www.nature.com/articles/nchem.1149" class="uri">https://www.nature.com/articles/nchem.1149</a><a href="#fnref2" class="footnote-back">↩</a></p></li>
+<li id="fn3"><p>They have diverse affiliations, but I added the one that seemed to me most fitting in the context of their presentation.<a href="#fnref3" class="footnote-back">↩</a></p></li>
+<li id="fn4"><p>I think that there <em>are</em> incentives for storing data in repositories - if people only knew about them! For example I’d say that looking up your own work is much easier with a properly organised online archive - instead of fumbling with outdated server logins and looking through backups.<a href="#fnref4" class="footnote-back">↩</a></p></li>
+<li id="fn5"><p>As mentioned above, “find previous work” is one of my prime incentives to use data storage.<a href="#fnref5" class="footnote-back">↩</a></p></li>
+<li id="fn6"><p>This was also asked by one of the participants; Michael Summner asked if combining code and data in a public computing environment would solve the problem.<a href="#fnref6" class="footnote-back">↩</a></p></li>
+</ol>
+</div>
