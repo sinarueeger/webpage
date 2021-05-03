@@ -1,0 +1,97 @@
+---
+title: Data Analysis Worrying - Part 2
+author: Sina Rüeger
+date: '2021-05-03'
+slug: cbt-data-analysis-tech
+categories: []
+tags:
+  - quality checks
+  - R
+  - wellbeing
+  - data-analysis
+image:
+  caption: ''
+  focal_point: ''
+draft: true
+---
+  
+  
+<span style="background-color: #F2AD00">_This blogpost is about solutions to tackle constant "data analysis worrying"._</span>
+  
+[**Part 1**](https://sinarueeger.github.io/post/cbt-data-analysis-part1/) discussed a mental coping approach, while **Part 2** will show more technical solutions and prevention techniques. Let's dive right in!  
+
+
+## 1. Work organisation
+
+Write code such that mistakes can be corrected and analysis rerun easily. 
+
+The reasoning: _this allows you to be at ease and not afraid of mistakes. Mistakes will happen to the greatest data analysts, but if you have a code/computing environment set up where you can quickly make a change to a code snippet written 2 months ago, and rerun the analysis, then you won't fear mistakes. It's one thing less to worry about. _
+
+- Use version control for code (and backup resulting data regularly and in a systematic way).
+- Use an R-package to help with the analysis project organisation: [targets](https://github.com/ropensci/targets), [ProjectTemplate](http://projecttemplate.net/getting_started.html), [workflowr](https://jdblischak.github.io/workflowr/) and probably lots more.
+
+- Apply [best practices in scientific computing](https://journals.plos.org/ploscompbiol/article?id=10.1371/journal.pcbi.1005510) (contains valueable tips, among them data management, project organisation, software).
+
+## 2. Breaks
+
+Take breaks often, especially when debugging - a draining activity - or during deep work. This will help to keep the focus up - even though it seems like you are taking the focus away by leaving your desk briefly. 
+
+The important bit is, that you rest during the break. Pet your cat, drink a coffee, watch the cars pass. 
+
+The comic below by [Julia Evans](https://wizardzines.com/comics/take-breaks/) shows the value of taking breaks in the context of debugging, but seems legit during a normal work day too. 
+
+![<sup>Debugging tips by [Julia Evans](https://wizardzines.com/comics/take-breaks/).</sup>](https://wizardzines.com/comics/take-breaks/take-breaks.png){width=500px}
+
+
+### Breathing
+
+During the break, or when stressed, apply [box breathing](https://www.youtube.com/watch?v=n6RbW2LtdFs). When stressed, our breathing becomes shallow. I don't know the science behind it, but any type of deep and regular breathing helps to calm down and refocus.
+
+### Pomodoro Technique
+
+When to take breaks? The official [pomodoro technique](https://en.wikipedia.org/wiki/Pomodoro_Technique) is: work 25 min, have a 5 min break. 
+
+There are tons of apps around for exactly this purpose, but I found my **oven timer** most effective (I _really_ have to leave my desk to turn off the timer).
+
+## 3. R packages for high confidence in data
+
+### Use modern tooling
+
+When reading in and out tables, don't rely on `read.table`. Instead, use a more modern tooling, such as `data.table::fread` or `readr::read_table` that have not only faster, but are better in recognizing column data types. 
+
+### Automatic data sanity checking
+
+Use R-package `janitor` to apply automatic data checks. 
+
+Use R-package `skimr` to summarize your data quickly. 
+
+<!----------
+## 4. Familiarize yourself with methods
+
+When applying a statistical method, the most important bit will be the valdiation part - is your model behaving the way it should. That can be the residual plot for logistic regression, ... for random Forest, ... for .
+
+By exposing yourself to the methods you use, you will .. 
+----->
+
+## 5. Debugging
+
+If you happen to run into bug follow these tips by [Julia Evans](https://wizardzines.com/comics/attitude-matters/). Above all - take a [break](#breaks)!
+
+
+![<sup>Debugging & Attitude by [Julia Evans](https://wizardzines.com/comics/attitude-matters/).</sup>](https://wizardzines.com/comics/attitude-matters/attitude-matters.png){width=500px}
+
+### Quick changes vs. systematical approach
+
+Quick bug fixes do exist, but if it takes more than a few minutes, you may better be off to take a break and approach the bug more systematically later on.
+
+I find walks in forests the best to think about bugs. 
+
+### The power of debugging
+
+Finally, debugging is not all bad. On the contrary, debugging might be an opportunity to refactor some code, rethink a method, learn something new (see [love your bugs by Julia Evans](https://wizardzines.com/comics/love-your-bugs/)) or simply becoming better at staying composed during debugging.
+
+
+## Summary
+
+
+

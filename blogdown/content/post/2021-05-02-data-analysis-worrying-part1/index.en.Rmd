@@ -1,0 +1,124 @@
+---
+title: Data Analysis Worrying - Part 1
+author: Sina Rüeger
+date: '2021-05-02'
+slug: cbt-data-analysis-part1
+categories: []
+tags:
+  - quality checks
+  - wellbeing
+  - data analysis
+image:
+  caption: ''
+  focal_point: ''
+draft: false
+---
+
+---
+title: Data Analysis Worrying - Part 2
+author: Sina Rüeger
+date: '2021-05-03'
+slug: cbt-data-analysis-tech
+categories: []
+tags:
+  - quality checks
+  - R
+  - wellbeing
+  - data-analysis
+image:
+  caption: ''
+  focal_point: ''
+draft: true
+---
+
+
+<span style="background-color: #F2AD00">_This blogpost is about applying a mental-wellbeing coping to constant "data analysis worrying". _</span>
+
+![<sup>From https://xkcd.com/1222/.</sup>](https://imgs.xkcd.com/comics/pastime.png){width=80%}
+
+Let's say you get a new project handed over; some kind of data analysis. 
+What do you feel: 
+
+a) **excitement** of getting your hands onto new data, or 
+b) **anxiety** that this project may fail, stumbling upon all the data science mistakes that one can possibly make? 
+
+I feel both of these things. I am always delighted about a. because it means that I still like my work. But b. bothers me to no end, and so I decided to do something about it. Here is my write-up of my coping approach, split into two parts. 
+
+This **Part 1** will discuss a mental coping approach, while **Part 2** will show technical solutions that are available in R. 
+
+## Data analytic challenges
+
+There are tons of factors that will influence an analysis - whether controllable or not. Keeping these factors in check is often a challenge.
+
+To give an example: <span style="color:gray">_Before actually seeing a dataset and without experience with that kind of data, we have little idea about the effort required to deliver an analysis._</span>
+
+Of course, with experience, analysts will develop a knack for foreseeing some of these troublesome factors and start to master them.
+
+In the example above, <span style="color:gray">_we may ask for a sample dataset first before giving any delivery date; ask for more background information; any analysis previously done; that the dataset be sent in a specific data format, or for the power analysis that was done before the data was generated._</span>
+
+
+Such challenges are also highlighted in [this RStudio Conf talk by Caitlin Hudon](https://rstudio.com/resources/rstudioconf-2019/learning-from-eight-years-of-data-science-mistakes/). Here, Caitlin Hudon talked about different categories of Data Science mistakes, one of them being "Technical / Analysis", and then goes on to give a list of potential misunderstandings and mistakes. It's a brilliant talk and I recommend watching it and taking notes of your mistakes (I do that with a simple text file).
+
+
+Now, a little challenge is different from constant worrying. Constant worrying can come form real problems, say, "data QC will be a challenge". But it can range up to a cognitive distortion, for example "this project will never end and be a total failure".
+
+
+## Does experience really help?
+
+Making mistakes and developing experience takes time and may also depend on work culture. Most importantly though, your self-confidence, "worry baseline" and core beliefs play a role^[One could also argue that this is simply [impostor syndrome](https://en.wikipedia.org/wiki/Impostor_syndrome).].
+
+My point is, that instead of relying on years and years of experience, it may be quicker to apply what I call the “worry battling technique". 
+
+## "Worry battling technique"
+
+This is borrowed from [CBT - cognitive behavioral therapy](https://en.wikipedia.org/wiki/Cognitive_behavioral_therapy) - an intervention technique used to improve mental health. CBT techniques re-direct emotions and the resulting behaviour. 
+
+![](/post/2021-03-05-cbt-ds_files/what-can-go-wrong.003.png)
+
+So that the cycle of Thoughts > Feelings > Behaviour > Thoughts > ... becomes less vicious. 
+
+CBT also gives coping strategies to change cognitive distortions. You could say that worrying about the outcome of a data analysis after years of data analytic experience is a cognitive distortion. 
+
+## De-catastrophizing
+
+For myself, I have created a mix of several existing techniques around catastrophizing and anxious thoughts (borrowed from worksheets [here](https://www.therapistaid.com/worksheets/worry-exploration-questions.pdf) and [here](https://www.therapistaid.com/worksheets/challenging-anxious-thoughts.pdf)) that work for me. 
+
+Whenever I feel anxiety creeping up, I go through the seven steps. It goes like this: 
+
+| Question to ask yourself | _Example 1: Modelling_ | _Example 2: Data QC_ |
+|--------|--------|--------|
+|     <span style="background-color: #FF0000">1) What is something you are worried about?  </span>  |   _I won't find the right model for a given dataset. _    |  _I will overlook data cleaning traps (e.g. incorrect identification of missing values)  _    |
+| <span style="background-color: #00A08A"> 2) What are some clues that your worry will not come true?</span>      |   _I have a solid education and it is not possible to find "the best model" anyway - it will always be an approximation and also depends on the time I have at hand. I have modeling validation techniques in place. I dedicate lots of time to talk to subject matter experts and collect background information. _    |   _I have data cleaning techniques in place. I have experienced lots of problems already - I am well prepared. Data cleaning is an iterative process; it's ok to go back, correct the data cleaning process and rerun it._   |
+|    <span style="background-color: #F2AD00">3) Worst possible outcome</span>    |   _Nothing fits, or the model does not converge._     |   _Forth and back, running out of time to do any actual analysis._  |
+|   <span style="background-color: #F98400"> 4) Best possible outcome </span>   |    _Perfect model._     |    _Clean dataset._    |
+|  <span style="background-color: #5BBCD6">  5) Likely outcome </span>   |   _I'll find an ok model after some modelling iteration._      |    _I'll overlook a data cleaning aspect, but will fix it and rerun the data QC._    |
+|  <span style="background-color: #74A089"> 6) If your worry does come true, how will you handle it? Will you eventually be okay? </span>   |     _I stick to a simpler model and suggest that someone else looks at it with fresh eyes. I will be ok._   |  _I anticipate my worry and keep data cleaning separate from any analysis. This way I can rerun the data QC at any time again. I will be ok._      |
+
+## Core beliefs
+
+Another exercise is around [core beliefs](https://www.therapistaid.com/worksheets/core-beliefs.pdf):
+
+
+| Questions to ask yourself | Example 1 | Example 2|
+|--------|--------|--------|
+|   <span style="background-color: #3B9AB2"> What is one of your negative core beliefs? </span>  |   _No data analysis of mine was ever correct or has made a difference to science._   | _I am a slow data analyst._ |
+| <span style="background-color: #78B7C5">List pieces of evidence contrary to your negative core belief.</span>| _I) Several of my data analyses have made it to manuscript or pipelines, II) People often tell me that they find my work helpful._ | _I am curious, quick to pick up new things and work hard._ |
+
+## Why does it work?
+
+I am not a psychologist, so I don't know. 
+
+I guess for me it helps to know that there is a midway between the best and worst scenario, and that even if the worst happens, the world won't fall apart. 
+
+## Summary
+
+Some people have a tendency to anxiety. Such anxiety may cause unrealistic catastrophizing of a data analysis. This in turn can create an unhealthy nervousness and simply exhaust. 
+
+Whenever faced with a "<something> will go totally wrong", I use a six step questionnaire for myself. Likewise, when I have a negative core belief creeping up, I use a two step questionnaire. 
+
+These sets of questions help me and I hope they help you as well. 
+
+## Part 2
+
+In [part 2]() I will discuss more technical solutions, e.g. project set up, QC tooling in R or how important it is to take breaks.
+
