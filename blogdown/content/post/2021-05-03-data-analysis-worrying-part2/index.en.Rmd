@@ -1,5 +1,5 @@
 ---
-title: Data Analysis Worrying (Part 2)
+title: Data Analysis Worrying - Part 2
 author: Sina Rüeger
 date: '2021-05-03'
 slug: cbt-data-analysis-tech
@@ -14,12 +14,11 @@ image:
   focal_point: ''
 draft: true
 ---
-  
-  
+
+
 <span style="background-color: #F2AD00">_This blogpost is about solutions to tackle constant "data analysis worrying"._</span>
   
 [**Part 1**](https://sinarueeger.github.io/post/cbt-data-analysis-part1/) discussed a mental coping approach, while **Part 2** will show more technical solutions and prevention techniques. Let's dive right in!  
-
 
 ## 1. Work organisation
 
