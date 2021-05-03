@@ -14,6 +14,7 @@ image:
 draft: false
 ---
 
+
 <span style="background-color: #F2AD00">_This blogpost is about applying a mental-wellbeing coping to constant "data analysis worrying". _</span>
 
 ![<sup>From https://xkcd.com/1222/.</sup>](https://imgs.xkcd.com/comics/pastime.png){width=80%}

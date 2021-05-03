@@ -28,7 +28,7 @@ system("git push")
 
 
 ## a) commit changes to github 
-setwd("/Users/rueger/Documents/Projects/sinarueeger.github.io")
+setwd("/Users/rueger/webpage-stuff/sinarueeger.github.io")
 system("git add -f *")
 system(paste0("git commit -a -m ", comment))
 system("git push")
