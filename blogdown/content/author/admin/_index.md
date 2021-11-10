@@ -13,7 +13,7 @@ role = "(Genomic) Data Scientist"
 
 # Organizations/Affiliations
 #   Separate multiple entries with a comma, using the form: `[ {name="Org1", url=""}, {name="Org2", url=""} ]`.
-organizations = [ { name = "data42 at Novartis" } ]
+organizations = [ { name = "Novartis" } ]
 
 # Short bio (displayed in user profile at end of posts)
 bio = "  "
