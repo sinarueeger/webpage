@@ -18,14 +18,24 @@ date_format = "Jan 2006"
 #   Leave `date_end` empty if it's your current employer.
 #   Begin/end multi-line descriptions with 3 quotes `"""`.
 
+[[experience]]
+  title = "Data Scientist"
+  company = "Novartis Institutes for BioMedical Research (NIBR), Novartis"
+  company_url = "https://www.novartis.com/research-development/novartis-institutes-biomedical-research"
+  location = "Basel, Switzerland"
+  date_start = "2021-11-01"
+  date_end = ""
+  description = """
+  """
+  
 
 [[experience]]
   title = "Data Scientist"
-  company = "Novartis"
-  company_url = ""
+  company = "data42, Novartis"
+  company_url = "https://www.novartis.com/stories/data42-program-shows-novartis-intent-go-big-data-and-digital"
   location = "Basel, Switzerland"
   date_start = "2021-02-15"
-  date_end = ""
+  date_end = "2021-10-30"
   description = """
   """
   
