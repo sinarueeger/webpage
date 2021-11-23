@@ -19,7 +19,7 @@ date_format = "Jan 2006"
 #   Begin/end multi-line descriptions with 3 quotes `"""`.
 
 [[experience]]
-  title = "Data Scientist"
+  title = "Senior Data Scientist"
   company = "Novartis Institutes for BioMedical Research (NIBR), Novartis"
   company_url = "https://www.novartis.com/research-development/novartis-institutes-biomedical-research"
   location = "Basel, Switzerland"
