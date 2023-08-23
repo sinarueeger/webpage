@@ -19,7 +19,7 @@ blogdown::hugo_build()
 ## 3) commit changes to github >> do in terminal
 path <- getwd()
  
-comment <- "'update cv'"
+comment <- "'update cv and update phd thesis link'"
 
 ## b) commit changes of webpage folder
 ## add files system("git add ...")
@@ -28,7 +28,7 @@ system("git push")
 
 
 ## a) commit changes to github 
-setwd("/Users/rueger/webpage-stuff/sinarueeger.github.io")
+setwd("/Users/sinarueeger/webpage-stuff/sinarueeger.github.io")
 system("git add -f *")
 system(paste0("git commit -a -m ", comment))
 system("git push")
