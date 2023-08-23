@@ -21,7 +21,7 @@ tags = ["statistical genetics"]
 slides = ""
 
 # Links (optional).
-url_pdf = "https://drive.switch.ch/index.php/s/FpWZlbw4Rfq20le"
+url_pdf = "https://drive.google.com/file/d/1btlOf8qJFpj_KT524C9JeCOz8xHkziMW/view"
 url_slides = "https://sinarueeger.github.io/publicdefense/slides#1"
 url_video = ""
 url_code = "https://github.com/sinarueeger/publicdefense"
